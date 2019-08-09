@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.tmall.common.annotation.LoginRequire;
-import com.tmall.common.constants.LoginErrResultEnum;
+import com.tmall.common.constants.UserErrResultEnum;
 import com.tmall.common.dto.AjaxResult;
 import com.tmall.common.redis.RedisClient;
 import com.tmall.common.utils.CommonUtil;
@@ -12,9 +12,11 @@ import com.tmall.remote.goods.api.IGoodsService;
 import com.tmall.remote.goods.dto.GoodsDTO;
 import com.tmall.user.entity.dto.LoginInfo;
 import com.tmall.user.entity.dto.LoginUser;
+import com.tmall.user.entity.dto.RegisterDTO;
 import com.tmall.user.entity.po.AccountPO;
 import com.tmall.user.keys.UserKey;
 import com.tmall.user.service.AccountService;
+import com.tmall.user.service.UserService;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -34,6 +36,8 @@ public class UserResource {
     private RedisClient redisClient;
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/hello")
     public String hello() {
@@ -53,13 +57,7 @@ public class UserResource {
 
     @PostMapping("/login")
     public AjaxResult login(@RequestBody AccountPO account) {
-        LoginUser loginUser = accountService.login(account);
-        if (loginUser == null) {
-            return AjaxResult.error(LoginErrResultEnum.LOGIN_FAIL);
-        }
-        String token = CommonUtil.getUuid();
-        redisClient.set(UserKey.TOKEN, token, loginUser);
-        return AjaxResult.success(token);
+        return accountService.login(account);
     }
 
     @LoginRequire
@@ -67,6 +65,16 @@ public class UserResource {
     public AjaxResult logout() {
         redisClient.removeKey(UserKey.TOKEN, LoginInfo.getToken());
         return AjaxResult.success();
+    }
+
+    @GetMapping("/sendRegisterCaptcha")
+    public AjaxResult sendRegisterCaptcha(String account) {
+        return AjaxResult.success(accountService.sendRegisterCaptcha(account));
+    }
+
+    @PostMapping("/register")
+    public AjaxResult register(@RequestBody RegisterDTO registerInfo) {
+        return userService.register(registerInfo);
     }
 
 }

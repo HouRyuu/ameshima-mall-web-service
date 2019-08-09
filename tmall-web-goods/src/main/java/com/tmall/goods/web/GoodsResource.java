@@ -1,10 +1,13 @@
 package com.tmall.goods.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tmall.common.dto.AjaxResult;
+import com.tmall.goods.service.GoodsCategoryService;
 import com.tmall.remote.goods.dto.GoodsDTO;
 
 /**
@@ -19,6 +22,9 @@ import com.tmall.remote.goods.dto.GoodsDTO;
 @RequestMapping("/goods")
 public class GoodsResource {
 
+    @Autowired
+    private GoodsCategoryService goodsCategoryService;
+
     @GetMapping("/hello")
     public String hello() {
         return "hello Goods";
@@ -30,5 +36,15 @@ public class GoodsResource {
         goods.setId(1);
         goods.setName("Prada 2019夏季男士短袖");
         return goods;
+    }
+
+    @GetMapping("/findSecondCategories")
+    public AjaxResult findSecondCategories() {
+        return AjaxResult.success(goodsCategoryService.findSecondCategories());
+    }
+
+    @GetMapping("/{pid}/findCategories")
+    public AjaxResult findCategoriesByPid(@PathVariable int pid) {
+        return AjaxResult.success(goodsCategoryService.findCategoriesByPid(pid));
     }
 }

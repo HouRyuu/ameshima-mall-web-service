@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.tmall.common.annotation.LoginRequire;
-import com.tmall.common.constants.LoginErrResultEnum;
+import com.tmall.common.constants.UserErrResultEnum;
 import com.tmall.common.dto.AjaxResult;
 import com.tmall.common.redis.RedisClient;
 import com.tmall.common.utils.WebUtil;
@@ -61,11 +61,12 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
         if (StringUtils.isBlank(token)) {
             response.setContentType("application/json;charset=utf-8");
-            response.getWriter().print(JSON.toJSON(AjaxResult.error(LoginErrResultEnum.NOT_LOGIN)));
+            response.getWriter().print(JSON.toJSON(AjaxResult.error(UserErrResultEnum.NOT_LOGIN)));
+            return false;
         }
         if (loginUser == null) {
             response.setContentType("application/json;charset=utf-8");
-            response.getWriter().print(JSON.toJSON(AjaxResult.error(LoginErrResultEnum.INVALID_LOGIN)));
+            response.getWriter().print(JSON.toJSON(AjaxResult.error(UserErrResultEnum.INVALID_LOGIN)));
             return false;
         }
         return true;

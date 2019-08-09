@@ -1,5 +1,6 @@
 package com.tmall.user.service;
 
+import com.tmall.common.dto.AjaxResult;
 import com.tmall.user.entity.dto.LoginUser;
 import com.tmall.user.entity.po.AccountPO;
 
@@ -15,6 +16,14 @@ public interface AccountService {
 
     Integer create(AccountPO account);
 
-    LoginUser login(AccountPO account);
+    AjaxResult login(AccountPO account);
+
+    /**
+     * 发送注册验证码
+     * 
+     * @param account 账号
+     * @return 发送间隔秒
+     */
+    int sendRegisterCaptcha(String account);
 
 }

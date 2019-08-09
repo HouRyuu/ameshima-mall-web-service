@@ -19,4 +19,6 @@ public final class TmallConstant {
 
     public static final String PARAM_ERR_MSG = "参数异常";
 
+    public static final String REG_MOBILE = "^1[3-8]\\d{9}$";
+
 }

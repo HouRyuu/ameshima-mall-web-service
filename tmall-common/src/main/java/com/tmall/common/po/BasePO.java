@@ -1,4 +1,4 @@
-package com.tmall.user.entity.po;
+package com.tmall.common.po;
 
 import java.util.Date;
 

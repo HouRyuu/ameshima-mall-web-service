@@ -1,5 +1,7 @@
 package com.tmall.user.entity.po;
 
+import com.tmall.common.po.BasePO;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;

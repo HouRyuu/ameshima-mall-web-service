@@ -1,7 +1,7 @@
-package com.tmall.user.mapper;
+package com.tmall.common.mapper;
 
 import com.tmall.common.BaseMapper;
-import com.tmall.user.entity.po.UserAlipayPO;
+import com.tmall.common.po.GlobalConfigPO;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -11,7 +11,5 @@ import com.tmall.user.entity.po.UserAlipayPO;
  * @see [相关类/方法]（可选）
  * @since [产品/模块版本] （可选）
  */
-public interface UserAlipayMapper extends BaseMapper<UserAlipayPO> {
-
-    int saveOrUpdate(UserAlipayPO userAlipay);
+public interface GlobalConfigMapper extends BaseMapper<GlobalConfigPO> {
 }
