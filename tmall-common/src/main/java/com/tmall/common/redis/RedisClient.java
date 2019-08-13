@@ -32,7 +32,7 @@ public class RedisClient {
      * 存储至redis
      * 
      * @param prefix key前缀（可包含过期时间）
-     * @param key key
+     * @param key keys
      * @param value 值【普通对象或集合容器反省对象必须实现序列化接口Serializable】
      * @param <T> 泛型
      * @return 存储是否成功
@@ -55,7 +55,7 @@ public class RedisClient {
      * 根据key获取redis缓存
      * 
      * @param prefix key前缀
-     * @param key key
+     * @param key keys
      * @param <T> 泛型
      * @return 值
      */
@@ -91,7 +91,7 @@ public class RedisClient {
      * 根据key删除redis缓存
      *
      * @param prefix key前缀
-     * @param key key
+     * @param key keys
      * @return 是否成功
      */
     public boolean removeKey(KeyPrefix prefix, Object key) {
@@ -108,7 +108,7 @@ public class RedisClient {
      * 增加或减少指定数值
      * 
      * @param prefix key前缀
-     * @param key key
+     * @param key keys
      * @param number 数值
      */
     public Long incrOrDecr(KeyPrefix prefix, Object key, long number) {
@@ -122,7 +122,7 @@ public class RedisClient {
      * 生成最终缓存的key
      * 
      * @param prefix 前缀
-     * @param key key
+     * @param key keys
      * @return 最终缓存的key
      */
     private String realKey(KeyPrefix prefix, Object key) {

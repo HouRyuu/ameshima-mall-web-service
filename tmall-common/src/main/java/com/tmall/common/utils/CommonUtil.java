@@ -1,8 +1,8 @@
 package com.tmall.common.utils;
 
-import java.util.Random;
 import java.util.UUID;
 
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -20,10 +20,9 @@ public final class CommonUtil {
     }
 
     public static String createCaptcha() {
-        Random random = new Random();
         StringBuilder captcha = new StringBuilder();
         for (int i = 0; i < 6; i++) {
-            captcha.append(random.nextInt(10));
+            captcha.append(RandomUtils.nextInt(0, 10));
         }
         return captcha.toString();
     }

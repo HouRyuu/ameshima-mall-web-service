@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--suppress ALL -->
+<mapper namespace="com.tmall.store.mapper.StoreBannerMapper">
+
+    <select id="getBannerCount" resultType="int">
+        SELECT
+        COUNT(1)
+        FROM
+        `t_store_banner`
+        WHERE
+        is_delete = 0
+        <if test="isIndexShow != null">
+            AND is_index_show = #{isIndexShow}
+        </if>
+    </select>
+
+    <select id="findBanners" parameterType="StoreBannerDTO" resultType="StoreBannerDTO">
+        SELECT
+        store_id,
+        banner_img,
+        banner_color
+        FROM
+        `t_store_banner`
+        WHERE
+        is_delete = 0
+        <if test="isIndexShow != null">
+            AND is_index_show = #{isIndexShow}
+        </if>
+        LIMIT #{firstIndex}, #{showCount}
+    </select>
+
+</mapper>

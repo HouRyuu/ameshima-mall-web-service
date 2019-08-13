@@ -19,6 +19,10 @@ zuul:
           path: /goods/**
           serviceId: tmall-goods
           stripPrefix: false
+    storeApi:
+          path: /store/**
+          serviceId: tmall-store
+          stripPrefix: false
 
 #熔断机制超时
 hystrix:

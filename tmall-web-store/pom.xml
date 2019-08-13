@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.tmall</groupId>
-	<artifactId>tmall-web-goods</artifactId>
+	<artifactId>tmall-web-store</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>tmall-web-goods</name>
+	<name>tmall-web-store</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
