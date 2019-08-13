@@ -33,10 +33,13 @@ public class StoreBannerServiceImpl implements StoreBannerService {
 
     @Override
     public List<StoreBannerDTO> findIndexBanner() {
-//        return redisClient.get(StoreKey.INDEX_BANNER, null, () -> {
+        return redisClient.get(StoreKey.INDEX_BANNER, null, () -> {
             int bannerCount = storeBannerMapper.getBannerCount(1);
+            if (bannerCount == 0) {
+                return null;
+            }
             int firstIndex = 0;
-            int showCount = Integer.parseInt(globalConfig.get(GlobalConfig.BANNER_INDEX_SHOW_COUNT));
+            int showCount = Integer.parseInt(globalConfig.get(GlobalConfig.INDEX_BANNER_SHOW_COUNT));
             if (bannerCount > showCount) {
                 firstIndex = RandomUtils.nextInt(0, bannerCount - showCount + 1);
             }
@@ -45,6 +48,6 @@ public class StoreBannerServiceImpl implements StoreBannerService {
             queryParam.setFirstIndex(firstIndex);
             queryParam.setShowCount(showCount);
             return storeBannerMapper.findBanners(queryParam);
-//        });
+        });
     }
 }

@@ -31,7 +31,8 @@ public class GlobalConfig {
     private static final char CONNECTOR = '_';
     public static final String KEY_LIMIT_CAPTCHA = "limit_captcha";
 
-    public static final String BANNER_INDEX_SHOW_COUNT = "banner_indexShowCount";
+    public static final String INDEX_BANNER_SHOW_COUNT = "index_bannerShowCount";
+    public static final String INDEX_BRAND_SHOW_COUNT = "index_brandShowCount";
 
     @Autowired
     private GlobalConfigMapper globalConfigMapper;

@@ -1,13 +1,15 @@
 package com.tmall.goods;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.context.annotation.ComponentScan;
+import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringBootApplication
 @EnableEurekaClient
-@MapperScan("com.tmall.goods.mapper")
+@ComponentScan("com.tmall")
+@MapperScan("com.tmall.*.mapper")
 public class TmallWebGoodsApplication {
 
 	public static void main(String[] args) {
