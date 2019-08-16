@@ -15,7 +15,8 @@ import com.tmall.common.redis.KeyPrefix;
  */
 public class GoodsKey extends BaseKeyPrefix {
 
-    public static final KeyPrefix INDEX_BRANDS = new GoodsKey("index_brands", 2, TimeUnit.HOURS);
+    public static final KeyPrefix INDEX_BRANDS = new GoodsKey("index_brands", 2L, TimeUnit.HOURS);
+    public static final KeyPrefix INDEX_PROMOTE_PLATE = new GoodsKey("index_promote_plate", 2L, TimeUnit.HOURS);
 
     private GoodsKey(String prefix, long timeout, TimeUnit timeUnit) {
         super(prefix, timeout, timeUnit);

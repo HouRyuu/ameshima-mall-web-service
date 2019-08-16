@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--suppress ALL -->
+<mapper namespace="com.tmall.goods.mapper.GoodsPromoteMapper">
+
+    <select id="findPromotes" resultType="GoodsPromoteDTO">
+        SELECT
+            id,
+            title,
+            sub_name,
+            banner_img
+        FROM
+            `t_goods_promote`
+        WHERE
+            is_delete = 0
+        <if test="isShowIndex != null">
+        AND is_show_index = #{isShowIndex}
+        </if>
+    </select>
+
+</mapper>

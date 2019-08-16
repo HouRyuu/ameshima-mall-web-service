@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tmall.common.dto.AjaxResult;
 import com.tmall.goods.service.GoodsCategoryService;
+import com.tmall.goods.service.GoodsPromoteService;
+import com.tmall.goods.service.GoodsService;
 import com.tmall.remote.goods.dto.GoodsDTO;
 
 /**
@@ -24,6 +26,10 @@ public class GoodsResource {
 
     @Autowired
     private GoodsCategoryService goodsCategoryService;
+    @Autowired
+    private GoodsService goodsService;
+    @Autowired
+    private GoodsPromoteService goodsPromoteService;
 
     @GetMapping("/hello")
     public String hello() {
@@ -46,5 +52,15 @@ public class GoodsResource {
     @GetMapping("/{pid}/findCategories")
     public AjaxResult findCategoriesByPid(@PathVariable int pid) {
         return AjaxResult.success(goodsCategoryService.findCategoriesByPid(pid));
+    }
+
+    @GetMapping("/indexPromotePlate")
+    public AjaxResult indexPromotePlate() {
+        return AjaxResult.success(goodsPromoteService.findPromotes());
+    }
+
+    @GetMapping("/{promoteId}/findPromoteGoods")
+    public AjaxResult findPromoteGoods(@PathVariable int promoteId) {
+        return AjaxResult.success(goodsService.findPromote(promoteId));
     }
 }

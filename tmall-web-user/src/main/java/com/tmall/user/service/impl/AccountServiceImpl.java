@@ -47,7 +47,7 @@ public class AccountServiceImpl implements AccountService {
             account.setAccount(CommonUtil.getUuid());
         }
         if (StringUtils.isNotBlank(account.getPassword())) {
-            account.setPassword(DigestUtils.md5Hex(DigestUtils.md5(account.getAccount())));
+            account.setPassword(DigestUtils.md5Hex(DigestUtils.md5(account.getPassword())));
         }
         accountMapper.insertSelective(account);
         return account.getId();
@@ -57,7 +57,7 @@ public class AccountServiceImpl implements AccountService {
     public AjaxResult login(AccountPO account) {
         Assert.isTrue(account != null && !StringUtils.isAnyBlank(account.getAccount(), account.getPassword()),
                 TmallConstant.PARAM_ERR_MSG);
-        account.setPassword(DigestUtils.md5Hex(DigestUtils.md5(account.getAccount())));
+        account.setPassword(DigestUtils.md5Hex(DigestUtils.md5(account.getPassword())));
         LoginUser loginUser =  accountMapper.login(account);
         if (loginUser == null) {
             return AjaxResult.error(UserErrResultEnum.LOGIN_FAIL);

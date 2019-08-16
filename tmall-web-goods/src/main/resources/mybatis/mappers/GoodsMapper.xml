@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--suppress ALL -->
+<mapper namespace="com.tmall.goods.mapper.GoodsMapper">
+
+    <select id="findPromote" resultType="GoodsGridDTO">
+        SELECT
+        t.id,
+        t.`name`,
+        t.img_url,
+        CASE
+        WHEN t.promo_price IS NULL THEN
+        t.price
+        WHEN promo_price IS NOT NULL THEN
+        t.promo_price
+        END price
+        FROM
+        t_goods t
+        INNER JOIN t_goods_category_relation t1 ON t.id = t1.goods_id
+        INNER JOIN t_goods_category t2 ON t1.category_id = t2.id
+        AND t2.is_delete = 0
+        INNER JOIN t_goods_promote_category t3 ON t2.pid = t3.category_id
+        AND t3.is_delete = 0
+        WHERE
+        t.is_delete = 0
+        AND t3.promote_id = #{promoteId}
+    </select>
+
+</mapper>
