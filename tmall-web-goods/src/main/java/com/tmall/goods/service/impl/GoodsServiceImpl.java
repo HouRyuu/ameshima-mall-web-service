@@ -2,10 +2,14 @@ package com.tmall.goods.service.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.Lists;
+import com.tmall.common.constants.GlobalConfig;
 import com.tmall.goods.entity.dto.GoodsGridDTO;
+import com.tmall.goods.entity.dto.GuessLikeQueryDTO;
 import com.tmall.goods.mapper.GoodsMapper;
 import com.tmall.goods.service.GoodsService;
 
@@ -22,9 +26,28 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Autowired
     private GoodsMapper goodsMapper;
+    @Autowired
+    private GlobalConfig globalConfig;
 
     @Override
-    public List<GoodsGridDTO> findPromote(int promoteId) {
+    public List<GoodsGridDTO> findByPromote(int promoteId) {
         return goodsMapper.findPromote(promoteId);
+    }
+
+    @Override
+    public List<GoodsGridDTO> findByCategories(GuessLikeQueryDTO queryParam) {
+        int count = Integer.parseInt(globalConfig.get(GlobalConfig.INDEX_GUESS_LIKE_COUNT));
+        queryParam.setCount(count);
+        List<GoodsGridDTO> goodsList = ArrayUtils.isEmpty(queryParam.getCategories()) ? Lists.newArrayList()
+                : goodsMapper.findByCategories(queryParam);
+        if (goodsList.size() < count) {
+            queryParam.setCount(count - goodsList.size());
+            if (goodsList.size() > 0) {
+                queryParam.setNotCategories(queryParam.getCategories());
+            }
+            queryParam.setCategories(null);
+            goodsList.addAll(goodsMapper.findByCategories(queryParam));
+        }
+        return goodsList;
     }
 }

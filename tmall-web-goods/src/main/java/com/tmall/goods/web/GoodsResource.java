@@ -1,12 +1,10 @@
 package com.tmall.goods.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.tmall.common.dto.AjaxResult;
+import com.tmall.goods.entity.dto.GuessLikeQueryDTO;
 import com.tmall.goods.service.GoodsCategoryService;
 import com.tmall.goods.service.GoodsPromoteService;
 import com.tmall.goods.service.GoodsService;
@@ -61,6 +59,11 @@ public class GoodsResource {
 
     @GetMapping("/{promoteId}/findPromoteGoods")
     public AjaxResult findPromoteGoods(@PathVariable int promoteId) {
-        return AjaxResult.success(goodsService.findPromote(promoteId));
+        return AjaxResult.success(goodsService.findByPromote(promoteId));
+    }
+
+    @PostMapping("/guessLike")
+    public AjaxResult guessLike(@RequestBody GuessLikeQueryDTO queryParam) {
+        return AjaxResult.success(goodsService.findByCategories(queryParam));
     }
 }

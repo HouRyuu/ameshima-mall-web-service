@@ -4,14 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.tmall.common.annotation.LoginRequire;
-import com.tmall.common.constants.UserErrResultEnum;
 import com.tmall.common.dto.AjaxResult;
 import com.tmall.common.redis.RedisClient;
-import com.tmall.common.utils.CommonUtil;
 import com.tmall.remote.goods.api.IGoodsService;
 import com.tmall.remote.goods.dto.GoodsDTO;
 import com.tmall.user.entity.dto.LoginInfo;
-import com.tmall.user.entity.dto.LoginUser;
 import com.tmall.user.entity.dto.RegisterDTO;
 import com.tmall.user.entity.po.AccountPO;
 import com.tmall.user.keys.UserKey;
@@ -69,7 +66,7 @@ public class UserResource {
 
     @GetMapping("/sendRegisterCaptcha")
     public AjaxResult sendRegisterCaptcha(String account) {
-        return AjaxResult.success(accountService.sendRegisterCaptcha(account));
+        return accountService.sendRegisterCaptcha(account);
     }
 
     @PostMapping("/register")

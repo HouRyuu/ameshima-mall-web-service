@@ -33,6 +33,7 @@ public class GlobalConfig {
 
     public static final String INDEX_BANNER_SHOW_COUNT = "index_bannerShowCount";
     public static final String INDEX_BRAND_SHOW_COUNT = "index_brandShowCount";
+    public static final String INDEX_GUESS_LIKE_COUNT = "index_guessLikeCount";
 
     @Autowired
     private GlobalConfigMapper globalConfigMapper;

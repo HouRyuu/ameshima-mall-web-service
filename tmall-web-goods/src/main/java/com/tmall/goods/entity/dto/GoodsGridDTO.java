@@ -16,6 +16,7 @@ public class GoodsGridDTO {
     private String name;
     private BigDecimal price;
     private String imgUrl;
+    private int categoryId;
 
     public int getId() {
         return id;
@@ -47,5 +48,13 @@ public class GoodsGridDTO {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 }

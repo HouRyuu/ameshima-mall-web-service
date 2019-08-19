@@ -24,6 +24,6 @@ public interface AccountService {
      * @param account 账号
      * @return 发送间隔秒
      */
-    int sendRegisterCaptcha(String account);
+    AjaxResult sendRegisterCaptcha(String account);
 
 }
