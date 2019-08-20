@@ -2,10 +2,11 @@ package com.tmall.goods.mapper;
 
 import java.util.List;
 
-import com.tmall.goods.entity.dto.GuessLikeQueryDTO;
 import org.apache.ibatis.annotations.Param;
 
+import com.tmall.goods.entity.dto.GoodsBannerDTO;
 import com.tmall.goods.entity.dto.GoodsGridDTO;
+import com.tmall.goods.entity.dto.GuessLikeQueryDTO;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -20,5 +21,7 @@ public interface GoodsMapper {
     List<GoodsGridDTO> findPromote(@Param("promoteId") int promoteId);
 
     List<GoodsGridDTO> findByCategories(GuessLikeQueryDTO queryParam);
+
+    List<GoodsBannerDTO> findBanners(@Param("storeId") int storeId);
 
 }

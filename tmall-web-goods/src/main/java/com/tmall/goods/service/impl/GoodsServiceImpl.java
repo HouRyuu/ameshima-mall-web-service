@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
 import com.tmall.common.constants.GlobalConfig;
+import com.tmall.goods.entity.dto.GoodsBannerDTO;
 import com.tmall.goods.entity.dto.GoodsGridDTO;
 import com.tmall.goods.entity.dto.GuessLikeQueryDTO;
 import com.tmall.goods.mapper.GoodsMapper;
@@ -49,5 +50,10 @@ public class GoodsServiceImpl implements GoodsService {
             goodsList.addAll(goodsMapper.findByCategories(queryParam));
         }
         return goodsList;
+    }
+
+    @Override
+    public List<GoodsBannerDTO> findBanners(int storeId) {
+        return goodsMapper.findBanners(storeId);
     }
 }

@@ -66,4 +66,9 @@ public class GoodsResource {
     public AjaxResult guessLike(@RequestBody GuessLikeQueryDTO queryParam) {
         return AjaxResult.success(goodsService.findByCategories(queryParam));
     }
+
+    @GetMapping("/{storeId}/findBanners")
+    public AjaxResult findBanners(@PathVariable int storeId) {
+        return AjaxResult.success(goodsService.findBanners(storeId));
+    }
 }

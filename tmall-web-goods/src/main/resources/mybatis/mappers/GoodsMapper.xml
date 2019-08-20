@@ -61,4 +61,19 @@
         LIMIT #{count}
     </select>
 
+    <select id="findBanners" resultType="GoodsBannerDTO">
+        SELECT
+            t3.goods_id,
+            t3.img_url
+        FROM
+            t_goods t1
+        INNER JOIN t_goods_img t3 ON t3.is_delete = 0
+        AND t1.id = t3.goods_id
+        AND t3.img_type = 16
+        WHERE
+            t1.is_delete = 0
+        AND t1.store_id = #{storeId}
+        AND t1.is_show_banner = 1
+    </select>
+
 </mapper>
