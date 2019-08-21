@@ -8,17 +8,17 @@ package com.tmall.goods.entity.dto;
  * @see [相关类/方法]（可选）
  * @since [产品/模块版本] （可选）
  */
-public class GoodsBannerDTO {
+public class GoodsImgDTO {
 
-    private int goodsId;
+    private int imgType;
     private String imgUrl;
 
-    public int getGoodsId() {
-        return goodsId;
+    public int getImgType() {
+        return imgType;
     }
 
-    public void setGoodsId(int goodsId) {
-        this.goodsId = goodsId;
+    public void setImgType(int imgType) {
+        this.imgType = imgType;
     }
 
     public String getImgUrl() {

@@ -17,6 +17,8 @@ public class GoodsKey extends BaseKeyPrefix {
 
     public static final KeyPrefix INDEX_BRANDS = new GoodsKey("index_brands", 2L, TimeUnit.HOURS);
     public static final KeyPrefix INDEX_PROMOTE_PLATE = new GoodsKey("index_promote_plate", 2L, TimeUnit.HOURS);
+    public static final KeyPrefix STORE_INDEX_GOODS = new GoodsKey("store_index_goods", 2L, TimeUnit.HOURS);
+    public static final KeyPrefix GOODS_ATTRS = new GoodsKey("goods_attrs", 2L, TimeUnit.HOURS);
 
     private GoodsKey(String prefix, long timeout, TimeUnit timeUnit) {
         super(prefix, timeout, timeUnit);

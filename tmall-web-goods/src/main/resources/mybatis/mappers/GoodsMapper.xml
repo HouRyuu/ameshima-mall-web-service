@@ -3,44 +3,56 @@
 <!--suppress ALL -->
 <mapper namespace="com.tmall.goods.mapper.GoodsMapper">
 
+    <select id="getGoods" resultType="GoodsDTO">
+        SELECT
+            t.id,
+            t.`name`,
+            t.simple_desc,
+            t3.price,
+            t3.market_price,
+            t2.pid category_id
+        FROM
+            t_goods t
+        INNER JOIN t_goods_category_relation t1 ON t.id = t1.goods_id
+        INNER JOIN t_goods_category t2 ON t1.category_id = t2.id
+        AND t2.is_delete = 0
+        INNER JOIN t_goods_sku t3 ON t.sku_id = t3.id
+        AND t3.is_delete = 0
+        WHERE
+            t.is_delete = 0
+        AND t.id = #{goodsId}
+    </select>
+
     <select id="findPromote" resultType="GoodsGridDTO">
         SELECT
-        t.id,
-        t.`name`,
-        t.img_url,
-        CASE
-        WHEN t.promo_price IS NULL THEN
-        t.price
-        WHEN promo_price IS NOT NULL THEN
-        t.promo_price
-        END price,
-        t3.category_id
+            t.id,
+            t.`name`,
+            t.img_url,
+            t4.price,
+            t3.category_id
         FROM
-        t_goods t
+            t_goods t
         INNER JOIN t_goods_category_relation t1 ON t.id = t1.goods_id
         INNER JOIN t_goods_category t2 ON t1.category_id = t2.id
         AND t2.is_delete = 0
         INNER JOIN t_goods_promote_category t3 ON t2.pid = t3.category_id
         AND t3.is_delete = 0
+        INNER JOIN t_goods_sku t4 ON t.sku_id = t4.id
+        AND t4.is_delete = 0
         WHERE
-        t.is_delete = 0
+            t.is_delete = 0
         AND t3.promote_id = #{promoteId}
     </select>
 
     <select id="findByCategories" resultType="GoodsGridDTO">
         SELECT
-        t.id,
-        t.`name`,
-        t.img_url,
-        CASE
-        WHEN t.promo_price IS NULL THEN
-        t.price
-        WHEN promo_price IS NOT NULL THEN
-        t.promo_price
-        END price,
-        t2.pid category_id
+            t.id,
+            t.`name`,
+            t.img_url,
+            t3.price,
+            t2.pid category_id
         FROM
-        `t_goods` t
+          `t_goods` t
         INNER JOIN t_goods_category_relation t1 ON t.id = t1.goods_id
         INNER JOIN t_goods_category t2 ON t1.category_id = t2.id
         AND t2.is_delete = 0
@@ -50,6 +62,8 @@
                 #{pid}
             </foreach>
         </if>
+        INNER JOIN t_goods_sku t3 ON t.sku_id = t3.id
+        AND t3.is_delete = 0
         WHERE
         t.is_delete = 0
         <if test="notCategories != null">
@@ -61,19 +75,71 @@
         LIMIT #{count}
     </select>
 
-    <select id="findBanners" resultType="GoodsBannerDTO">
+    <select id="storeGoods" resultType="StoreGoodsDTO">
         SELECT
-            t3.goods_id,
-            t3.img_url
+            t.id,
+            t.is_show_banner,
+            t.is_promote,
+            t.`name`,
+            t.img_url,
+            t1.img_url banner_url,
+            t3.price,
+         t2.category_id
         FROM
-            t_goods t1
-        INNER JOIN t_goods_img t3 ON t3.is_delete = 0
-        AND t1.id = t3.goods_id
-        AND t3.img_type = 16
+            `t_goods` t
+        LEFT JOIN t_goods_img t1 ON t.id = t1.goods_id
+        AND t.is_show_banner = 1
+        AND t1.img_type = 16
+        AND t1.is_delete = 0
+        INNER JOIN t_goods_category_relation t2 ON t2.goods_id = t.id
+        INNER JOIN t_goods_sku t3 ON t.sku_id = t3.id
+        AND t3.is_delete = 0
         WHERE
-            t1.is_delete = 0
-        AND t1.store_id = #{storeId}
-        AND t1.is_show_banner = 1
+            t.is_delete = 0
+        AND t.store_id = #{storeId}
+        AND (
+            t.is_show_banner = 1
+            OR t.is_promote = 1
+        )
     </select>
 
+    <select id="findImgs" resultType="GoodsImgDTO">
+        SELECT
+            img_type,
+            img_url
+        FROM
+            t_goods_img
+        WHERE
+            is_delete = 0
+        AND goods_id = #{goodsId}
+        AND img_type IN (13, 14)
+        ORDER BY
+            img_type
+    </select>
+
+    <select id="findParams" resultType="GoodsParamDTO">
+        SELECT
+            param_name,
+            param_value
+        FROM
+            t_goods_param
+        WHERE
+            is_delete = 0
+        AND goods_id = #{goodsId}
+    </select>
+
+    <select id="findSku" resultType="GoodsSkuDTO">
+        SELECT
+            t.attrs,
+            t.price,
+            t.market_price,
+            t1.quantity
+        FROM
+            t_goods_sku t
+        INNER JOIN t_goods_stock t1 ON t.id = t1.sku_id
+        AND t1.is_delete = 0
+        WHERE
+            t.is_delete = 0
+        AND t.goods_id = #{goodsId}
+    </select>
 </mapper>

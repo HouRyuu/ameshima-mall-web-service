@@ -69,7 +69,7 @@ public class RedisClient {
         }
     }
 
-    public <T> T get(KeyPrefix prefix, String key, Callable<T> callable) {
+    public <T> T get(KeyPrefix prefix, Object key, Callable<T> callable) {
         try {
             ValueOperations<String, T> valueOperations = redisTemplate.opsForValue();
             T result = valueOperations.get(realKey(prefix, key));

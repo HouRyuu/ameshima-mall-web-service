@@ -2,15 +2,16 @@ package com.tmall.goods.service.impl;
 
 import java.util.List;
 
+import com.tmall.remote.goods.dto.GoodsDTO;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
 import com.tmall.common.constants.GlobalConfig;
-import com.tmall.goods.entity.dto.GoodsBannerDTO;
-import com.tmall.goods.entity.dto.GoodsGridDTO;
-import com.tmall.goods.entity.dto.GuessLikeQueryDTO;
+import com.tmall.common.redis.RedisClient;
+import com.tmall.goods.entity.dto.*;
+import com.tmall.goods.keys.GoodsKey;
 import com.tmall.goods.mapper.GoodsMapper;
 import com.tmall.goods.service.GoodsService;
 
@@ -29,6 +30,8 @@ public class GoodsServiceImpl implements GoodsService {
     private GoodsMapper goodsMapper;
     @Autowired
     private GlobalConfig globalConfig;
+    @Autowired
+    private RedisClient redisClient;
 
     @Override
     public List<GoodsGridDTO> findByPromote(int promoteId) {
@@ -53,7 +56,27 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public List<GoodsBannerDTO> findBanners(int storeId) {
-        return goodsMapper.findBanners(storeId);
+    public List<StoreGoodsDTO> storeGoods(int storeId) {
+        return redisClient.get(GoodsKey.STORE_INDEX_GOODS, storeId, () -> goodsMapper.storeGoods(storeId));
+    }
+
+    @Override
+    public GoodsDTO getGoods(int goodsId) {
+        return goodsMapper.getGoods(goodsId);
+    }
+
+    @Override
+    public List<GoodsImgDTO> findImgs(int goodsId) {
+        return goodsMapper.findImgs(goodsId);
+    }
+
+    @Override
+    public List<GoodsParamDTO> findParams(int goodsId) {
+        return goodsMapper.findParams(goodsId);
+    }
+
+    @Override
+    public List<GoodsSkuDTO> findSku(int goodsId) {
+        return goodsMapper.findSku(goodsId);
     }
 }

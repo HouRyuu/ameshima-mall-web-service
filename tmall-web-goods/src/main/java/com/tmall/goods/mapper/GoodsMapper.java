@@ -2,11 +2,12 @@ package com.tmall.goods.mapper;
 
 import java.util.List;
 
+import com.tmall.remote.goods.dto.GoodsDTO;
 import org.apache.ibatis.annotations.Param;
 
-import com.tmall.goods.entity.dto.GoodsBannerDTO;
-import com.tmall.goods.entity.dto.GoodsGridDTO;
-import com.tmall.goods.entity.dto.GuessLikeQueryDTO;
+import com.tmall.common.BaseMapper;
+import com.tmall.goods.entity.dto.*;
+import com.tmall.goods.entity.po.GoodsPO;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -16,12 +17,20 @@ import com.tmall.goods.entity.dto.GuessLikeQueryDTO;
  * @see [相关类/方法]（可选）
  * @since [产品/模块版本] （可选）
  */
-public interface GoodsMapper {
+public interface GoodsMapper extends BaseMapper<GoodsPO> {
+
+    GoodsDTO getGoods(@Param("goodsId") int goodsId);
 
     List<GoodsGridDTO> findPromote(@Param("promoteId") int promoteId);
 
     List<GoodsGridDTO> findByCategories(GuessLikeQueryDTO queryParam);
 
-    List<GoodsBannerDTO> findBanners(@Param("storeId") int storeId);
+    List<StoreGoodsDTO> storeGoods(@Param("storeId") int storeId);
+
+    List<GoodsImgDTO> findImgs(@Param("goodsId") int goodsId);
+
+    List<GoodsParamDTO> findParams(@Param("goodsId") int goodsId);
+
+    List<GoodsSkuDTO> findSku(@Param("goodsId") int goodsId);
 
 }

@@ -1,6 +1,9 @@
-package com.tmall.remote.goods.dto;
+package com.tmall.goods.entity.po;
 
 import java.math.BigDecimal;
+
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -10,20 +13,22 @@ import java.math.BigDecimal;
  * @see [相关类/方法]（可选）
  * @since [产品/模块版本] （可选）
  */
-public class GoodsDTO {
+@Table(name = "t_goods")
+public class GoodsPO {
 
+    @Id
     private Integer id;
     private String name;
     private String simpleDesc;
     private BigDecimal price;
-    private BigDecimal marketPrice;
+    private BigDecimal promoPrice;
     private String location;
     private int isDelete;
 
-    public GoodsDTO() {
+    public GoodsPO() {
     }
 
-    public GoodsDTO(Integer id) {
+    public GoodsPO(Integer id) {
         this.id = id;
     }
 
@@ -59,12 +64,12 @@ public class GoodsDTO {
         this.price = price;
     }
 
-    public BigDecimal getMarketPrice() {
-        return marketPrice;
+    public BigDecimal getPromoPrice() {
+        return promoPrice;
     }
 
-    public void setMarketPrice(BigDecimal marketPrice) {
-        this.marketPrice = marketPrice;
+    public void setPromoPrice(BigDecimal promoPrice) {
+        this.promoPrice = promoPrice;
     }
 
     public String getLocation() {

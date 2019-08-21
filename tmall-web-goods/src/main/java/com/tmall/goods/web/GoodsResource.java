@@ -1,10 +1,14 @@
 package com.tmall.goods.web;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.google.common.collect.Maps;
 import com.tmall.common.dto.AjaxResult;
 import com.tmall.goods.entity.dto.GuessLikeQueryDTO;
+import com.tmall.goods.service.GoodsAttrService;
 import com.tmall.goods.service.GoodsCategoryService;
 import com.tmall.goods.service.GoodsPromoteService;
 import com.tmall.goods.service.GoodsService;
@@ -28,6 +32,8 @@ public class GoodsResource {
     private GoodsService goodsService;
     @Autowired
     private GoodsPromoteService goodsPromoteService;
+    @Autowired
+    private GoodsAttrService goodsAttrService;
 
     @GetMapping("/hello")
     public String hello() {
@@ -67,8 +73,20 @@ public class GoodsResource {
         return AjaxResult.success(goodsService.findByCategories(queryParam));
     }
 
-    @GetMapping("/{storeId}/findBanners")
-    public AjaxResult findBanners(@PathVariable int storeId) {
-        return AjaxResult.success(goodsService.findBanners(storeId));
+    @GetMapping("/{storeId}/storeGoods")
+    public AjaxResult storeGoods(@PathVariable int storeId) {
+        return AjaxResult.success(goodsService.storeGoods(storeId));
+    }
+
+    @GetMapping("/{goodsId}/detail")
+    public AjaxResult detail(@PathVariable int goodsId) {
+        Map<String, Object> result = Maps.newHashMap();
+        result.put("goods", goodsService.getGoods(goodsId));
+        result.put("attrs", goodsAttrService.findGoodsAttrList(goodsId));
+        result.put("skus", goodsService.findSku(goodsId));
+        result.put("coverImgs", goodsService.findImgs(goodsId));
+        result.put("detailImgs", goodsService.findImgs(goodsId));
+        result.put("params", goodsService.findParams(goodsId));
+        return AjaxResult.success(result);
     }
 }

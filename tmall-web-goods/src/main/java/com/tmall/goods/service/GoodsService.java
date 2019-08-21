@@ -2,9 +2,8 @@ package com.tmall.goods.service;
 
 import java.util.List;
 
-import com.tmall.goods.entity.dto.GoodsBannerDTO;
-import com.tmall.goods.entity.dto.GoodsGridDTO;
-import com.tmall.goods.entity.dto.GuessLikeQueryDTO;
+import com.tmall.goods.entity.dto.*;
+import com.tmall.remote.goods.dto.GoodsDTO;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -20,6 +19,14 @@ public interface GoodsService {
 
     List<GoodsGridDTO> findByCategories(GuessLikeQueryDTO queryParam);
 
-    List<GoodsBannerDTO> findBanners(int storeId);
+    List<StoreGoodsDTO> storeGoods(int storeId);
+
+    GoodsDTO getGoods(int goodsId);
+
+    List<GoodsImgDTO> findImgs(int goodsId);
+
+    List<GoodsParamDTO> findParams(int goodsId);
+
+    List<GoodsSkuDTO> findSku(int goodsId);
 
 }
