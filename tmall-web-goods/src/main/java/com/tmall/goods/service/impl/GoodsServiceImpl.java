@@ -2,7 +2,6 @@ package com.tmall.goods.service.impl;
 
 import java.util.List;
 
-import com.tmall.remote.goods.dto.GoodsDTO;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +13,7 @@ import com.tmall.goods.entity.dto.*;
 import com.tmall.goods.keys.GoodsKey;
 import com.tmall.goods.mapper.GoodsMapper;
 import com.tmall.goods.service.GoodsService;
+import com.tmall.remote.goods.dto.GoodsDTO;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -67,12 +67,12 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public List<GoodsImgDTO> findImgs(int goodsId) {
-        return goodsMapper.findImgs(goodsId);
+        return redisClient.get(GoodsKey.GOODS_IMGS, goodsId, () -> goodsMapper.findImgs(goodsId));
     }
 
     @Override
     public List<GoodsParamDTO> findParams(int goodsId) {
-        return goodsMapper.findParams(goodsId);
+        return redisClient.get(GoodsKey.GOODS_PARAMS, goodsId, () -> goodsMapper.findParams(goodsId));
     }
 
     @Override

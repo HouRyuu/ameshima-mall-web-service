@@ -1,12 +1,16 @@
 package com.tmall.goods.web;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.tmall.common.constants.GlobalConfig;
 import com.tmall.common.dto.AjaxResult;
+import com.tmall.goods.entity.dto.GoodsImgDTO;
 import com.tmall.goods.entity.dto.GuessLikeQueryDTO;
 import com.tmall.goods.service.GoodsAttrService;
 import com.tmall.goods.service.GoodsCategoryService;
@@ -43,7 +47,7 @@ public class GoodsResource {
     @GetMapping("/getGoods/{id}")
     public GoodsDTO getGoods(@PathVariable Integer id) {
         GoodsDTO goods = new GoodsDTO();
-        goods.setId(1);
+        goods.setId(id);
         goods.setName("Prada 2019夏季男士短袖");
         return goods;
     }
@@ -84,8 +88,17 @@ public class GoodsResource {
         result.put("goods", goodsService.getGoods(goodsId));
         result.put("attrs", goodsAttrService.findGoodsAttrList(goodsId));
         result.put("skus", goodsService.findSku(goodsId));
-        result.put("coverImgs", goodsService.findImgs(goodsId));
-        result.put("detailImgs", goodsService.findImgs(goodsId));
+        List<GoodsImgDTO> imgList = goodsService.findImgs(goodsId);
+        List<String> coverImgs = Lists.newArrayList(), detailImgs = Lists.newArrayList();
+        for (GoodsImgDTO img : imgList) {
+            if (img.getImgType() == GlobalConfig.GOODS_IMG_TYPE_COVER) {
+                coverImgs.add(img.getImgUrl());
+                continue;
+            }
+            detailImgs.add(img.getImgUrl());
+        }
+        result.put("coverImgs", coverImgs);
+        result.put("detailImgs", detailImgs);
         result.put("params", goodsService.findParams(goodsId));
         return AjaxResult.success(result);
     }

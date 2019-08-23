@@ -1,9 +1,7 @@
 package com.tmall.goods.service;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
-
-import com.tmall.goods.entity.dto.GoodsAttrDTO;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -15,5 +13,5 @@ import com.tmall.goods.entity.dto.GoodsAttrDTO;
  */
 public interface GoodsAttrService {
 
-    Map<String, Collection<GoodsAttrDTO>> findGoodsAttrList(int goodsId);
+    List<Map<String, Object>> findGoodsAttrList(int goodsId);
 }

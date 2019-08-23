@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2019-08-16 18:06:04
+Date: 2019-08-23 18:27:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,13 +29,14 @@ CREATE TABLE `t_account` (
   `is_delete` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `account` (`account`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='账户';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='账户';
 
 -- ----------------------------
 -- Records of t_account
 -- ----------------------------
 INSERT INTO `t_account` VALUES ('1', null, null, '1', '2019-08-02 14:37:17', '2019-08-02 16:14:49', '0');
 INSERT INTO `t_account` VALUES ('2', '18516516436', 'a583ac460a9a894beae6f26079c2a852', '0', '2019-08-09 13:54:36', null, '0');
+INSERT INTO `t_account` VALUES ('3', '13817206436', '4280d89a5a03f812751f504cc10ee8a5', '0', '2019-08-19 10:48:34', null, '0');
 
 -- ----------------------------
 -- Table structure for t_global_config
@@ -51,7 +52,7 @@ CREATE TABLE `t_global_config` (
   `is_delete` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `name` (`name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='全局配置';
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='全局配置';
 
 -- ----------------------------
 -- Records of t_global_config
@@ -69,6 +70,9 @@ INSERT INTO `t_global_config` VALUES ('11', 'goodsAttr', 'digital', '存储容�
 INSERT INTO `t_global_config` VALUES ('12', 'goodsAttr', 'bags', '容量', '2019-08-14 15:56:18', '2019-08-15 10:20:12', '0');
 INSERT INTO `t_global_config` VALUES ('13', 'goods', 'imgType', 'cover', '2019-08-15 13:49:19', null, '0');
 INSERT INTO `t_global_config` VALUES ('14', 'goods', 'imgType', 'detail', '2019-08-15 13:49:39', null, '0');
+INSERT INTO `t_global_config` VALUES ('15', 'index', 'guessLikeCount', '15', '2019-08-19 14:10:55', '2019-08-19 15:48:48', '0');
+INSERT INTO `t_global_config` VALUES ('16', 'goods', 'imgType', 'storeBanner', '2019-08-20 15:55:25', null, '0');
+INSERT INTO `t_global_config` VALUES ('17', 'goods', 'promote', '9', '2019-08-21 10:15:36', null, '0');
 
 -- ----------------------------
 -- Table structure for t_goods
@@ -78,45 +82,74 @@ CREATE TABLE `t_goods` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `store_id` int(11) DEFAULT NULL COMMENT '店铺id',
   `brand_id` int(11) DEFAULT NULL COMMENT '品牌id',
+  `sku_id` int(11) DEFAULT NULL COMMENT '商品默认SKU',
   `name` varchar(128) DEFAULT NULL COMMENT '商品名称',
   `simple_desc` varchar(64) DEFAULT NULL COMMENT '简单描述',
   `price` decimal(11,2) DEFAULT NULL COMMENT '原价',
   `promo_price` decimal(11,2) DEFAULT NULL COMMENT '促销价/实时价',
   `img_url` varchar(255) DEFAULT NULL COMMENT '封面图',
   `location` varchar(32) DEFAULT NULL COMMENT '所在地',
+  `is_show_banner` tinyint(1) DEFAULT '0' COMMENT '是否在店铺页展示banner',
+  `is_promote` tinyint(1) DEFAULT '0' COMMENT '是否是推荐商品',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
   `update_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `is_delete` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `store_id` (`store_id`),
-  KEY `brand_id` (`brand_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='店铺商品';
+  KEY `brand_id` (`brand_id`),
+  KEY `sku_id` (`sku_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='店铺商品';
 
 -- ----------------------------
 -- Records of t_goods
 -- ----------------------------
-INSERT INTO `t_goods` VALUES ('1', '1', '1', 'FILA FUSION 斐乐 女子卫衣 2019秋季新款潮流时尚运动连帽卫衣', null, '780.00', null, '//img.alicdn.com/imgextra/i1/676606897/O1CN01E7rYW420osDWdw7dE_!!0-item_pic.jpg_430x430q90.jpg', '福建泉州', '2019-08-15 11:18:41', null, '0');
-INSERT INTO `t_goods` VALUES ('2', '1', '1', 'FILA 斐乐官方 男子针织长裤 2019夏季新款收口运动裤男裤子', '百年意式经典 品牌官方旗舰店 正品保障', '740.00', '559.00', 'https://img.alicdn.com/imgextra/i3/676606897/O1CN017TSc8m20osBB0WzOG_!!0-item_pic.jpg_430x430q90.jpg', '福建泉州', '2019-08-15 13:37:04', '2019-08-15 13:55:29', '0');
-INSERT INTO `t_goods` VALUES ('3', '1', '1', 'FILA 斐乐官方 男子短袖T恤 2019夏季新款运动圆领棉质学生短袖衫', '百年意式经典 品牌官方旗舰店 正品保障', '440.00', '329.00', 'https://img.alicdn.com/imgextra/i3/676606897/O1CN01lpC2Sr20osBVnTLkS_!!676606897.jpg_430x430q90.jpg', '福建泉州', '2019-08-15 13:55:24', '2019-08-15 13:55:32', '0');
-INSERT INTO `t_goods` VALUES ('4', '3', '3', '阿迪达斯官方 adidas 90s VALASION 女子跑步鞋EE9906 EE9907', '官方旗舰店 运动鞋', '699.00', null, 'https://img.alicdn.com/imgextra/i4/446338500/O1CN011op8Lb2Cf36jiovi9_!!0-item_pic.jpg_430x430q90.jpg', '江苏苏州', '2019-08-15 14:09:36', '2019-08-15 14:10:46', '0');
-INSERT INTO `t_goods` VALUES ('5', '8', '8', 'belulu classy升级版脸部美容仪面部提拉紧致红蓝光超声波导入仪', null, '1299.00', '959.00', 'https://img.alicdn.com/imgextra/i1/2811185140/O1CN01xKSM8B1nqAKI8fjUq_!!0-item_pic.jpg_430x430q90.jpg', '天津', '2019-08-15 14:23:06', null, '0');
-INSERT INTO `t_goods` VALUES ('6', '4', '4', 'COACH蔻驰CHARLES系列编织链钢带手表男表情侣表', '任嘉伦同款 时尚米兰编织带 情侣款', '1300.00', null, '//img.alicdn.com/imgextra/i3/2200699039036/O1CN01fgQX1S2GcXMi8ilge_!!2200699039036.jpg_430x430q90.jpg', '上海', '2019-08-15 14:33:47', null, '0');
-INSERT INTO `t_goods` VALUES ('7', '3', '3', '阿迪达斯adidas三叶草PE MODERN BP男女背包ED7994 ED7995 ED8063', '官方旗舰店 运动包 国际码', '499.00', null, 'https://img.alicdn.com/imgextra/i4/446338500/O1CN018eNmSM2Cf36wlFYho_!!0-item_pic.jpg_430x430q90.jpg', '江苏苏州', '2019-08-15 14:45:59', null, '0');
-INSERT INTO `t_goods` VALUES ('8', '16', '16', '英雄联盟 LOL 插画风洛与霞T恤 游戏周边 官方正品', null, '150.00', null, 'https://img.alicdn.com/imgextra/i2/2629007270/O1CN01k0SFUa23ZhvNSc0Dl_!!0-item_pic.jpg_430x430q90.jpg', '广东广州', '2019-08-15 14:59:45', null, '0');
-INSERT INTO `t_goods` VALUES ('9', '38', '31', 'Apple/苹果 13 英寸 Macbook Pro 1.4GHz 四核处理器 (Turbo Boost 最高可达 3.9GHz) 128GB 存储容量 触控栏和触控 ID', null, '9999.00', null, 'https://img.alicdn.com/imgextra/i2/1917047079/O1CN019ajfWy22AEI5uRNZK_!!2-item_pic.png_430x430q90.jpg', '上海', '2019-08-15 15:30:51', '2019-08-15 15:43:05', '0');
-INSERT INTO `t_goods` VALUES ('10', '36', '32', '【新品上市】华为科技潮牌/荣耀9X麒麟810芯片4800万超清双摄升降式全面屏智能手机官方旗舰店全新正品', '晒单赢荣耀耳机，限量6000个，联系客服参与', '1399.00', null, 'https://img.alicdn.com/imgextra/i3/1114511827/O1CN01D20c5F1PMo9n7bFNc_!!1114511827.png_430x430q90.jpg', '广东深圳', '2019-08-15 15:51:08', null, '0');
-INSERT INTO `t_goods` VALUES ('11', '37', '30', 'Huawei/华为P30 Pro曲面屏超感光徕卡四摄变焦双景录像980智能手机p30pro', '4000万超感光徕卡四摄', '4988.00', null, 'https://img.alicdn.com/imgextra/i1/2838892713/O1CN015mszGy1Vub2GbscuV_!!2838892713.jpg_430x430q90.jpg', '广东深圳', '2019-08-15 16:14:04', null, '0');
-INSERT INTO `t_goods` VALUES ('12', '42', '36', 'Philips/飞利浦 SHB2505无线蓝牙耳机HIFI发烧降噪音乐入耳塞', '真全无线蓝牙耳机 HIFI杰作 长时间舒适佩戴', '599.00', '439.00', '//img.alicdn.com/imgextra/i3/92686194/O1CN01uNXCRm1vctmAUSvbj_!!92686194.png_430x430q90.jpg', '上海', '2019-08-15 16:34:40', '2019-08-15 16:34:42', '0');
-INSERT INTO `t_goods` VALUES ('13', '2', '2', '松下吸尘器家用强力大功率无线手持式轻巧小型吸尘机无绳6DD65', '微尘感知，轻量本体，大吸力', '2799.00', '1299.00', 'https://img.alicdn.com/imgextra/https://img.alicdn.com/imgextra/i4/669690917/O1CN01ZhaY1o1Ie1j2gfihs_!!669690917.jpg_430x430q90.jpg', '浙江嘉兴', '2019-08-15 16:47:06', null, '0');
-INSERT INTO `t_goods` VALUES ('14', '38', '31', 'Apple/苹果 iPhone XS', null, '8199.00', null, 'https://img.alicdn.com/imgextra/i3/1917047079/TB2.1oZXpzqK1RjSZFzXXXjrpXa_!!1917047079.jpg_430x430q90.jpg', '上海', '2019-08-15 16:59:28', '2019-08-15 16:59:30', '0');
-INSERT INTO `t_goods` VALUES ('15', '37', '30', '【官方正品】HUAWEI/华为移动路由5G CPE Pro 无线路由器 家用 WiFi 穿墙王 全千兆双宽带7nm巴龙5000芯片', '7nm巴龙5000芯片 5G千兆宽带', '2499.00', null, 'https://img.alicdn.com/imgextra/i2/2838892713/O1CN01rUuNGf1Vub4kTzEgv_!!0-item_pic.jpg_430x430q90.jpg', '广东深圳', '2019-08-15 17:05:39', null, '0');
-INSERT INTO `t_goods` VALUES ('16', '37', '20', 'Huawei/华为mini蓝牙音箱nova迷你小音响无线挂绳便携式低音炮', '小巧精致 浑厚低音 出行方便 生活防水设计', '129.00', null, 'https://img.alicdn.com/imgextra/i3/2838892713/O1CN01PM45hv1Vub4DRTMEn_!!2838892713.jpg_430x430q90.jpg', '广东深圳', '2019-08-15 17:11:12', '2019-08-15 17:11:14', '0');
+INSERT INTO `t_goods` VALUES ('1', '1', '1', '1', 'FILA FUSION 斐乐 女子卫衣 2019秋季新款潮流时尚运动连帽卫衣', null, '780.00', '702.00', '//img.alicdn.com/imgextra/i1/676606897/O1CN01E7rYW420osDWdw7dE_!!0-item_pic.jpg_430x430q90.jpg', '福建泉州', '1', '1', '2019-08-15 11:18:41', '2019-08-21 18:36:19', '0');
+INSERT INTO `t_goods` VALUES ('2', '1', '1', '17', 'FILA 斐乐官方 男子针织长裤 2019夏季新款收口运动裤男裤子', '百年意式经典 品牌官方旗舰店 正品保障', '740.00', '559.00', 'https://img.alicdn.com/imgextra/i3/676606897/O1CN017TSc8m20osBB0WzOG_!!0-item_pic.jpg_430x430q90.jpg', '福建泉州', '1', '1', '2019-08-15 13:37:04', '2019-08-23 14:09:50', '0');
+INSERT INTO `t_goods` VALUES ('3', '1', '1', '27', 'FILA 斐乐官方 男子短袖T恤 2019夏季新款运动圆领棉质学生短袖衫', '百年意式经典 品牌官方旗舰店 正品保障', '440.00', '329.00', 'https://img.alicdn.com/imgextra/i3/676606897/O1CN01lpC2Sr20osBVnTLkS_!!676606897.jpg_430x430q90.jpg', '福建泉州', '1', '1', '2019-08-15 13:55:24', '2019-08-23 14:09:53', '0');
+INSERT INTO `t_goods` VALUES ('4', '3', '3', '31', '阿迪达斯官方 adidas 90s VALASION 女子跑步鞋EE9906 EE9907', '官方旗舰店 运动鞋', '699.00', null, 'https://img.alicdn.com/imgextra/i4/446338500/O1CN011op8Lb2Cf36jiovi9_!!0-item_pic.jpg_430x430q90.jpg', '江苏苏州', '0', '0', '2019-08-15 14:09:36', '2019-08-23 14:10:04', '0');
+INSERT INTO `t_goods` VALUES ('5', '8', '8', '43', 'belulu classy升级版脸部美容仪面部提拉紧致红蓝光超声波导入仪', null, '1299.00', '959.00', 'https://img.alicdn.com/imgextra/i1/2811185140/O1CN01xKSM8B1nqAKI8fjUq_!!0-item_pic.jpg_430x430q90.jpg', '天津', '0', '0', '2019-08-15 14:23:06', '2019-08-23 14:10:15', '0');
+INSERT INTO `t_goods` VALUES ('6', '4', '4', '46', 'COACH蔻驰CHARLES系列编织链钢带手表男表情侣表', '任嘉伦同款 时尚米兰编织带 情侣款', '1300.00', null, '//img.alicdn.com/imgextra/i3/2200699039036/O1CN01fgQX1S2GcXMi8ilge_!!2200699039036.jpg_430x430q90.jpg', '上海', '0', '0', '2019-08-15 14:33:47', '2019-08-23 14:10:29', '0');
+INSERT INTO `t_goods` VALUES ('7', '3', '3', '50', '阿迪达斯adidas三叶草PE MODERN BP男女背包ED7994 ED7995 ED8063', '官方旗舰店 运动包 国际码', '499.00', null, 'https://img.alicdn.com/imgextra/i4/446338500/O1CN018eNmSM2Cf36wlFYho_!!0-item_pic.jpg_430x430q90.jpg', '江苏苏州', '0', '0', '2019-08-15 14:45:59', '2019-08-23 14:10:43', '0');
+INSERT INTO `t_goods` VALUES ('8', '16', '16', '53', '英雄联盟 LOL 插画风洛与霞T恤 游戏周边 官方正品', null, '150.00', null, 'https://img.alicdn.com/imgextra/i2/2629007270/O1CN01k0SFUa23ZhvNSc0Dl_!!0-item_pic.jpg_430x430q90.jpg', '广东广州', '0', '0', '2019-08-15 14:59:45', '2019-08-23 14:10:44', '0');
+INSERT INTO `t_goods` VALUES ('9', '38', '31', '54', 'Apple/苹果 13 英寸 Macbook Pro 1.4GHz 四核处理器 (Turbo Boost 最高可达 3.9GHz) 128GB 存储容量 触控栏和触控 ID', null, '9999.00', null, 'https://img.alicdn.com/imgextra/i2/1917047079/O1CN019ajfWy22AEI5uRNZK_!!2-item_pic.png_430x430q90.jpg', '上海', '0', '0', '2019-08-15 15:30:51', '2019-08-23 14:10:50', '0');
+INSERT INTO `t_goods` VALUES ('10', '36', '32', '56', '【新品上市】华为科技潮牌/荣耀9X麒麟810芯片4800万超清双摄升降式全面屏智能手机官方旗舰店全新正品', '晒单赢荣耀耳机，限量6000个，联系客服参与', '1399.00', null, 'https://img.alicdn.com/imgextra/i3/1114511827/O1CN01D20c5F1PMo9n7bFNc_!!1114511827.png_430x430q90.jpg', '广东深圳', '0', '0', '2019-08-15 15:51:08', '2019-08-23 14:10:56', '0');
+INSERT INTO `t_goods` VALUES ('11', '37', '30', '62', 'Huawei/华为P30 Pro曲面屏超感光徕卡四摄变焦双景录像980智能手机p30pro', '4000万超感光徕卡四摄', '4988.00', null, 'https://img.alicdn.com/imgextra/i1/2838892713/O1CN015mszGy1Vub2GbscuV_!!2838892713.jpg_430x430q90.jpg', '广东深圳', '0', '0', '2019-08-15 16:14:04', '2019-08-23 14:11:04', '0');
+INSERT INTO `t_goods` VALUES ('12', '42', '36', '77', 'Philips/飞利浦 SHB2505无线蓝牙耳机HIFI发烧降噪音乐入耳塞', '真全无线蓝牙耳机 HIFI杰作 长时间舒适佩戴', '599.00', '439.00', '//img.alicdn.com/imgextra/i3/92686194/O1CN01uNXCRm1vctmAUSvbj_!!92686194.png_430x430q90.jpg', '上海', '0', '0', '2019-08-15 16:34:40', '2019-08-23 14:11:15', '0');
+INSERT INTO `t_goods` VALUES ('13', '2', '2', '81', '松下吸尘器家用强力大功率无线手持式轻巧小型吸尘机无绳6DD65', '微尘感知，轻量本体，大吸力', '2799.00', '1299.00', 'https://img.alicdn.com/imgextra/https://img.alicdn.com/imgextra/i4/669690917/O1CN01ZhaY1o1Ie1j2gfihs_!!669690917.jpg_430x430q90.jpg', '浙江嘉兴', '0', '0', '2019-08-15 16:47:06', '2019-08-23 14:11:27', '0');
+INSERT INTO `t_goods` VALUES ('14', '38', '31', '82', 'Apple/苹果 iPhone XS', null, '8199.00', null, 'https://img.alicdn.com/imgextra/i3/1917047079/TB2.1oZXpzqK1RjSZFzXXXjrpXa_!!1917047079.jpg_430x430q90.jpg', '上海', '0', '0', '2019-08-15 16:59:28', '2019-08-23 14:11:28', '0');
+INSERT INTO `t_goods` VALUES ('15', '37', '30', '85', '【官方正品】HUAWEI/华为移动路由5G CPE Pro 无线路由器 家用 WiFi 穿墙王 全千兆双宽带7nm巴龙5000芯片', '7nm巴龙5000芯片 5G千兆宽带', '2499.00', null, 'https://img.alicdn.com/imgextra/i2/2838892713/O1CN01rUuNGf1Vub4kTzEgv_!!0-item_pic.jpg_430x430q90.jpg', '广东深圳', '0', '0', '2019-08-15 17:05:39', '2019-08-23 14:11:36', '0');
+INSERT INTO `t_goods` VALUES ('16', '37', '20', '86', 'Huawei/华为mini蓝牙音箱nova迷你小音响无线挂绳便携式低音炮', '小巧精致 浑厚低音 出行方便 生活防水设计', '129.00', null, 'https://img.alicdn.com/imgextra/i3/2838892713/O1CN01PM45hv1Vub4DRTMEn_!!2838892713.jpg_430x430q90.jpg', '广东深圳', '0', '0', '2019-08-15 17:11:12', '2019-08-23 14:11:39', '0');
+INSERT INTO `t_goods` VALUES ('17', '55', '50', '89', 'Stokke Xplory V6 银车架款婴童车高景观婴儿推车四轮儿童推车', '荷兰进口的车架和座椅', '10990.00', '9891.00', 'https://img.alicdn.com/imgextra/i2/1806053478/O1CN01fDtrV31bYy2jhmEwi_!!1806053478.jpg_430x430q90.jpg', '江苏苏州', '1', '1', '2019-08-20 16:31:51', '2019-08-23 14:12:09', '0');
+INSERT INTO `t_goods` VALUES ('18', '55', '50', '92', 'Stokke JetKids bedbox 儿童行李箱骑乘旅行 宝宝坐飞机睡觉机舱', null, '1590.00', '1558.00', 'https://img.alicdn.com/imgextra/i3/1806053478/O1CN01fxJ7Os1bYy02Tvri0_!!1806053478.jpg_430x430q90.jpg', '江苏苏州', '1', '1', '2019-08-20 16:42:43', '2019-08-23 14:12:11', '0');
+INSERT INTO `t_goods` VALUES ('19', '55', '50', '95', 'Stokke Sleepi Bed婴儿床 7年延保 实木', 'Sleepi 婴儿床 欧洲制造', '7590.00', '7490.00', 'https://img.alicdn.com/imgextra/i2/1806053478/TB2HCimmLBNTKJjSszbXXaFrFXa_!!1806053478.jpg_430x430q90.jpg', '江苏苏州', '1', '1', '2019-08-20 16:48:24', '2019-08-23 14:12:12', '0');
 
 -- ----------------------------
 -- Table structure for t_goods_attr
 -- ----------------------------
 DROP TABLE IF EXISTS `t_goods_attr`;
 CREATE TABLE `t_goods_attr` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(32) DEFAULT NULL COMMENT '文本值',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='商品销售属性';
+
+-- ----------------------------
+-- Records of t_goods_attr
+-- ----------------------------
+INSERT INTO `t_goods_attr` VALUES ('1', '尺码', '2019-08-21 17:27:37', '2019-08-21 17:27:41', '0');
+INSERT INTO `t_goods_attr` VALUES ('2', '颜色分类', '2019-08-21 17:27:37', '2019-08-21 17:27:41', '0');
+INSERT INTO `t_goods_attr` VALUES ('3', '尺寸', '2019-08-21 17:27:37', '2019-08-21 17:27:41', '0');
+INSERT INTO `t_goods_attr` VALUES ('4', '化妆品净含量', '2019-08-21 17:27:37', '2019-08-21 17:27:41', '0');
+INSERT INTO `t_goods_attr` VALUES ('5', '存储容量', '2019-08-21 17:27:37', '2019-08-21 17:27:41', '0');
+
+-- ----------------------------
+-- Table structure for t_goods_attr2
+-- ----------------------------
+DROP TABLE IF EXISTS `t_goods_attr2`;
+CREATE TABLE `t_goods_attr2` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `goods_id` int(11) DEFAULT NULL COMMENT '商品id',
   `attr_id` int(11) DEFAULT NULL COMMENT '商品可选属性id t_global_config goodsAttr',
@@ -130,77 +163,178 @@ CREATE TABLE `t_goods_attr` (
 ) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8 COMMENT='商品可选属性';
 
 -- ----------------------------
--- Records of t_goods_attr
+-- Records of t_goods_attr2
 -- ----------------------------
-INSERT INTO `t_goods_attr` VALUES ('1', '1', '6', '155/76A/XS', null, '2019-08-15 11:20:51', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('2', '1', '6', '160/80A/S', null, '2019-08-15 11:21:09', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('3', '1', '6', '165/84A/M', null, '2019-08-15 11:21:16', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('4', '1', '6', '170/88A/L', null, '2019-08-15 11:21:29', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('5', '1', '6', '175/92A/XL', null, '2019-08-15 11:21:39', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('6', '1', '6', '180/96A/XXL', null, '2019-08-15 11:21:53', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('7', '1', '8', '标准白-WT', '//img.alicdn.com/imgextra/i2/676606897/O1CN01DiC5Ob20osDZeKb7z_!!676606897.jpg_40x40q90.jpg', '2019-08-15 11:22:36', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('8', '1', '8', '传奇红-RD', '//img.alicdn.com/imgextra/i2/676606897/O1CN01HTUyNu20osDa4RbzM_!!676606897.jpg_40x40q90.jpg', '2019-08-15 11:23:16', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('9', '1', '8', '深黑-BK', '//img.alicdn.com/imgextra/i3/676606897/O1CN017Sll0A20osDXIYCzF_!!676606897.jpg_40x40q90.jpg', '2019-08-15 11:24:04', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('10', '2', '6', '170/80A/M', null, '2019-08-15 13:39:03', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('11', '2', '6', '175/84A/L', null, '2019-08-15 13:39:09', '2019-08-15 13:41:02', '0');
-INSERT INTO `t_goods_attr` VALUES ('12', '2', '6', '180/88A/XL', null, '2019-08-15 13:39:11', '2019-08-15 13:41:02', '0');
-INSERT INTO `t_goods_attr` VALUES ('13', '2', '6', '185/92A/XXL', null, '2019-08-15 13:39:12', '2019-08-15 13:41:02', '0');
-INSERT INTO `t_goods_attr` VALUES ('14', '2', '6', '190/96A/XXXL', null, '2019-08-15 13:39:12', '2019-08-15 13:41:02', '0');
-INSERT INTO `t_goods_attr` VALUES ('15', '2', '8', '传奇蓝-NV', 'https://img.alicdn.com/imgextra/i3/676606897/O1CN01ZUH3No20osAdNnJxs_!!676606897.jpg_40x40q90.jpg', '2019-08-15 13:39:12', '2019-08-15 13:41:02', '0');
-INSERT INTO `t_goods_attr` VALUES ('16', '2', '8', '传奇蓝A-NV-补货', 'https://img.alicdn.com/imgextra/i2/676606897/O1CN014oN7l920osBusMrDw_!!676606897.jpg_40x40q90.jpg', '2019-08-15 13:41:24', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('17', '3', '6', '175/96A/L', null, '2019-08-15 14:03:23', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('18', '3', '6', '180/100A/XL', null, '2019-08-15 14:03:33', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('19', '3', '6', '185/104A/XXL', null, '2019-08-15 14:03:42', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('20', '3', '6', '190/108A/XXXL', null, '2019-08-15 14:03:49', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('21', '3', '8', '标准白-F11M938197AWT-补货', 'https://img.alicdn.com/imgextra/i4/676606897/O1CN01g7x2Bk20osChx34Lo_!!676606897.jpg_40x40q90.jpg', '2019-08-15 14:04:08', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('22', '4', '6', '36', null, '2019-08-15 14:14:58', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('23', '4', '6', '36.5', null, '2019-08-15 14:15:06', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('24', '4', '6', '37', null, '2019-08-15 14:15:12', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('25', '4', '6', '38', null, '2019-08-15 14:15:21', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('26', '4', '6', '38.5', null, '2019-08-15 14:15:32', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('27', '4', '6', '39', null, '2019-08-15 14:15:42', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('28', '4', '8', '米色/白色/藏青色', 'https://img.alicdn.com/imgextra/i4/446338500/O1CN013emk3F2Cf36iVwNCp-446338500.jpg_40x40q90.jpg', '2019-08-15 14:16:01', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('29', '4', '8', '黑色', 'https://img.alicdn.com/imgextra/i3/446338500/O1CN019LIfQ42Cf36jDDPJw-446338500.jpg_40x40q90.jpg', '2019-08-15 14:16:15', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('30', '5', '8', '珍珠白', 'https://img.alicdn.com/imgextra/i3/2811185140/O1CN01Y3PNya1nqAKRxhdKr_!!2811185140.jpg_40x40q90.jpg', '2019-08-15 14:29:10', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('31', '5', '8', '水漾粉', 'https://img.alicdn.com/imgextra/i4/2811185140/O1CN01nFDKGU1nqAKScsl5S_!!2811185140.jpg_40x40q90.jpg', '2019-08-15 14:29:28', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('32', '5', '8', '金色', 'https://img.alicdn.com/imgextra/i3/2811185140/O1CN015XUL5J1nqAKRxiIue_!!2811185140.jpg_40x40q90.jpg', '2019-08-15 14:29:44', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('33', '6', '8', '男款深蓝色14602146（41MM）', 'https://img.alicdn.com/imgextra/i3/2200699039036/O1CN01f3h4pi2GcXMijiYV3_!!2200699039036.jpg_40x40q90.jpg', '2019-08-15 14:36:17', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('34', '6', '8', '男款气质银14602144（41MM）', 'https://img.alicdn.com/imgextra/i3/2200699039036/O1CN01fgQX1S2GcXMi8ilge_!!2200699039036.jpg_40x40q90.jpg', '2019-08-15 14:36:36', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('35', '6', '8', '男款黑色14602148（41MM）', 'https://img.alicdn.com/imgextra/i2/2200699039036/O1CN01b0D8QV2GcXNlzuZDk_!!2200699039036.jpg_40x40q90.jpg', '2019-08-15 14:36:53', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('36', '6', '8', '男款优雅灰14602145（41MM）', 'https://img.alicdn.com/imgextra/i3/2200699039036/O1CN01qpVkst2GcXMsGYZs3_!!2200699039036.jpg_40x40q90.jpg', '2019-08-15 14:37:21', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('37', '7', '8', '学院藏青蓝', 'https://img.alicdn.com/imgextra/i1/446338500/O1CN01jEYyiB2Cf36y2xHKw-446338500.jpg_40x40q90.jpg', '2019-08-15 14:51:57', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('38', '7', '8', '黑', 'https://img.alicdn.com/imgextra/i2/446338500/O1CN01KZ9ICQ2Cf36zQOKKM-446338500.jpg_40x40q90.jpg', '2019-08-15 14:52:03', '2019-08-15 14:52:28', '0');
-INSERT INTO `t_goods_attr` VALUES ('39', '7', '8', '酱紫', 'https://img.alicdn.com/imgextra/i1/446338500/O1CN012d4FqT2Cf36tkNA9Q-446338500.jpg_40x40q90.jpg', '2019-08-15 14:52:09', '2019-08-15 14:52:42', '0');
-INSERT INTO `t_goods_attr` VALUES ('40', '7', '12', 'NS', null, '2019-08-15 14:52:13', '2019-08-15 14:52:48', '0');
-INSERT INTO `t_goods_attr` VALUES ('41', '8', '6', 'M', null, '2019-08-15 15:00:12', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('42', '8', '8', '洛霞插画T恤', 'https://img.alicdn.com/imgextra/i3/2629007270/O1CN01UlLjqx23ZhvKT3oHU_!!2629007270.jpg_40x40q90.jpg', '2019-08-15 15:00:32', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('43', '9', '8', '深空灰色', 'https://img.alicdn.com/imgextra/i1/1917047079/O1CN01aehc1x22AEIGJ4TUp_!!1917047079.jpeg_40x40q90.jpg', '2019-08-15 15:43:47', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('44', '9', '8', '银色', 'https://img.alicdn.com/imgextra/i1/1917047079/O1CN01BrSwPd22AEIDSoJYT_!!1917047079.jpeg_40x40q90.jpg', '2019-08-15 15:43:55', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('45', '10', '8', '幻夜黑', 'https://img.alicdn.com/imgextra/i3/1114511827/O1CN01r4vRMG1PMo9xWPrfQ_!!1114511827.jpg_40x40q90.jpg', '2019-08-15 15:52:00', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('46', '10', '8', '魅海蓝', 'https://img.alicdn.com/imgextra/i1/1114511827/O1CN01c7q7L01PMo9xWSPen_!!1114511827.jpg_40x40q90.jpg', '2019-08-15 15:52:21', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('47', '10', '11', '4+64G', null, '2019-08-15 16:16:44', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('48', '10', '11', '6+64G', null, '2019-08-15 16:16:54', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('49', '10', '11', '6+128G', null, '2019-08-15 16:17:03', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('50', '11', '8', '亮黑色', 'https://img.alicdn.com/imgextra/i2/TB1wqMRNQzoK1RjSZFl1gqi4VXa_112400.jpg_40x40q90.jpg', '2019-08-15 16:17:42', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('51', '11', '8', '珠光贝母', 'https://img.alicdn.com/imgextra/i1/TB1qw7RNPTpK1RjSZKPXtC3UpXa_112414.jpg_40x40q90.jpg', '2019-08-15 16:18:04', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('52', '11', '8', '极光色', 'https://img.alicdn.com/imgextra/i8/TB1uiAYNMHqK1RjSZFkXfd.WFXa_112352.jpg_40x40q90.jpg', '2019-08-15 16:18:27', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('53', '11', '8', '天空之境', 'https://img.alicdn.com/imgextra/i4/TB1yVcUNQPoK1RjSZKbytX1IXXa_112407.jpg_40x40q90.jpg', '2019-08-15 16:18:46', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('54', '11', '8', '赤茶橘', 'https://img.alicdn.com/imgextra/i7/TB1s2gONNTpK1RjSZFKUqG2wXXa_112344.jpg_40x40q90.jpg', '2019-08-15 16:19:09', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('55', '11', '11', '8+128G', null, '2019-08-15 16:20:12', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('56', '11', '11', '8+256G', null, '2019-08-15 16:20:21', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('57', '11', '11', '8+512G', null, '2019-08-15 16:20:30', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('58', '12', '8', '黑色', 'https://img.alicdn.com/imgextra/i3/92686194/O1CN01uNXCRm1vctmAUSvbj_!!92686194.png_40x40q90.jpg', '2019-08-15 16:35:10', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('59', '12', '8', '蓝色', 'https://img.alicdn.com/imgextra/i3/92686194/O1CN01XZt3Gf1vctmD581D9_!!92686194.png_40x40q90.jpg', '2019-08-15 16:35:30', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('60', '12', '8', '紫色', 'https://img.alicdn.com/imgextra/i1/92686194/O1CN01VELE1Z1vctm7VzYcl_!!92686194.png_40x40q90.jpg', '2019-08-15 16:35:43', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('61', '12', '8', '白色', 'https://img.alicdn.com/imgextra/i1/92686194/O1CN01bjY4Ux1vctm8OdMek_!!92686194.png_40x40q90.jpg', '2019-08-15 16:35:54', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('62', '13', '8', '亮银', null, '2019-08-15 16:47:21', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('64', '14', '8', '银色', 'https://img.alicdn.com/imgextra/i4/1917047079/TB2yF71XAvoK1RjSZFNXXcxMVXa_!!1917047079.jpg_40x40q90.jpg', '2019-08-15 17:00:01', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('65', '14', '8', '深空灰色', 'https://img.alicdn.com/imgextra/i2/1917047079/TB2pAsZXpzqK1RjSZFvXXcB7VXa_!!1917047079.jpg_40x40q90.jpg', '2019-08-15 17:00:15', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('66', '14', '8', '金色', 'https://img.alicdn.com/imgextra/i4/1917047079/TB21oE1XpzqK1RjSZFzXXXjrpXa_!!1917047079.jpg_40x40q90.jpg', '2019-08-15 17:00:40', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('67', '15', '8', '白色', 'https://img.alicdn.com/imgextra/i1/2838892713/O1CN0164M7KA1Vub4acbVuC_!!2838892713.png_40x40q90.jpg', '2019-08-15 17:06:14', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('68', '16', '8', '绮境森林', 'https://img.alicdn.com/imgextra/i1/2838892713/O1CN014MwXVK1Vub3wGVFCb_!!2838892713.jpg_40x40q90.jpg', '2019-08-15 17:11:39', null, '0');
-INSERT INTO `t_goods_attr` VALUES ('69', '16', '8', '珊瑚橙', 'https://img.alicdn.com/imgextra/i1/2838892713/O1CN018ft6MS1Vub3wtfUVx_!!2838892713.jpg_40x40q90.jpg', '2019-08-15 17:12:00', '2019-08-15 17:12:26', '0');
-INSERT INTO `t_goods_attr` VALUES ('70', '16', '8', '仲夏紫', 'https://img.alicdn.com/imgextra/i2/2838892713/O1CN01DgrLsc1Vub3y76V7N_!!2838892713.jpg_40x40q90.jpg', '2019-08-15 17:12:18', '2019-08-15 17:12:34', '0');
+INSERT INTO `t_goods_attr2` VALUES ('1', '1', '6', '155/76A/XS', null, '2019-08-15 11:20:51', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('2', '1', '6', '160/80A/S', null, '2019-08-15 11:21:09', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('3', '1', '6', '165/84A/M', null, '2019-08-15 11:21:16', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('4', '1', '6', '170/88A/L', null, '2019-08-15 11:21:29', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('5', '1', '6', '175/92A/XL', null, '2019-08-15 11:21:39', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('6', '1', '6', '180/96A/XXL', null, '2019-08-15 11:21:53', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('7', '1', '8', '标准白-WT', '//img.alicdn.com/imgextra/i2/676606897/O1CN01DiC5Ob20osDZeKb7z_!!676606897.jpg_40x40q90.jpg', '2019-08-15 11:22:36', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('8', '1', '8', '传奇红-RD', '//img.alicdn.com/imgextra/i2/676606897/O1CN01HTUyNu20osDa4RbzM_!!676606897.jpg_40x40q90.jpg', '2019-08-15 11:23:16', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('9', '1', '8', '深黑-BK', '//img.alicdn.com/imgextra/i3/676606897/O1CN017Sll0A20osDXIYCzF_!!676606897.jpg_40x40q90.jpg', '2019-08-15 11:24:04', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('10', '2', '6', '170/80A/M', null, '2019-08-15 13:39:03', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('11', '2', '6', '175/84A/L', null, '2019-08-15 13:39:09', '2019-08-15 13:41:02', '0');
+INSERT INTO `t_goods_attr2` VALUES ('12', '2', '6', '180/88A/XL', null, '2019-08-15 13:39:11', '2019-08-15 13:41:02', '0');
+INSERT INTO `t_goods_attr2` VALUES ('13', '2', '6', '185/92A/XXL', null, '2019-08-15 13:39:12', '2019-08-15 13:41:02', '0');
+INSERT INTO `t_goods_attr2` VALUES ('14', '2', '6', '190/96A/XXXL', null, '2019-08-15 13:39:12', '2019-08-15 13:41:02', '0');
+INSERT INTO `t_goods_attr2` VALUES ('15', '2', '8', '传奇蓝-NV', 'https://img.alicdn.com/imgextra/i3/676606897/O1CN01ZUH3No20osAdNnJxs_!!676606897.jpg_40x40q90.jpg', '2019-08-15 13:39:12', '2019-08-15 13:41:02', '0');
+INSERT INTO `t_goods_attr2` VALUES ('16', '2', '8', '传奇蓝A-NV-补货', 'https://img.alicdn.com/imgextra/i2/676606897/O1CN014oN7l920osBusMrDw_!!676606897.jpg_40x40q90.jpg', '2019-08-15 13:41:24', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('17', '3', '6', '175/96A/L', null, '2019-08-15 14:03:23', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('18', '3', '6', '180/100A/XL', null, '2019-08-15 14:03:33', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('19', '3', '6', '185/104A/XXL', null, '2019-08-15 14:03:42', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('20', '3', '6', '190/108A/XXXL', null, '2019-08-15 14:03:49', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('21', '3', '8', '标准白-F11M938197AWT-补货', 'https://img.alicdn.com/imgextra/i4/676606897/O1CN01g7x2Bk20osChx34Lo_!!676606897.jpg_40x40q90.jpg', '2019-08-15 14:04:08', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('22', '4', '6', '36', null, '2019-08-15 14:14:58', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('23', '4', '6', '36.5', null, '2019-08-15 14:15:06', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('24', '4', '6', '37', null, '2019-08-15 14:15:12', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('25', '4', '6', '38', null, '2019-08-15 14:15:21', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('26', '4', '6', '38.5', null, '2019-08-15 14:15:32', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('27', '4', '6', '39', null, '2019-08-15 14:15:42', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('28', '4', '8', '米色/白色/藏青色', 'https://img.alicdn.com/imgextra/i4/446338500/O1CN013emk3F2Cf36iVwNCp-446338500.jpg_40x40q90.jpg', '2019-08-15 14:16:01', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('29', '4', '8', '黑色', 'https://img.alicdn.com/imgextra/i3/446338500/O1CN019LIfQ42Cf36jDDPJw-446338500.jpg_40x40q90.jpg', '2019-08-15 14:16:15', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('30', '5', '8', '珍珠白', 'https://img.alicdn.com/imgextra/i3/2811185140/O1CN01Y3PNya1nqAKRxhdKr_!!2811185140.jpg_40x40q90.jpg', '2019-08-15 14:29:10', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('31', '5', '8', '水漾粉', 'https://img.alicdn.com/imgextra/i4/2811185140/O1CN01nFDKGU1nqAKScsl5S_!!2811185140.jpg_40x40q90.jpg', '2019-08-15 14:29:28', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('32', '5', '8', '金色', 'https://img.alicdn.com/imgextra/i3/2811185140/O1CN015XUL5J1nqAKRxiIue_!!2811185140.jpg_40x40q90.jpg', '2019-08-15 14:29:44', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('33', '6', '8', '男款深蓝色14602146（41MM）', 'https://img.alicdn.com/imgextra/i3/2200699039036/O1CN01f3h4pi2GcXMijiYV3_!!2200699039036.jpg_40x40q90.jpg', '2019-08-15 14:36:17', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('34', '6', '8', '男款气质银14602144（41MM）', 'https://img.alicdn.com/imgextra/i3/2200699039036/O1CN01fgQX1S2GcXMi8ilge_!!2200699039036.jpg_40x40q90.jpg', '2019-08-15 14:36:36', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('35', '6', '8', '男款黑色14602148（41MM）', 'https://img.alicdn.com/imgextra/i2/2200699039036/O1CN01b0D8QV2GcXNlzuZDk_!!2200699039036.jpg_40x40q90.jpg', '2019-08-15 14:36:53', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('36', '6', '8', '男款优雅灰14602145（41MM）', 'https://img.alicdn.com/imgextra/i3/2200699039036/O1CN01qpVkst2GcXMsGYZs3_!!2200699039036.jpg_40x40q90.jpg', '2019-08-15 14:37:21', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('37', '7', '8', '学院藏青蓝', 'https://img.alicdn.com/imgextra/i1/446338500/O1CN01jEYyiB2Cf36y2xHKw-446338500.jpg_40x40q90.jpg', '2019-08-15 14:51:57', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('38', '7', '8', '黑', 'https://img.alicdn.com/imgextra/i2/446338500/O1CN01KZ9ICQ2Cf36zQOKKM-446338500.jpg_40x40q90.jpg', '2019-08-15 14:52:03', '2019-08-15 14:52:28', '0');
+INSERT INTO `t_goods_attr2` VALUES ('39', '7', '8', '酱紫', 'https://img.alicdn.com/imgextra/i1/446338500/O1CN012d4FqT2Cf36tkNA9Q-446338500.jpg_40x40q90.jpg', '2019-08-15 14:52:09', '2019-08-15 14:52:42', '0');
+INSERT INTO `t_goods_attr2` VALUES ('40', '7', '12', 'NS', null, '2019-08-15 14:52:13', '2019-08-15 14:52:48', '0');
+INSERT INTO `t_goods_attr2` VALUES ('41', '8', '6', 'M', null, '2019-08-15 15:00:12', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('42', '8', '8', '洛霞插画T恤', 'https://img.alicdn.com/imgextra/i3/2629007270/O1CN01UlLjqx23ZhvKT3oHU_!!2629007270.jpg_40x40q90.jpg', '2019-08-15 15:00:32', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('43', '9', '8', '深空灰色', 'https://img.alicdn.com/imgextra/i1/1917047079/O1CN01aehc1x22AEIGJ4TUp_!!1917047079.jpeg_40x40q90.jpg', '2019-08-15 15:43:47', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('44', '9', '8', '银色', 'https://img.alicdn.com/imgextra/i1/1917047079/O1CN01BrSwPd22AEIDSoJYT_!!1917047079.jpeg_40x40q90.jpg', '2019-08-15 15:43:55', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('45', '10', '8', '幻夜黑', 'https://img.alicdn.com/imgextra/i3/1114511827/O1CN01r4vRMG1PMo9xWPrfQ_!!1114511827.jpg_40x40q90.jpg', '2019-08-15 15:52:00', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('46', '10', '8', '魅海蓝', 'https://img.alicdn.com/imgextra/i1/1114511827/O1CN01c7q7L01PMo9xWSPen_!!1114511827.jpg_40x40q90.jpg', '2019-08-15 15:52:21', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('47', '10', '11', '4+64G', null, '2019-08-15 16:16:44', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('48', '10', '11', '6+64G', null, '2019-08-15 16:16:54', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('49', '10', '11', '6+128G', null, '2019-08-15 16:17:03', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('50', '11', '8', '亮黑色', 'https://img.alicdn.com/imgextra/i2/TB1wqMRNQzoK1RjSZFl1gqi4VXa_112400.jpg_40x40q90.jpg', '2019-08-15 16:17:42', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('51', '11', '8', '珠光贝母', 'https://img.alicdn.com/imgextra/i1/TB1qw7RNPTpK1RjSZKPXtC3UpXa_112414.jpg_40x40q90.jpg', '2019-08-15 16:18:04', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('52', '11', '8', '极光色', 'https://img.alicdn.com/imgextra/i8/TB1uiAYNMHqK1RjSZFkXfd.WFXa_112352.jpg_40x40q90.jpg', '2019-08-15 16:18:27', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('53', '11', '8', '天空之境', 'https://img.alicdn.com/imgextra/i4/TB1yVcUNQPoK1RjSZKbytX1IXXa_112407.jpg_40x40q90.jpg', '2019-08-15 16:18:46', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('54', '11', '8', '赤茶橘', 'https://img.alicdn.com/imgextra/i7/TB1s2gONNTpK1RjSZFKUqG2wXXa_112344.jpg_40x40q90.jpg', '2019-08-15 16:19:09', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('55', '11', '11', '8+128G', null, '2019-08-15 16:20:12', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('56', '11', '11', '8+256G', null, '2019-08-15 16:20:21', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('57', '11', '11', '8+512G', null, '2019-08-15 16:20:30', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('58', '12', '8', '黑色', 'https://img.alicdn.com/imgextra/i3/92686194/O1CN01uNXCRm1vctmAUSvbj_!!92686194.png_40x40q90.jpg', '2019-08-15 16:35:10', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('59', '12', '8', '蓝色', 'https://img.alicdn.com/imgextra/i3/92686194/O1CN01XZt3Gf1vctmD581D9_!!92686194.png_40x40q90.jpg', '2019-08-15 16:35:30', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('60', '12', '8', '紫色', 'https://img.alicdn.com/imgextra/i1/92686194/O1CN01VELE1Z1vctm7VzYcl_!!92686194.png_40x40q90.jpg', '2019-08-15 16:35:43', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('61', '12', '8', '白色', 'https://img.alicdn.com/imgextra/i1/92686194/O1CN01bjY4Ux1vctm8OdMek_!!92686194.png_40x40q90.jpg', '2019-08-15 16:35:54', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('62', '13', '8', '亮银', null, '2019-08-15 16:47:21', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('64', '14', '8', '银色', 'https://img.alicdn.com/imgextra/i4/1917047079/TB2yF71XAvoK1RjSZFNXXcxMVXa_!!1917047079.jpg_40x40q90.jpg', '2019-08-15 17:00:01', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('65', '14', '8', '深空灰色', 'https://img.alicdn.com/imgextra/i2/1917047079/TB2pAsZXpzqK1RjSZFvXXcB7VXa_!!1917047079.jpg_40x40q90.jpg', '2019-08-15 17:00:15', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('66', '14', '8', '金色', 'https://img.alicdn.com/imgextra/i4/1917047079/TB21oE1XpzqK1RjSZFzXXXjrpXa_!!1917047079.jpg_40x40q90.jpg', '2019-08-15 17:00:40', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('67', '15', '8', '白色', 'https://img.alicdn.com/imgextra/i1/2838892713/O1CN0164M7KA1Vub4acbVuC_!!2838892713.png_40x40q90.jpg', '2019-08-15 17:06:14', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('68', '16', '8', '绮境森林', 'https://img.alicdn.com/imgextra/i1/2838892713/O1CN014MwXVK1Vub3wGVFCb_!!2838892713.jpg_40x40q90.jpg', '2019-08-15 17:11:39', null, '0');
+INSERT INTO `t_goods_attr2` VALUES ('69', '16', '8', '珊瑚橙', 'https://img.alicdn.com/imgextra/i1/2838892713/O1CN018ft6MS1Vub3wtfUVx_!!2838892713.jpg_40x40q90.jpg', '2019-08-15 17:12:00', '2019-08-15 17:12:26', '0');
+INSERT INTO `t_goods_attr2` VALUES ('70', '16', '8', '仲夏紫', 'https://img.alicdn.com/imgextra/i2/2838892713/O1CN01DgrLsc1Vub3y76V7N_!!2838892713.jpg_40x40q90.jpg', '2019-08-15 17:12:18', '2019-08-15 17:12:34', '0');
+
+-- ----------------------------
+-- Table structure for t_goods_attr_map
+-- ----------------------------
+DROP TABLE IF EXISTS `t_goods_attr_map`;
+CREATE TABLE `t_goods_attr_map` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `goods_id` int(11) DEFAULT NULL,
+  `sku_id` int(11) DEFAULT NULL,
+  `attr_id` int(11) DEFAULT NULL COMMENT '商品可选属性类型 t_global_config goodsAttr',
+  `attr_name` varchar(32) DEFAULT NULL COMMENT '属性名称',
+  `txt_value` varchar(32) DEFAULT NULL COMMENT '文本值',
+  `img_value` varchar(255) DEFAULT NULL COMMENT '文本值对应图片 如非空即优先显示图片',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `attr_id` (`attr_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8 COMMENT='商品SPU-SKU-ATTR映射';
+
+-- ----------------------------
+-- Records of t_goods_attr_map
+-- ----------------------------
+INSERT INTO `t_goods_attr_map` VALUES ('1', '1', null, '1', '尺码', '155/76A/XS', null, '2019-08-15 11:20:51', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('2', '1', null, '1', '尺码', '160/80A/S', null, '2019-08-15 11:21:09', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('3', '1', null, '1', '尺码', '165/84A/M', null, '2019-08-15 11:21:16', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('4', '1', null, '1', '尺码', '170/88A/L', null, '2019-08-15 11:21:29', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('5', '1', null, '1', '尺码', '175/92A/XL', null, '2019-08-15 11:21:39', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('6', '1', null, '1', '尺码', '180/96A/XXL', null, '2019-08-15 11:21:53', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('7', '1', null, '2', '颜色分类', '标准白-WT', '//img.alicdn.com/imgextra/i2/676606897/O1CN01DiC5Ob20osDZeKb7z_!!676606897.jpg_40x40q90.jpg', '2019-08-15 11:22:36', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('8', '1', null, '2', '颜色分类', '传奇红-RD', '//img.alicdn.com/imgextra/i2/676606897/O1CN01HTUyNu20osDa4RbzM_!!676606897.jpg_40x40q90.jpg', '2019-08-15 11:23:16', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('9', '1', null, '2', '颜色分类', '深黑-BK', '//img.alicdn.com/imgextra/i3/676606897/O1CN017Sll0A20osDXIYCzF_!!676606897.jpg_40x40q90.jpg', '2019-08-15 11:24:04', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('10', '2', null, '1', '尺码', '170/80A/M', null, '2019-08-15 13:39:03', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('11', '2', null, '1', '尺码', '175/84A/L', null, '2019-08-15 13:39:09', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('12', '2', null, '1', '尺码', '180/88A/XL', null, '2019-08-15 13:39:11', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('13', '2', null, '1', '尺码', '185/92A/XXL', null, '2019-08-15 13:39:12', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('14', '2', null, '1', '尺码', '190/96A/XXXL', null, '2019-08-15 13:39:12', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('15', '2', null, '2', '颜色分类', '传奇蓝-NV', 'https://img.alicdn.com/imgextra/i3/676606897/O1CN01ZUH3No20osAdNnJxs_!!676606897.jpg_40x40q90.jpg', '2019-08-15 13:39:12', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('16', '2', null, '2', '颜色分类', '传奇蓝A-NV-补货', 'https://img.alicdn.com/imgextra/i2/676606897/O1CN014oN7l920osBusMrDw_!!676606897.jpg_40x40q90.jpg', '2019-08-15 13:41:24', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('17', '3', null, '1', '尺码', '175/96A/L', null, '2019-08-15 14:03:23', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('18', '3', null, '1', '尺码', '180/100A/XL', null, '2019-08-15 14:03:33', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('19', '3', null, '1', '尺码', '185/104A/XXL', null, '2019-08-15 14:03:42', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('20', '3', null, '1', '尺码', '190/108A/XXXL', null, '2019-08-15 14:03:49', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('21', '3', null, '2', '颜色分类', '标准白-F11M938197AWT-补货', 'https://img.alicdn.com/imgextra/i4/676606897/O1CN01g7x2Bk20osChx34Lo_!!676606897.jpg_40x40q90.jpg', '2019-08-15 14:04:08', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('22', '4', null, '1', '尺码', '36', null, '2019-08-15 14:14:58', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('23', '4', null, '1', '尺码', '36.5', null, '2019-08-15 14:15:06', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('24', '4', null, '1', '尺码', '37', null, '2019-08-15 14:15:12', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('25', '4', null, '1', '尺码', '38', null, '2019-08-15 14:15:21', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('26', '4', null, '1', '尺码', '38.5', null, '2019-08-15 14:15:32', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('27', '4', null, '1', '尺码', '39', null, '2019-08-15 14:15:42', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('28', '4', null, '2', '颜色分类', '米色/白色/藏青色', 'https://img.alicdn.com/imgextra/i4/446338500/O1CN013emk3F2Cf36iVwNCp-446338500.jpg_40x40q90.jpg', '2019-08-15 14:16:01', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('29', '4', null, '2', '颜色分类', '黑色', 'https://img.alicdn.com/imgextra/i3/446338500/O1CN019LIfQ42Cf36jDDPJw-446338500.jpg_40x40q90.jpg', '2019-08-15 14:16:15', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('30', '5', null, '2', '颜色分类', '珍珠白', 'https://img.alicdn.com/imgextra/i3/2811185140/O1CN01Y3PNya1nqAKRxhdKr_!!2811185140.jpg_40x40q90.jpg', '2019-08-15 14:29:10', '2019-08-21 18:28:30', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('31', '5', null, '2', '颜色分类', '水漾粉', 'https://img.alicdn.com/imgextra/i4/2811185140/O1CN01nFDKGU1nqAKScsl5S_!!2811185140.jpg_40x40q90.jpg', '2019-08-15 14:29:28', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('32', '5', null, '2', '颜色分类', '金色', 'https://img.alicdn.com/imgextra/i3/2811185140/O1CN015XUL5J1nqAKRxiIue_!!2811185140.jpg_40x40q90.jpg', '2019-08-15 14:29:44', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('33', '6', null, '2', '颜色分类', '男款深蓝色14602146（41MM）', 'https://img.alicdn.com/imgextra/i3/2200699039036/O1CN01f3h4pi2GcXMijiYV3_!!2200699039036.jpg_40x40q90.jpg', '2019-08-15 14:36:17', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('34', '6', null, '2', '颜色分类', '男款气质银14602144（41MM）', 'https://img.alicdn.com/imgextra/i3/2200699039036/O1CN01fgQX1S2GcXMi8ilge_!!2200699039036.jpg_40x40q90.jpg', '2019-08-15 14:36:36', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('35', '6', null, '2', '颜色分类', '男款黑色14602148（41MM）', 'https://img.alicdn.com/imgextra/i2/2200699039036/O1CN01b0D8QV2GcXNlzuZDk_!!2200699039036.jpg_40x40q90.jpg', '2019-08-15 14:36:53', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('36', '6', null, '2', '颜色分类', '男款优雅灰14602145（41MM）', 'https://img.alicdn.com/imgextra/i3/2200699039036/O1CN01qpVkst2GcXMsGYZs3_!!2200699039036.jpg_40x40q90.jpg', '2019-08-15 14:37:21', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('37', '7', null, '2', '颜色分类', '学院藏青蓝', 'https://img.alicdn.com/imgextra/i1/446338500/O1CN01jEYyiB2Cf36y2xHKw-446338500.jpg_40x40q90.jpg', '2019-08-15 14:51:57', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('38', '7', null, '2', '颜色分类', '黑', 'https://img.alicdn.com/imgextra/i2/446338500/O1CN01KZ9ICQ2Cf36zQOKKM-446338500.jpg_40x40q90.jpg', '2019-08-15 14:52:03', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('39', '7', null, '2', '颜色分类', '酱紫', 'https://img.alicdn.com/imgextra/i1/446338500/O1CN012d4FqT2Cf36tkNA9Q-446338500.jpg_40x40q90.jpg', '2019-08-15 14:52:09', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('40', '7', null, '12', null, 'NS', null, '2019-08-15 14:52:13', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('41', '8', null, '1', '尺码', 'M', null, '2019-08-15 15:00:12', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('42', '8', null, '2', '颜色分类', '洛霞插画T恤', 'https://img.alicdn.com/imgextra/i3/2629007270/O1CN01UlLjqx23ZhvKT3oHU_!!2629007270.jpg_40x40q90.jpg', '2019-08-15 15:00:32', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('43', '9', null, '2', '颜色分类', '深空灰色', 'https://img.alicdn.com/imgextra/i1/1917047079/O1CN01aehc1x22AEIGJ4TUp_!!1917047079.jpeg_40x40q90.jpg', '2019-08-15 15:43:47', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('44', '9', null, '2', '颜色分类', '银色', 'https://img.alicdn.com/imgextra/i1/1917047079/O1CN01BrSwPd22AEIDSoJYT_!!1917047079.jpeg_40x40q90.jpg', '2019-08-15 15:43:55', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('45', '10', null, '2', '颜色分类', '幻夜黑', 'https://img.alicdn.com/imgextra/i3/1114511827/O1CN01r4vRMG1PMo9xWPrfQ_!!1114511827.jpg_40x40q90.jpg', '2019-08-15 15:52:00', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('46', '10', null, '2', '颜色分类', '魅海蓝', 'https://img.alicdn.com/imgextra/i1/1114511827/O1CN01c7q7L01PMo9xWSPen_!!1114511827.jpg_40x40q90.jpg', '2019-08-15 15:52:21', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('47', '10', null, '5', '存储容量', '4+64G', null, '2019-08-15 16:16:44', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('48', '10', null, '5', '存储容量', '6+64G', null, '2019-08-15 16:16:54', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('49', '10', null, '5', '存储容量', '6+128G', null, '2019-08-15 16:17:03', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('50', '11', null, '2', '颜色分类', '亮黑色', 'https://img.alicdn.com/imgextra/i2/TB1wqMRNQzoK1RjSZFl1gqi4VXa_112400.jpg_40x40q90.jpg', '2019-08-15 16:17:42', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('51', '11', null, '2', '颜色分类', '珠光贝母', 'https://img.alicdn.com/imgextra/i1/TB1qw7RNPTpK1RjSZKPXtC3UpXa_112414.jpg_40x40q90.jpg', '2019-08-15 16:18:04', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('52', '11', null, '2', '颜色分类', '极光色', 'https://img.alicdn.com/imgextra/i8/TB1uiAYNMHqK1RjSZFkXfd.WFXa_112352.jpg_40x40q90.jpg', '2019-08-15 16:18:27', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('53', '11', null, '2', '颜色分类', '天空之境', 'https://img.alicdn.com/imgextra/i4/TB1yVcUNQPoK1RjSZKbytX1IXXa_112407.jpg_40x40q90.jpg', '2019-08-15 16:18:46', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('54', '11', null, '2', '颜色分类', '赤茶橘', 'https://img.alicdn.com/imgextra/i7/TB1s2gONNTpK1RjSZFKUqG2wXXa_112344.jpg_40x40q90.jpg', '2019-08-15 16:19:09', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('55', '11', null, '5', '存储容量', '8+128G', null, '2019-08-15 16:20:12', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('56', '11', null, '5', '存储容量', '8+256G', null, '2019-08-15 16:20:21', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('57', '11', null, '5', '存储容量', '8+512G', null, '2019-08-15 16:20:30', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('58', '12', null, '2', '颜色分类', '黑色', 'https://img.alicdn.com/imgextra/i3/92686194/O1CN01uNXCRm1vctmAUSvbj_!!92686194.png_40x40q90.jpg', '2019-08-15 16:35:10', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('59', '12', null, '2', '颜色分类', '蓝色', 'https://img.alicdn.com/imgextra/i3/92686194/O1CN01XZt3Gf1vctmD581D9_!!92686194.png_40x40q90.jpg', '2019-08-15 16:35:30', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('60', '12', null, '2', '颜色分类', '紫色', 'https://img.alicdn.com/imgextra/i1/92686194/O1CN01VELE1Z1vctm7VzYcl_!!92686194.png_40x40q90.jpg', '2019-08-15 16:35:43', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('61', '12', null, '2', '颜色分类', '白色', 'https://img.alicdn.com/imgextra/i1/92686194/O1CN01bjY4Ux1vctm8OdMek_!!92686194.png_40x40q90.jpg', '2019-08-15 16:35:54', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('62', '13', null, '2', '颜色分类', '亮银', null, '2019-08-15 16:47:21', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('64', '14', null, '2', '颜色分类', '银色', 'https://img.alicdn.com/imgextra/i4/1917047079/TB2yF71XAvoK1RjSZFNXXcxMVXa_!!1917047079.jpg_40x40q90.jpg', '2019-08-15 17:00:01', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('65', '14', null, '2', '颜色分类', '深空灰色', 'https://img.alicdn.com/imgextra/i2/1917047079/TB2pAsZXpzqK1RjSZFvXXcB7VXa_!!1917047079.jpg_40x40q90.jpg', '2019-08-15 17:00:15', '2019-08-21 18:28:31', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('66', '14', null, '2', '颜色分类', '金色', 'https://img.alicdn.com/imgextra/i4/1917047079/TB21oE1XpzqK1RjSZFzXXXjrpXa_!!1917047079.jpg_40x40q90.jpg', '2019-08-15 17:00:40', '2019-08-21 18:28:32', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('67', '15', null, '2', '颜色分类', '白色', 'https://img.alicdn.com/imgextra/i1/2838892713/O1CN0164M7KA1Vub4acbVuC_!!2838892713.png_40x40q90.jpg', '2019-08-15 17:06:14', '2019-08-21 18:28:32', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('68', '16', null, '2', '颜色分类', '绮境森林', 'https://img.alicdn.com/imgextra/i1/2838892713/O1CN014MwXVK1Vub3wGVFCb_!!2838892713.jpg_40x40q90.jpg', '2019-08-15 17:11:39', '2019-08-21 18:28:32', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('69', '16', null, '2', '颜色分类', '珊瑚橙', 'https://img.alicdn.com/imgextra/i1/2838892713/O1CN018ft6MS1Vub3wtfUVx_!!2838892713.jpg_40x40q90.jpg', '2019-08-15 17:12:00', '2019-08-21 18:28:32', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('70', '16', null, '2', '颜色分类', '仲夏紫', 'https://img.alicdn.com/imgextra/i2/2838892713/O1CN01DgrLsc1Vub3y76V7N_!!2838892713.jpg_40x40q90.jpg', '2019-08-15 17:12:18', '2019-08-21 18:28:32', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('71', '17', null, '2', '颜色分类', '银车架黑色扶手+座椅浅灰麻', 'https://img.alicdn.com/imgextra/TB1lBNsjLuSBuNkHFqDL6RfhVXa_40x40q90.jpg', '2019-08-20 16:34:15', '2019-08-21 18:29:48', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('72', '17', null, '2', '颜色分类', '银车架黑色扶手+座椅深蓝色', 'https://img.alicdn.com/imgextra/TB1j8i8f2ImBKNjSZFlL6U43FXa_40x40q90.jpg', '2019-08-20 16:34:30', '2019-08-21 18:29:48', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('73', '17', null, '2', '颜色分类', '银车架黑色扶手+座椅莲粉色', 'https://img.alicdn.com/imgextra/TB1Llx0f8nTBKNjSZPfL6Tf1XXa_40x40q90.jpg', '2019-08-20 16:35:16', '2019-08-21 18:29:48', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('74', '18', null, '2', '颜色分类', '粉色', null, '2019-08-20 16:43:17', '2019-08-21 18:29:52', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('75', '18', null, '2', '颜色分类', '绿色', null, '2019-08-20 16:43:27', '2019-08-21 18:29:52', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('76', '18', null, '2', '颜色分类', '蓝色', null, '2019-08-20 16:43:33', '2019-08-21 18:29:52', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('77', '19', null, '2', '颜色分类', '天然色', 'https://img.alicdn.com/imgextra/i2/1806053478/TB2g9DCqVXXXXaRXpXXXXXXXXXX_!!1806053478.jpg_40x40q90.jpg', '2019-08-20 16:49:04', '2019-08-21 18:29:54', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('78', '19', null, '2', '颜色分类', '复古灰', 'https://img.alicdn.com/imgextra/i2/1806053478/TB2xakSazzyQeBjy0FjXXc5CVXa_!!1806053478.jpg_40x40q90.jpg', '2019-08-20 16:49:18', '2019-08-21 18:29:54', '0');
+INSERT INTO `t_goods_attr_map` VALUES ('79', '19', null, '2', '颜色分类', '薄荷绿', 'https://img.alicdn.com/imgextra/i2/1806053478/O1CN012vj9QH1bYxzu8oiEg_!!1806053478.jpg_40x40q90.jpg', '2019-08-20 16:49:33', '2019-08-21 18:29:54', '0');
 
 -- ----------------------------
 -- Table structure for t_goods_brand
@@ -1945,28 +2079,32 @@ DROP TABLE IF EXISTS `t_goods_category_relation`;
 CREATE TABLE `t_goods_category_relation` (
   `goods_id` int(11) NOT NULL DEFAULT '0',
   `category_id` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`category_id`,`goods_id`)
+  PRIMARY KEY (`category_id`,`goods_id`),
+  KEY `goods_id` (`goods_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of t_goods_category_relation
 -- ----------------------------
 INSERT INTO `t_goods_category_relation` VALUES ('1', '77');
-INSERT INTO `t_goods_category_relation` VALUES ('3', '157');
-INSERT INTO `t_goods_category_relation` VALUES ('8', '157');
 INSERT INTO `t_goods_category_relation` VALUES ('2', '171');
+INSERT INTO `t_goods_category_relation` VALUES ('3', '157');
 INSERT INTO `t_goods_category_relation` VALUES ('4', '223');
-INSERT INTO `t_goods_category_relation` VALUES ('7', '245');
 INSERT INTO `t_goods_category_relation` VALUES ('5', '301');
 INSERT INTO `t_goods_category_relation` VALUES ('6', '431');
-INSERT INTO `t_goods_category_relation` VALUES ('14', '487');
+INSERT INTO `t_goods_category_relation` VALUES ('7', '245');
+INSERT INTO `t_goods_category_relation` VALUES ('8', '157');
+INSERT INTO `t_goods_category_relation` VALUES ('9', '507');
 INSERT INTO `t_goods_category_relation` VALUES ('10', '489');
 INSERT INTO `t_goods_category_relation` VALUES ('11', '494');
-INSERT INTO `t_goods_category_relation` VALUES ('9', '507');
-INSERT INTO `t_goods_category_relation` VALUES ('15', '536');
-INSERT INTO `t_goods_category_relation` VALUES ('16', '548');
 INSERT INTO `t_goods_category_relation` VALUES ('12', '549');
 INSERT INTO `t_goods_category_relation` VALUES ('13', '991');
+INSERT INTO `t_goods_category_relation` VALUES ('14', '487');
+INSERT INTO `t_goods_category_relation` VALUES ('15', '536');
+INSERT INTO `t_goods_category_relation` VALUES ('16', '548');
+INSERT INTO `t_goods_category_relation` VALUES ('17', '604');
+INSERT INTO `t_goods_category_relation` VALUES ('18', '263');
+INSERT INTO `t_goods_category_relation` VALUES ('19', '609');
 
 -- ----------------------------
 -- Table structure for t_goods_freight
@@ -2002,7 +2140,7 @@ CREATE TABLE `t_goods_img` (
   `is_delete` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=259 DEFAULT CHARSET=utf8 COMMENT='商品图片';
+) ENGINE=InnoDB AUTO_INCREMENT=284 DEFAULT CHARSET=utf8 COMMENT='商品图片';
 
 -- ----------------------------
 -- Records of t_goods_img
@@ -2263,6 +2401,31 @@ INSERT INTO `t_goods_img` VALUES ('255', '16', 'https://img.alicdn.com/imgextra/
 INSERT INTO `t_goods_img` VALUES ('256', '16', 'https://img.alicdn.com/imgextra/i2/2838892713/O1CN018puRjp1Vub47eFxnB_!!2838892713.jpg', '14', '2019-08-15 17:14:21', null, '0');
 INSERT INTO `t_goods_img` VALUES ('257', '16', 'https://img.alicdn.com/imgextra/i4/2838892713/O1CN01qugAM81Vub47c037f_!!2838892713.jpg', '14', '2019-08-15 17:14:24', '2019-08-15 17:14:42', '0');
 INSERT INTO `t_goods_img` VALUES ('258', '16', 'https://img.alicdn.com/imgextra/i4/2838892713/O1CN01Y8T1Ip1Vub48lF2LZ_!!2838892713.jpg', '14', '2019-08-15 17:14:53', null, '0');
+INSERT INTO `t_goods_img` VALUES ('259', '17', 'https://img.alicdn.com/imgextra/i2/1806053478/O1CN01fDtrV31bYy2jhmEwi_!!1806053478.jpg_430x430q90.jpg', '13', '2019-08-20 16:37:21', null, '0');
+INSERT INTO `t_goods_img` VALUES ('260', '17', '//img.alicdn.com/imgextra/TB1j8i8f2ImBKNjSZFlL6U43FXa_430x430q90.jpg', '13', '2019-08-20 16:37:32', null, '0');
+INSERT INTO `t_goods_img` VALUES ('261', '17', '//img.alicdn.com/imgextra/TB1Llx0f8nTBKNjSZPfL6Tf1XXa_430x430q90.jpg', '13', '2019-08-20 16:38:17', null, '0');
+INSERT INTO `t_goods_img` VALUES ('262', '17', '//img.alicdn.com/imgextra/TB1gxw.jyCYBuNkSnaVL6UMsVXa_430x430q90.jpg', '13', '2019-08-20 16:38:23', null, '0');
+INSERT INTO `t_goods_img` VALUES ('263', '17', 'https://img.alicdn.com/imgextra/i2/1806053478/O1CN01BzwXvj1bYy2hjSUla_!!1806053478.jpg', '14', '2019-08-20 16:38:30', '2019-08-20 16:38:46', '0');
+INSERT INTO `t_goods_img` VALUES ('264', '17', 'https://img.alicdn.com/imgextra/i3/1806053478/O1CN01acPn791bYy2gEpTyP_!!1806053478.jpg', '14', '2019-08-20 16:39:24', null, '0');
+INSERT INTO `t_goods_img` VALUES ('265', '17', 'https://img.alicdn.com/imgextra/i4/1806053478/O1CN01OFsIVW1bYy2hr1z5W_!!1806053478.jpg', '14', '2019-08-20 16:39:27', '2019-08-20 16:40:10', '0');
+INSERT INTO `t_goods_img` VALUES ('266', '17', '//gdp.alicdn.com/imgextra/i2/1806053478/O1CN01KPDjNy1bYxzhEwaRD_!!1806053478.jpg', '16', '2019-08-20 16:40:59', null, '0');
+INSERT INTO `t_goods_img` VALUES ('267', '18', 'https://gdp.alicdn.com/imgextra/i3/1806053478/O1CN01fOlwdw1bYy0L3wE3E_!!1806053478.jpg', '16', '2019-08-20 16:41:37', null, '0');
+INSERT INTO `t_goods_img` VALUES ('268', '18', 'https://img.alicdn.com/imgextra/i3/1806053478/O1CN01njrjnP1bYy0QkljQI_!!1806053478.jpg_430x430q90.jpg', '13', '2019-08-20 16:44:48', null, '0');
+INSERT INTO `t_goods_img` VALUES ('269', '18', 'https://img.alicdn.com/imgextra/i1/1806053478/O1CN01Lxiy5E1bYy3TWLXyp_!!1806053478.jpg_430x430q90.jpg', '13', '2019-08-20 16:45:04', null, '0');
+INSERT INTO `t_goods_img` VALUES ('270', '18', 'https://img.alicdn.com/imgextra/i3/1806053478/O1CN01njrjnP1bYy0QkljQI_!!1806053478.jpg_430x430q90.jpg', '13', '2019-08-20 16:45:16', null, '0');
+INSERT INTO `t_goods_img` VALUES ('271', '18', 'https://img.alicdn.com/imgextra/i3/1806053478/O1CN01fxJ7Os1bYy02Tvri0_!!1806053478.jpg_430x430q90.jpg', '13', '2019-08-20 16:45:54', null, '0');
+INSERT INTO `t_goods_img` VALUES ('272', '18', 'https://img.alicdn.com/imgextra/i2/1806053478/O1CN01m9kmuC1bYy0Zbbjrn_!!1806053478.jpg', '14', '2019-08-20 16:46:05', null, '0');
+INSERT INTO `t_goods_img` VALUES ('273', '18', 'https://img.alicdn.com/imgextra/i4/1806053478/O1CN01cXKpof1bYy0XoxhuK_!!1806053478.jpg', '14', '2019-08-20 16:46:26', null, '0');
+INSERT INTO `t_goods_img` VALUES ('274', '18', 'https://img.alicdn.com/imgextra/i4/1806053478/O1CN01GZdlY21bYy0XjMyS7_!!1806053478.jpg', '14', '2019-08-20 16:47:01', null, '0');
+INSERT INTO `t_goods_img` VALUES ('275', '18', 'https://img.alicdn.com/imgextra/i1/1806053478/O1CN01WpP6EP1bYy0YoxaFd_!!1806053478.gif', '14', '2019-08-20 16:47:24', null, '0');
+INSERT INTO `t_goods_img` VALUES ('276', '19', 'https://gdp.alicdn.com/imgextra/i2/1806053478/O1CN010lLjfo1bYxzgcxe06_!!1806053478.jpg', '16', '2019-08-20 16:51:21', null, '0');
+INSERT INTO `t_goods_img` VALUES ('277', '19', 'https://img.alicdn.com/imgextra/i4/1806053478/O1CN01jEWKtr1bYy4NYO54p_!!0-item_pic.jpg_430x430q90.jpg', '13', '2019-08-20 16:51:39', null, '0');
+INSERT INTO `t_goods_img` VALUES ('278', '19', '//img.alicdn.com/imgextra/i2/1806053478/TB2g9DCqVXXXXaRXpXXXXXXXXXX_!!1806053478.jpg_430x430q90.jpg', '13', '2019-08-20 16:51:55', null, '0');
+INSERT INTO `t_goods_img` VALUES ('279', '19', 'https://img.alicdn.com/imgextra/i2/1806053478/O1CN014uY6jm1bYy3M2kTQ5_!!1806053478.jpg_430x430q90.jpg', '13', '2019-08-20 16:52:11', null, '0');
+INSERT INTO `t_goods_img` VALUES ('280', '19', '//img.alicdn.com/imgextra/i2/1806053478/O1CN012vj9QH1bYxzu8oiEg_!!1806053478.jpg_430x430q90.jpg', '13', '2019-08-20 16:52:29', null, '0');
+INSERT INTO `t_goods_img` VALUES ('281', '19', 'https://img.alicdn.com/imgextra/i4/1806053478/TB2PeR5bCr85uJjSZPhXXbXgpXa_!!1806053478.jpg', '14', '2019-08-20 16:52:47', null, '0');
+INSERT INTO `t_goods_img` VALUES ('282', '19', 'https://img.alicdn.com/imgextra/i1/1806053478/O1CN01umk9Wj1bYy3DZ2MQd_!!1806053478.jpg', '14', '2019-08-20 16:53:25', null, '0');
+INSERT INTO `t_goods_img` VALUES ('283', '19', 'https://img.alicdn.com/imgextra/i3/1806053478/TB2Z_4JatYA11Bjy0FhXXbIwVXa_!!1806053478.jpg', '14', '2019-08-20 16:53:51', null, '0');
 
 -- ----------------------------
 -- Table structure for t_goods_param
@@ -2278,7 +2441,7 @@ CREATE TABLE `t_goods_param` (
   `is_delete` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `goods_id` (`goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=148 DEFAULT CHARSET=utf8 COMMENT='商品参数';
+) ENGINE=InnoDB AUTO_INCREMENT=161 DEFAULT CHARSET=utf8 COMMENT='商品参数';
 
 -- ----------------------------
 -- Records of t_goods_param
@@ -2430,6 +2593,19 @@ INSERT INTO `t_goods_param` VALUES ('144', '15', '型号', 'H112-372', '2019-08-
 INSERT INTO `t_goods_param` VALUES ('145', '16', '产品名称', 'Huawei/华为 CM510', '2019-08-15 17:13:00', null, '0');
 INSERT INTO `t_goods_param` VALUES ('146', '16', '功能', '防尘 防水', '2019-08-15 17:13:20', null, '0');
 INSERT INTO `t_goods_param` VALUES ('147', '16', '保修期', '12个月', '2019-08-15 17:13:26', null, '0');
+INSERT INTO `t_goods_param` VALUES ('148', '17', '证书编号', '2014012201668950', '2019-08-20 16:35:27', '2019-08-20 16:35:47', '0');
+INSERT INTO `t_goods_param` VALUES ('149', '17', '产品名称', '儿童推车/多功能儿童推车', '2019-08-20 16:35:57', null, '0');
+INSERT INTO `t_goods_param` VALUES ('150', '17', '制造商名称', 'Stokke AS', '2019-08-20 16:36:12', null, '0');
+INSERT INTO `t_goods_param` VALUES ('151', '17', '适用年龄', '6个月', '2019-08-20 16:36:26', null, '0');
+INSERT INTO `t_goods_param` VALUES ('152', '17', '厂商型号', '506501+524001', '2019-08-20 16:36:44', null, '0');
+INSERT INTO `t_goods_param` VALUES ('153', '18', '适用年龄', '2岁 3岁 4岁 5岁 6岁 7岁', '2019-08-20 16:43:54', null, '0');
+INSERT INTO `t_goods_param` VALUES ('154', '18', '颜色分类', '粉色 绿色 蓝色', '2019-08-20 16:44:04', null, '0');
+INSERT INTO `t_goods_param` VALUES ('155', '18', '货号', '534501', '2019-08-20 16:44:12', null, '0');
+INSERT INTO `t_goods_param` VALUES ('156', '19', '厂商型号', '104201', '2019-08-20 16:50:15', null, '0');
+INSERT INTO `t_goods_param` VALUES ('157', '19', '适用年龄', '6个月', '2019-08-20 16:50:27', null, '0');
+INSERT INTO `t_goods_param` VALUES ('158', '19', '材质', '榉木', '2019-08-20 16:50:36', null, '0');
+INSERT INTO `t_goods_param` VALUES ('159', '19', '功能', '带滚轮', '2019-08-20 16:50:47', null, '0');
+INSERT INTO `t_goods_param` VALUES ('160', '19', '尺寸', '其他', '2019-08-20 16:51:02', null, '0');
 
 -- ----------------------------
 -- Table structure for t_goods_promote
@@ -2536,6 +2712,159 @@ INSERT INTO `t_goods_promote_category` VALUES ('5', '1047', '0');
 INSERT INTO `t_goods_promote_category` VALUES ('5', '1048', '0');
 INSERT INTO `t_goods_promote_category` VALUES ('5', '1049', '0');
 INSERT INTO `t_goods_promote_category` VALUES ('5', '1050', '0');
+
+-- ----------------------------
+-- Table structure for t_goods_sku
+-- ----------------------------
+DROP TABLE IF EXISTS `t_goods_sku`;
+CREATE TABLE `t_goods_sku` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'SKU id',
+  `goods_id` int(11) DEFAULT NULL COMMENT 'SPU id',
+  `attrs` text COMMENT '销售属性值{attr_value_id}-{attr_value_id} 多个销售属性值逗号分隔',
+  `price` decimal(11,2) DEFAULT NULL COMMENT '售价',
+  `market_price` decimal(11,2) DEFAULT NULL COMMENT '市场价',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `goods_id` (`goods_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=98 DEFAULT CHARSET=utf8 COMMENT='商品SKU';
+
+-- ----------------------------
+-- Records of t_goods_sku
+-- ----------------------------
+INSERT INTO `t_goods_sku` VALUES ('1', '1', '1,9', '702.00', '780.00', '2019-08-21 18:01:26', '2019-08-21 18:02:10', '0');
+INSERT INTO `t_goods_sku` VALUES ('2', '1', '6,7', '702.00', '780.00', '2019-08-21 18:02:35', '2019-08-21 18:04:16', '0');
+INSERT INTO `t_goods_sku` VALUES ('3', '1', '6,8', '702.00', '780.00', '2019-08-21 18:02:42', '2019-08-21 18:04:27', '0');
+INSERT INTO `t_goods_sku` VALUES ('4', '1', '6,9', '702.00', '780.00', '2019-08-21 18:02:43', '2019-08-21 18:04:31', '0');
+INSERT INTO `t_goods_sku` VALUES ('5', '1', '2,7', '702.00', '780.00', '2019-08-21 18:02:44', '2019-08-21 18:04:31', '0');
+INSERT INTO `t_goods_sku` VALUES ('6', '1', '2,8', '702.00', '780.00', '2019-08-21 18:02:52', '2019-08-21 18:04:32', '0');
+INSERT INTO `t_goods_sku` VALUES ('7', '1', '2,9', '702.00', '780.00', '2019-08-21 18:02:52', '2019-08-21 18:04:32', '0');
+INSERT INTO `t_goods_sku` VALUES ('8', '1', '3,7', '702.00', '780.00', '2019-08-21 18:02:53', '2019-08-21 18:04:32', '0');
+INSERT INTO `t_goods_sku` VALUES ('9', '1', '3,8', '702.00', '780.00', '2019-08-21 18:02:53', '2019-08-21 18:04:32', '0');
+INSERT INTO `t_goods_sku` VALUES ('10', '1', '3,9', '702.00', '780.00', '2019-08-21 18:02:54', '2019-08-21 18:04:32', '0');
+INSERT INTO `t_goods_sku` VALUES ('11', '1', '4,7', '702.00', '780.00', '2019-08-21 18:02:55', '2019-08-21 18:04:32', '0');
+INSERT INTO `t_goods_sku` VALUES ('12', '1', '4,8', '702.00', '780.00', '2019-08-21 18:02:56', '2019-08-21 18:04:32', '0');
+INSERT INTO `t_goods_sku` VALUES ('13', '1', '4,9', '702.00', '780.00', '2019-08-21 18:02:56', '2019-08-21 18:04:32', '0');
+INSERT INTO `t_goods_sku` VALUES ('14', '1', '5,7', '702.00', '780.00', '2019-08-21 18:03:03', '2019-08-21 18:04:32', '0');
+INSERT INTO `t_goods_sku` VALUES ('15', '1', '5,8', '702.00', '780.00', '2019-08-21 18:03:04', '2019-08-21 18:04:32', '0');
+INSERT INTO `t_goods_sku` VALUES ('16', '1', '5,9', '702.00', '780.00', '2019-08-21 18:03:06', '2019-08-21 18:04:32', '0');
+INSERT INTO `t_goods_sku` VALUES ('17', '2', '10,15', '559.00', '740.00', '2019-08-23 13:50:39', '2019-08-23 13:51:23', '0');
+INSERT INTO `t_goods_sku` VALUES ('18', '2', '10,16', '559.00', '740.00', '2019-08-23 13:50:41', '2019-08-23 13:51:37', '0');
+INSERT INTO `t_goods_sku` VALUES ('19', '2', '11,15', '559.00', '740.00', '2019-08-23 13:50:42', '2019-08-23 13:51:41', '0');
+INSERT INTO `t_goods_sku` VALUES ('20', '2', '11,16', '559.00', '740.00', '2019-08-23 13:50:43', '2019-08-23 13:51:47', '0');
+INSERT INTO `t_goods_sku` VALUES ('21', '2', '12,15', '559.00', '740.00', '2019-08-23 13:50:43', '2019-08-23 13:52:05', '0');
+INSERT INTO `t_goods_sku` VALUES ('22', '2', '12,16', '559.00', '740.00', '2019-08-23 13:50:44', '2019-08-23 13:52:08', '0');
+INSERT INTO `t_goods_sku` VALUES ('23', '2', '13,15', '559.00', '740.00', '2019-08-23 13:50:45', '2019-08-23 13:52:12', '0');
+INSERT INTO `t_goods_sku` VALUES ('24', '2', '13,16', '559.00', '740.00', '2019-08-23 13:50:45', '2019-08-23 13:52:21', '0');
+INSERT INTO `t_goods_sku` VALUES ('25', '2', '14,15', '559.00', '740.00', '2019-08-23 13:50:46', '2019-08-23 13:52:23', '0');
+INSERT INTO `t_goods_sku` VALUES ('26', '2', '15,16', '559.00', '740.00', '2019-08-23 13:50:47', '2019-08-23 13:53:26', '0');
+INSERT INTO `t_goods_sku` VALUES ('27', '3', '17,21', '329.00', '440.00', '2019-08-23 13:53:21', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('28', '3', '18,21', '329.00', '440.00', '2019-08-23 13:53:22', '2019-08-23 13:53:34', '0');
+INSERT INTO `t_goods_sku` VALUES ('29', '3', '19,21', '329.00', '440.00', '2019-08-23 13:53:23', '2019-08-23 13:53:37', '0');
+INSERT INTO `t_goods_sku` VALUES ('30', '3', '20,21', '329.00', '440.00', '2019-08-23 13:53:24', '2019-08-23 13:53:42', '0');
+INSERT INTO `t_goods_sku` VALUES ('31', '4', '22,28', '690.00', '690.00', '2019-08-23 13:54:35', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('32', '4', '22,29', '690.00', '690.00', '2019-08-23 13:54:35', '2019-08-23 13:54:51', '0');
+INSERT INTO `t_goods_sku` VALUES ('33', '4', '23,28', '690.00', '690.00', '2019-08-23 13:54:36', '2019-08-23 13:55:05', '0');
+INSERT INTO `t_goods_sku` VALUES ('34', '4', '23,29', '690.00', '690.00', '2019-08-23 13:54:37', '2019-08-23 13:55:12', '0');
+INSERT INTO `t_goods_sku` VALUES ('35', '4', '24,28', '690.00', '690.00', '2019-08-23 13:54:37', '2019-08-23 13:55:14', '0');
+INSERT INTO `t_goods_sku` VALUES ('36', '4', '24,29', '690.00', '690.00', '2019-08-23 13:54:38', '2019-08-23 13:55:18', '0');
+INSERT INTO `t_goods_sku` VALUES ('37', '4', '25,28', '690.00', '690.00', '2019-08-23 13:54:38', '2019-08-23 13:55:21', '0');
+INSERT INTO `t_goods_sku` VALUES ('38', '4', '25,29', '690.00', '690.00', '2019-08-23 13:54:39', '2019-08-23 13:55:23', '0');
+INSERT INTO `t_goods_sku` VALUES ('39', '4', '26,28', '690.00', '690.00', '2019-08-23 13:54:39', '2019-08-23 13:55:27', '0');
+INSERT INTO `t_goods_sku` VALUES ('40', '4', '26,29', '690.00', '690.00', '2019-08-23 13:54:40', '2019-08-23 13:55:30', '0');
+INSERT INTO `t_goods_sku` VALUES ('41', '4', '27,28', '690.00', '690.00', '2019-08-23 13:54:40', '2019-08-23 13:55:33', '0');
+INSERT INTO `t_goods_sku` VALUES ('42', '4', '27,29', '690.00', '690.00', '2019-08-23 13:54:41', '2019-08-23 13:55:37', '0');
+INSERT INTO `t_goods_sku` VALUES ('43', '5', '30', '959.00', '1299.00', '2019-08-23 13:56:29', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('44', '5', '31', '959.00', '1299.00', '2019-08-23 13:56:30', '2019-08-23 13:56:39', '0');
+INSERT INTO `t_goods_sku` VALUES ('45', '5', '32', '959.00', '1299.00', '2019-08-23 13:56:31', '2019-08-23 13:56:42', '0');
+INSERT INTO `t_goods_sku` VALUES ('46', '6', '33', '1300.00', '1300.00', '2019-08-23 13:57:12', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('47', '6', '34', '1300.00', '1300.00', '2019-08-23 13:57:13', '2019-08-23 13:57:19', '0');
+INSERT INTO `t_goods_sku` VALUES ('48', '6', '35', '1300.00', '1300.00', '2019-08-23 13:57:13', '2019-08-23 13:57:22', '0');
+INSERT INTO `t_goods_sku` VALUES ('49', '6', '36', '1300.00', '1300.00', '2019-08-23 13:57:14', '2019-08-23 13:57:24', '0');
+INSERT INTO `t_goods_sku` VALUES ('50', '7', '37,40', '499.00', '499.00', '2019-08-23 13:58:18', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('51', '7', '38,40', '499.00', '499.00', '2019-08-23 13:58:20', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('52', '7', '39,40', '499.00', '499.00', '2019-08-23 13:58:23', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('53', '8', '41,42', '150.00', '150.00', '2019-08-23 13:59:18', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('54', '9', '43', '9999.00', '9999.00', '2019-08-23 13:59:44', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('55', '9', '44', '9999.00', '9999.00', '2019-08-23 13:59:48', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('56', '10', '45,47', '1399.00', '1399.00', '2019-08-23 14:00:30', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('57', '10', '45,48', '1399.00', '1399.00', '2019-08-23 14:00:37', '2019-08-23 14:00:48', '0');
+INSERT INTO `t_goods_sku` VALUES ('58', '10', '45,49', '1399.00', '1399.00', '2019-08-23 14:00:38', '2019-08-23 14:00:52', '0');
+INSERT INTO `t_goods_sku` VALUES ('59', '10', '46,47', '1399.00', '1399.00', '2019-08-23 14:00:38', '2019-08-23 14:00:55', '0');
+INSERT INTO `t_goods_sku` VALUES ('60', '10', '46,48', '1399.00', '1399.00', '2019-08-23 14:00:39', '2019-08-23 14:01:06', '0');
+INSERT INTO `t_goods_sku` VALUES ('61', '10', '46,49', '1399.00', '1399.00', '2019-08-23 14:00:40', '2019-08-23 14:01:10', '0');
+INSERT INTO `t_goods_sku` VALUES ('62', '11', '50,55', '4988.00', '4988.00', '2019-08-23 14:01:57', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('63', '11', '50,56', '4988.00', '4988.00', '2019-08-23 14:02:03', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('64', '11', '50,57', '4988.00', '4988.00', '2019-08-23 14:02:05', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('65', '11', '51,55', '4988.00', '4988.00', '2019-08-23 14:02:13', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('66', '11', '51,56', '4988.00', '4988.00', '2019-08-23 14:02:17', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('67', '11', '51,57', '4988.00', '4988.00', '2019-08-23 14:02:19', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('68', '11', '52,55', '4988.00', '4988.00', '2019-08-23 14:02:25', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('69', '11', '52,56', '4988.00', '4988.00', '2019-08-23 14:02:29', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('70', '11', '52,57', '4988.00', '4988.00', '2019-08-23 14:02:31', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('71', '11', '53,55', '4988.00', '4988.00', '2019-08-23 14:02:36', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('72', '11', '53,56', '4988.00', '4988.00', '2019-08-23 14:02:40', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('73', '11', '53,57', '4988.00', '4988.00', '2019-08-23 14:02:42', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('74', '11', '54,55', '4988.00', '4988.00', '2019-08-23 14:02:48', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('75', '11', '54,56', '4988.00', '4988.00', '2019-08-23 14:02:50', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('76', '11', '54,57', '4988.00', '4988.00', '2019-08-23 14:02:52', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('77', '12', '58', '439.00', '599.00', '2019-08-23 14:03:50', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('78', '12', '59', '439.00', '599.00', '2019-08-23 14:03:53', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('79', '12', '60', '439.00', '599.00', '2019-08-23 14:03:56', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('80', '12', '61', '439.00', '599.00', '2019-08-23 14:03:59', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('81', '13', '62', '1299.00', '2799.00', '2019-08-23 14:04:33', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('82', '14', '64', '8199.00', '8199.00', '2019-08-23 14:05:08', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('83', '14', '65', '8199.00', '8199.00', '2019-08-23 14:05:10', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('84', '14', '66', '8199.00', '8199.00', '2019-08-23 14:05:12', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('85', '15', '67', '2499.00', '2499.00', '2019-08-23 14:05:41', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('86', '16', '68', '129.00', '129.00', '2019-08-23 14:05:58', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('87', '16', '69', '129.00', '129.00', '2019-08-23 14:06:01', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('88', '16', '70', '129.00', '129.00', '2019-08-23 14:06:04', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('89', '17', '71', '9891.00', '10990.00', '2019-08-23 14:06:29', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('90', '17', '72', '9891.00', '10990.00', '2019-08-23 14:06:31', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('91', '17', '73', '9891.00', '10990.00', '2019-08-23 14:06:33', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('92', '18', '74', '1558.00', '1590.00', '2019-08-23 14:07:03', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('93', '18', '75', '1558.00', '1590.00', '2019-08-23 14:07:06', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('94', '18', '76', '1558.00', '1590.00', '2019-08-23 14:07:07', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('95', '19', '77', '7490.00', '7590.00', '2019-08-23 14:07:43', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('96', '19', '78', '7490.00', '7590.00', '2019-08-23 14:07:44', null, '0');
+INSERT INTO `t_goods_sku` VALUES ('97', '19', '79', '7490.00', '7590.00', '2019-08-23 14:07:45', null, '0');
+
+-- ----------------------------
+-- Table structure for t_goods_stock
+-- ----------------------------
+DROP TABLE IF EXISTS `t_goods_stock`;
+CREATE TABLE `t_goods_stock` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sku_id` int(11) DEFAULT '0' COMMENT 'SKU id',
+  `quantity` int(6) DEFAULT '0' COMMENT '库存数量',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `attr_id_2` (`sku_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='商品SKU库存';
+
+-- ----------------------------
+-- Records of t_goods_stock
+-- ----------------------------
+INSERT INTO `t_goods_stock` VALUES ('1', '1', '2', '2019-08-21 15:27:27', '2019-08-21 19:06:44', '0');
+INSERT INTO `t_goods_stock` VALUES ('2', '2', '11', '2019-08-21 15:27:36', '2019-08-21 19:08:02', '0');
+INSERT INTO `t_goods_stock` VALUES ('3', '6', '16', '2019-08-21 15:27:40', '2019-08-21 19:08:02', '0');
+INSERT INTO `t_goods_stock` VALUES ('4', '7', '35', '2019-08-21 15:28:23', '2019-08-21 19:08:02', '0');
+INSERT INTO `t_goods_stock` VALUES ('5', '8', '17', '2019-08-21 15:28:35', '2019-08-21 19:08:02', '0');
+INSERT INTO `t_goods_stock` VALUES ('6', '9', '26', '2019-08-21 15:29:04', '2019-08-21 19:08:02', '0');
+INSERT INTO `t_goods_stock` VALUES ('7', '10', '51', '2019-08-21 15:29:13', '2019-08-21 19:08:02', '0');
+INSERT INTO `t_goods_stock` VALUES ('8', '11', '17', '2019-08-21 15:29:19', '2019-08-21 19:08:02', '0');
+INSERT INTO `t_goods_stock` VALUES ('9', '12', '19', '2019-08-21 15:29:39', '2019-08-21 19:08:02', '0');
+INSERT INTO `t_goods_stock` VALUES ('10', '13', '35', '2019-08-21 15:29:49', '2019-08-21 19:08:02', '0');
+INSERT INTO `t_goods_stock` VALUES ('11', '14', '9', '2019-08-21 15:29:58', '2019-08-21 19:08:03', '0');
+INSERT INTO `t_goods_stock` VALUES ('12', '15', '9', '2019-08-21 15:30:16', '2019-08-21 19:08:03', '0');
+INSERT INTO `t_goods_stock` VALUES ('13', '16', '17', '2019-08-21 15:30:25', '2019-08-21 19:08:03', '0');
+INSERT INTO `t_goods_stock` VALUES ('14', '2', '2', '2019-08-21 15:30:32', '2019-08-21 19:08:03', '0');
+INSERT INTO `t_goods_stock` VALUES ('15', '3', '2', '2019-08-21 15:30:46', '2019-08-21 19:08:03', '0');
+INSERT INTO `t_goods_stock` VALUES ('16', '4', '2', '2019-08-21 15:30:54', '2019-08-21 19:08:03', '0');
 
 -- ----------------------------
 -- Table structure for t_region
@@ -6302,12 +6631,13 @@ CREATE TABLE `t_user` (
   `is_delete` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='系统默认用户';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='系统默认用户';
 
 -- ----------------------------
 -- Records of t_user
 -- ----------------------------
 INSERT INTO `t_user` VALUES ('1', '2', null, '昵称', null, '2019-08-09 13:54:36', null, '0');
+INSERT INTO `t_user` VALUES ('2', '3', null, '木南', null, '2019-08-19 10:48:34', null, '0');
 
 -- ----------------------------
 -- Table structure for t_user_alipay
@@ -6332,7 +6662,7 @@ CREATE TABLE `t_user_alipay` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`) USING BTREE,
   UNIQUE KEY `account_id` (`account_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='支付宝用户信息';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='支付宝用户信息';
 
 -- ----------------------------
 -- Records of t_user_alipay

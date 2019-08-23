@@ -31,6 +31,9 @@ public class GlobalConfig {
     private static final char CONNECTOR = '_';
     public static final String KEY_LIMIT_CAPTCHA = "limit_captcha";
 
+    public static final int GOODS_IMG_TYPE_COVER = 13;
+    public static final int GOODS_IMG_TYPE_DETAIL = 14;
+
     public static final String INDEX_BANNER_SHOW_COUNT = "index_bannerShowCount";
     public static final String INDEX_BRAND_SHOW_COUNT = "index_brandShowCount";
     public static final String INDEX_GUESS_LIKE_COUNT = "index_guessLikeCount";

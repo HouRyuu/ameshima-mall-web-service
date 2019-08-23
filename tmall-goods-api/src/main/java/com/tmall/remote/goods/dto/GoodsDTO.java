@@ -18,7 +18,6 @@ public class GoodsDTO {
     private BigDecimal price;
     private BigDecimal marketPrice;
     private String location;
-    private int isDelete;
 
     public GoodsDTO() {
     }
@@ -75,11 +74,4 @@ public class GoodsDTO {
         this.location = location;
     }
 
-    public int getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(int isDelete) {
-        this.isDelete = isDelete;
-    }
 }
