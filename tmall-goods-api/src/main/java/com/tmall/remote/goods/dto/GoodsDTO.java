@@ -13,11 +13,14 @@ import java.math.BigDecimal;
 public class GoodsDTO {
 
     private Integer id;
+    private Integer storeId;
     private String name;
     private String simpleDesc;
     private BigDecimal price;
     private BigDecimal marketPrice;
     private String location;
+    private int quantity;
+    private int evaluateCount;
 
     public GoodsDTO() {
     }
@@ -32,6 +35,14 @@ public class GoodsDTO {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Integer storeId) {
+        this.storeId = storeId;
     }
 
     public String getName() {
@@ -74,4 +85,19 @@ public class GoodsDTO {
         this.location = location;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public int getEvaluateCount() {
+        return evaluateCount;
+    }
+
+    public void setEvaluateCount(int evaluateCount) {
+        this.evaluateCount = evaluateCount;
+    }
 }

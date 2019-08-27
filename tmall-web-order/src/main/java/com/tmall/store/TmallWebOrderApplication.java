@@ -1,21 +1,19 @@
-package com.tmall.goods;
+package com.tmall.store;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringBootApplication
+@ComponentScan({ "com.tmall" })
 @EnableEurekaClient
-@EnableFeignClients("com.tmall.remote.*")
-@ComponentScan("com.tmall")
 @MapperScan("com.tmall.*.mapper")
-public class TmallWebGoodsApplication {
+public class TmallWebOrderApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TmallWebGoodsApplication.class, args);
+		SpringApplication.run(TmallWebOrderApplication.class, args);
 	}
 
 }

@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.tmall</groupId>
-	<artifactId>tmall-web-goods</artifactId>
+	<artifactId>tmall-web-order</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>tmall-web-goods</name>
+	<name>tmall-web-order</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -32,17 +32,12 @@
 		</dependency>
         <dependency>
             <groupId>com.tmall</groupId>
-            <artifactId>tmall-goods-api</artifactId>
+            <artifactId>tmall-order-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.tmall</groupId>
             <artifactId>tmall-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.tmall</groupId>
-            <artifactId>tmall-order-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

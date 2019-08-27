@@ -3,6 +3,8 @@ package com.tmall.goods.service.impl;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import com.tmall.goods.keys.GoodsKey;
 import com.tmall.goods.mapper.GoodsMapper;
 import com.tmall.goods.service.GoodsService;
 import com.tmall.remote.goods.dto.GoodsDTO;
+import com.tmall.remote.order.api.IOrderEvaluateService;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -26,12 +29,16 @@ import com.tmall.remote.goods.dto.GoodsDTO;
 @Service
 public class GoodsServiceImpl implements GoodsService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GoodsServiceImpl.class);
+
     @Autowired
     private GoodsMapper goodsMapper;
     @Autowired
     private GlobalConfig globalConfig;
     @Autowired
     private RedisClient redisClient;
+    @Autowired
+    private IOrderEvaluateService orderEvaluateService;
 
     @Override
     public List<GoodsGridDTO> findByPromote(int promoteId) {
@@ -62,7 +69,15 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public GoodsDTO getGoods(int goodsId) {
-        return goodsMapper.getGoods(goodsId);
+        GoodsDTO result = goodsMapper.getGoods(goodsId);
+        int evaluateCount = 0;
+        try {
+            evaluateCount = orderEvaluateService.count(goodsId);
+        } catch (Exception e) {
+            LOGGER.error("Get goods's evaluate count fail, goodsId=>{}", goodsId, e);
+        }
+        result.setEvaluateCount(evaluateCount);
+        return result;
     }
 
     @Override

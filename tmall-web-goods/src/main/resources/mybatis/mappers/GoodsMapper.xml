@@ -6,19 +6,25 @@
     <select id="getGoods" resultType="GoodsDTO">
         SELECT
             t.id,
+            t.store_id,
             t.`name`,
             t.simple_desc,
             t.location,
             t3.price,
             t3.market_price,
-            t2.pid category_id
+            t2.pid category_id,
+            SUM(t5.quantity) quantity
         FROM
             t_goods t
-        INNER JOIN t_goods_category_relation t1 ON t.id = t1.goods_id
-        INNER JOIN t_goods_category t2 ON t1.category_id = t2.id
+        INNER JOIN t_goods_category_relation t1 ON t1.goods_id = t.id
+        INNER JOIN t_goods_category t2 ON t2.id = t1.category_id
         AND t2.is_delete = 0
-        INNER JOIN t_goods_sku t3 ON t.sku_id = t3.id
+        INNER JOIN t_goods_sku t3 ON t3.id = t.sku_id
         AND t3.is_delete = 0
+        INNER JOIN t_goods_sku t4 ON t4.goods_id = t.id
+        AND t4.is_delete = 0
+        INNER JOIN t_goods_stock t5 ON t5.sku_id = t4.id
+        AND t5.is_delete = 0
         WHERE
             t.is_delete = 0
         AND t.id = #{goodsId}
@@ -132,6 +138,7 @@
 
     <select id="findSku" resultType="GoodsSkuDTO">
         SELECT
+            t.id,
             t.attrs,
             t.price,
             t.market_price,

@@ -12,10 +12,19 @@ import java.math.BigDecimal;
  */
 public class GoodsSkuDTO {
 
+    private int id;
     private String attrs;
     private BigDecimal price;
     private BigDecimal marketPrice;
     private int quantity;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getAttrs() {
         return attrs;

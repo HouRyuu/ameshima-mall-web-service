@@ -23,6 +23,10 @@ zuul:
           path: /store/**
           serviceId: tmall-store
           stripPrefix: false
+    orderApi:
+          path: /order/**
+          serviceId: tmall-order
+          stripPrefix: false
 
 # 添加ribbon的超时时间设置
 ribbon:
