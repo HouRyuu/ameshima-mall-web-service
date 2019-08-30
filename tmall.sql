@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50624
 File Encoding         : 65001
 
-Date: 2019-08-23 18:27:10
+Date: 2019-08-30 17:14:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -2145,16 +2145,16 @@ CREATE TABLE `t_goods_img` (
 -- ----------------------------
 -- Records of t_goods_img
 -- ----------------------------
-INSERT INTO `t_goods_img` VALUES ('1', '1', '//img.alicdn.com/imgextra/i1/676606897/O1CN01E7rYW420osDWdw7dE_!!0-item_pic.jpg_430x430q90.jpg', '13', '2019-08-15 11:19:22', '2019-08-15 13:51:26', '0');
-INSERT INTO `t_goods_img` VALUES ('2', '1', '//img.alicdn.com/imgextra/i2/676606897/O1CN01Wwo83h20osDZCYWnR_!!676606897.jpg_430x430q90.jpg', '13', '2019-08-15 11:19:36', '2019-08-15 13:51:27', '0');
-INSERT INTO `t_goods_img` VALUES ('3', '1', '//img.alicdn.com/imgextra/i4/676606897/O1CN01EaXtqj20osDUURi4s_!!676606897.jpg_430x430q90.jpg', '13', '2019-08-15 11:19:47', '2019-08-15 13:51:27', '0');
-INSERT INTO `t_goods_img` VALUES ('4', '1', '//img.alicdn.com/imgextra/i1/676606897/O1CN014NS2CX20osDWXHyPs_!!676606897.jpg_430x430q90.jpg', '13', '2019-08-15 11:20:01', '2019-08-15 13:51:27', '0');
-INSERT INTO `t_goods_img` VALUES ('5', '1', '//img.alicdn.com/imgextra/i2/676606897/O1CN01iaSxWB20osDUUTO5z_!!676606897.jpg_430x430q90.jpg', '13', '2019-08-15 11:20:10', '2019-08-15 13:51:27', '0');
-INSERT INTO `t_goods_img` VALUES ('7', '2', 'https://img.alicdn.com/imgextra/i3/676606897/O1CN017TSc8m20osBB0WzOG_!!0-item_pic.jpg_430x430q90.jpg', '13', '2019-08-15 13:37:31', '2019-08-15 13:51:27', '0');
-INSERT INTO `t_goods_img` VALUES ('8', '2', 'https://img.alicdn.com/imgextra/i2/676606897/O1CN01emYJh320osAnD08iv-676606897.jpg_430x430q90.jpg', '13', '2019-08-15 13:37:46', '2019-08-15 13:51:27', '0');
-INSERT INTO `t_goods_img` VALUES ('9', '2', 'https://img.alicdn.com/imgextra/i3/676606897/O1CN01ZymlIU20osAco0FuN_!!676606897.jpg_430x430q90.jpg', '13', '2019-08-15 13:37:54', '2019-08-15 13:51:27', '0');
-INSERT INTO `t_goods_img` VALUES ('10', '2', 'https://img.alicdn.com/imgextra/i3/676606897/O1CN01LsZEnU20osAdNvJFp_!!676606897.jpg_430x430q90.jpg', '13', '2019-08-15 13:38:03', '2019-08-15 13:51:27', '0');
-INSERT INTO `t_goods_img` VALUES ('11', '2', 'https://img.alicdn.com/imgextra/i3/676606897/O1CN01DE4cIx20osAco34aQ_!!676606897.jpg_430x430q90.jpg', '13', '2019-08-15 13:38:28', '2019-08-15 13:51:27', '0');
+INSERT INTO `t_goods_img` VALUES ('1', '1', '//img.alicdn.com/imgextra/i1/676606897/O1CN01E7rYW420osDWdw7dE_!!0-item_pic.jpg', '13', '2019-08-15 11:19:22', '2019-08-30 15:21:03', '0');
+INSERT INTO `t_goods_img` VALUES ('2', '1', '//img.alicdn.com/imgextra/i2/676606897/O1CN01Wwo83h20osDZCYWnR_!!676606897.jpg', '13', '2019-08-15 11:19:36', '2019-08-30 15:21:09', '0');
+INSERT INTO `t_goods_img` VALUES ('3', '1', '//img.alicdn.com/imgextra/i4/676606897/O1CN01EaXtqj20osDUURi4s_!!676606897.jpg', '13', '2019-08-15 11:19:47', '2019-08-30 15:21:11', '0');
+INSERT INTO `t_goods_img` VALUES ('4', '1', '//img.alicdn.com/imgextra/i1/676606897/O1CN014NS2CX20osDWXHyPs_!!676606897.jpg', '13', '2019-08-15 11:20:01', '2019-08-30 15:21:16', '0');
+INSERT INTO `t_goods_img` VALUES ('5', '1', '//img.alicdn.com/imgextra/i2/676606897/O1CN01iaSxWB20osDUUTO5z_!!676606897.jpg', '13', '2019-08-15 11:20:10', '2019-08-30 15:21:19', '0');
+INSERT INTO `t_goods_img` VALUES ('7', '2', 'https://img.alicdn.com/imgextra/i3/676606897/O1CN017TSc8m20osBB0WzOG_!!0-item_pic.jpg', '13', '2019-08-15 13:37:31', '2019-08-30 15:21:21', '0');
+INSERT INTO `t_goods_img` VALUES ('8', '2', 'https://img.alicdn.com/imgextra/i2/676606897/O1CN01emYJh320osAnD08iv-676606897.jpg', '13', '2019-08-15 13:37:46', '2019-08-30 15:21:24', '0');
+INSERT INTO `t_goods_img` VALUES ('9', '2', 'https://img.alicdn.com/imgextra/i3/676606897/O1CN01ZymlIU20osAco0FuN_!!676606897.jpg', '13', '2019-08-15 13:37:54', '2019-08-30 15:21:28', '0');
+INSERT INTO `t_goods_img` VALUES ('10', '2', 'https://img.alicdn.com/imgextra/i3/676606897/O1CN01LsZEnU20osAdNvJFp_!!676606897.jpg', '13', '2019-08-15 13:38:03', '2019-08-30 15:21:30', '0');
+INSERT INTO `t_goods_img` VALUES ('11', '2', 'https://img.alicdn.com/imgextra/i3/676606897/O1CN01DE4cIx20osAco34aQ_!!676606897.jpg', '13', '2019-08-15 13:38:28', '2019-08-30 15:21:34', '0');
 INSERT INTO `t_goods_img` VALUES ('12', '1', '//img.alicdn.com/imgextra/i2/676606897/O1CN012MwJH520osDWPJWF1_!!676606897.jpg', '14', '2019-08-15 13:53:40', null, '0');
 INSERT INTO `t_goods_img` VALUES ('13', '1', '//img.alicdn.com/imgextra/i2/676606897/O1CN01f2jxic20osDQqqFv8_!!676606897.jpg', '14', '2019-08-15 13:53:40', null, '0');
 INSERT INTO `t_goods_img` VALUES ('14', '1', '//img.alicdn.com/imgextra/i4/676606897/O1CN01SCoq4z20osDZDwAw1_!!676606897.jpg', '14', '2019-08-15 13:53:40', null, '0');
@@ -2185,11 +2185,11 @@ INSERT INTO `t_goods_img` VALUES ('38', '2', 'https://img.alicdn.com/imgextra/i4
 INSERT INTO `t_goods_img` VALUES ('39', '2', 'https://img.alicdn.com/imgextra/i1/676606897/O1CN01FLY8vk20osDQ0c7PP_!!676606897.jpg', '14', '2019-08-15 13:53:40', null, '0');
 INSERT INTO `t_goods_img` VALUES ('40', '2', 'https://img.alicdn.com/imgextra/i4/676606897/O1CN01t3B7LZ20osDOd51qd_!!676606897.jpg', '14', '2019-08-15 13:53:40', null, '0');
 INSERT INTO `t_goods_img` VALUES ('41', '2', 'https://img.alicdn.com/imgextra/i4/676606897/O1CN01mvHo2J20osDSllwUg_!!676606897.jpg', '14', '2019-08-15 13:53:40', null, '0');
-INSERT INTO `t_goods_img` VALUES ('43', '3', 'https://img.alicdn.com/imgextra/i3/676606897/O1CN01lpC2Sr20osBVnTLkS_!!676606897.jpg_430x430q90.jpg', '13', '2019-08-15 13:55:58', '2019-08-15 14:02:44', '0');
-INSERT INTO `t_goods_img` VALUES ('44', '3', 'https://img.alicdn.com/imgextra/i4/676606897/O1CN01GIsy1D20osBXFxPo8-676606897.jpg_430x430q90.jpg', '13', '2019-08-15 13:56:01', '2019-08-15 13:56:25', '0');
-INSERT INTO `t_goods_img` VALUES ('45', '3', 'https://img.alicdn.com/imgextra/i2/676606897/O1CN016fV9Hq20osBXP89Wm_!!0-item_pic.jpg_430x430q90.jpg', '13', '2019-08-15 13:56:45', null, '0');
-INSERT INTO `t_goods_img` VALUES ('46', '3', 'https://img.alicdn.com/imgextra/i2/676606897/O1CN014ashaL20osBUc9bSG_!!676606897.jpg_430x430q90.jpg', '13', '2019-08-15 13:56:50', null, '0');
-INSERT INTO `t_goods_img` VALUES ('47', '3', 'https://img.alicdn.com/imgextra/i1/676606897/O1CN01deay9y20osBg2cmzn-676606897.jpg_430x430q90.jpg', '13', '2019-08-15 13:57:00', null, '0');
+INSERT INTO `t_goods_img` VALUES ('43', '3', 'https://img.alicdn.com/imgextra/i3/676606897/O1CN01lpC2Sr20osBVnTLkS_!!676606897.jpg', '13', '2019-08-15 13:55:58', '2019-08-30 15:21:42', '0');
+INSERT INTO `t_goods_img` VALUES ('44', '3', 'https://img.alicdn.com/imgextra/i4/676606897/O1CN01GIsy1D20osBXFxPo8-676606897.jpg', '13', '2019-08-15 13:56:01', '2019-08-30 15:21:44', '0');
+INSERT INTO `t_goods_img` VALUES ('45', '3', 'https://img.alicdn.com/imgextra/i2/676606897/O1CN016fV9Hq20osBXP89Wm_!!0-item_pic.jpg', '13', '2019-08-15 13:56:45', '2019-08-30 15:21:47', '0');
+INSERT INTO `t_goods_img` VALUES ('46', '3', 'https://img.alicdn.com/imgextra/i2/676606897/O1CN014ashaL20osBUc9bSG_!!676606897.jpg', '13', '2019-08-15 13:56:50', '2019-08-30 15:21:49', '0');
+INSERT INTO `t_goods_img` VALUES ('47', '3', 'https://img.alicdn.com/imgextra/i1/676606897/O1CN01deay9y20osBg2cmzn-676606897.jpg', '13', '2019-08-15 13:57:00', '2019-08-30 15:21:52', '0');
 INSERT INTO `t_goods_img` VALUES ('48', '3', 'https://img.alicdn.com/imgextra/i3/676606897/O1CN01MxRJa420osBZ1FTGH_!!676606897.jpg', '14', '2019-08-15 13:57:29', null, '0');
 INSERT INTO `t_goods_img` VALUES ('49', '3', 'https://img.alicdn.com/imgextra/i4/676606897/O1CN01X9sML020osCzj39F6_!!676606897.jpg', '14', '2019-08-15 13:57:41', null, '0');
 INSERT INTO `t_goods_img` VALUES ('50', '3', 'https://img.alicdn.com/imgextra/i4/676606897/O1CN01KAd0jr20osDM1p50c_!!676606897.jpg', '14', '2019-08-15 13:57:45', null, '0');
@@ -2210,11 +2210,11 @@ INSERT INTO `t_goods_img` VALUES ('64', '3', 'https://img.alicdn.com/imgextra/i3
 INSERT INTO `t_goods_img` VALUES ('65', '3', 'https://img.alicdn.com/imgextra/i4/676606897/O1CN01VoRPsK20osBYOT7Jg_!!676606897.jpg', '14', '2019-08-15 14:01:39', null, '0');
 INSERT INTO `t_goods_img` VALUES ('66', '3', 'https://img.alicdn.com/imgextra/i2/676606897/O1CN01W3l5DI20osBaF7egO_!!676606897.jpg', '14', '2019-08-15 14:01:56', null, '0');
 INSERT INTO `t_goods_img` VALUES ('67', '3', 'https://img.alicdn.com/imgextra/i1/676606897/O1CN01k9Ppm020osBYTVxMN_!!676606897.jpg', '14', '2019-08-15 14:02:01', null, '0');
-INSERT INTO `t_goods_img` VALUES ('68', '4', 'https://img.alicdn.com/imgextra/i4/446338500/O1CN011op8Lb2Cf36jiovi9_!!0-item_pic.jpg_430x430q90.jpg', '13', '2019-08-15 14:11:18', null, '0');
-INSERT INTO `t_goods_img` VALUES ('69', '4', 'https://img.alicdn.com/imgextra/i3/446338500/O1CN01dzGIDY2Cf36ZVVNs2-446338500.jpg_430x430q90.jpg', '13', '2019-08-15 14:11:29', null, '0');
-INSERT INTO `t_goods_img` VALUES ('70', '4', 'https://img.alicdn.com/imgextra/i3/446338500/O1CN01L4Rl9D2Cf36amhXFB-446338500.jpg_430x430q90.jpg', '13', '2019-08-15 14:11:34', null, '0');
-INSERT INTO `t_goods_img` VALUES ('71', '4', 'https://img.alicdn.com/imgextra/i3/446338500/O1CN01GnaeKU2Cf36WAl2tt-446338500.jpg_430x430q90.jpg', '13', '2019-08-15 14:11:43', null, '0');
-INSERT INTO `t_goods_img` VALUES ('72', '4', 'https://img.alicdn.com/imgextra/i3/446338500/O1CN01nXyNzz2Cf36VGg9Vw-446338500.jpg_430x430q90.jpg', '13', '2019-08-15 14:12:05', null, '0');
+INSERT INTO `t_goods_img` VALUES ('68', '4', 'https://img.alicdn.com/imgextra/i4/446338500/O1CN011op8Lb2Cf36jiovi9_!!0-item_pic.jpg', '13', '2019-08-15 14:11:18', '2019-08-30 15:21:59', '0');
+INSERT INTO `t_goods_img` VALUES ('69', '4', 'https://img.alicdn.com/imgextra/i3/446338500/O1CN01dzGIDY2Cf36ZVVNs2-446338500.jpg', '13', '2019-08-15 14:11:29', '2019-08-30 15:22:02', '0');
+INSERT INTO `t_goods_img` VALUES ('70', '4', 'https://img.alicdn.com/imgextra/i3/446338500/O1CN01L4Rl9D2Cf36amhXFB-446338500.jpg', '13', '2019-08-15 14:11:34', '2019-08-30 15:22:04', '0');
+INSERT INTO `t_goods_img` VALUES ('71', '4', 'https://img.alicdn.com/imgextra/i3/446338500/O1CN01GnaeKU2Cf36WAl2tt-446338500.jpg', '13', '2019-08-15 14:11:43', '2019-08-30 15:22:06', '0');
+INSERT INTO `t_goods_img` VALUES ('72', '4', 'https://img.alicdn.com/imgextra/i3/446338500/O1CN01nXyNzz2Cf36VGg9Vw-446338500.jpg', '13', '2019-08-15 14:12:05', '2019-08-30 15:22:08', '0');
 INSERT INTO `t_goods_img` VALUES ('73', '4', 'https://img.alicdn.com/imgextra/i3/446338500/O1CN01dSgJrA2Cf36YHfojD-446338500.jpg', '14', '2019-08-15 14:12:21', null, '0');
 INSERT INTO `t_goods_img` VALUES ('74', '4', 'https://img.alicdn.com/imgextra/i2/446338500/O1CN01s5yQFJ2Cf36ZVShVJ-446338500.jpg', '14', '2019-08-15 14:12:36', null, '0');
 INSERT INTO `t_goods_img` VALUES ('75', '4', 'https://img.alicdn.com/imgextra/i1/446338500/O1CN01J21j4j2Cf36bAUTpX-446338500.jpg', '14', '2019-08-15 14:12:48', null, '0');
@@ -2226,11 +2226,11 @@ INSERT INTO `t_goods_img` VALUES ('80', '4', 'https://img.alicdn.com/imgextra/i4
 INSERT INTO `t_goods_img` VALUES ('81', '4', 'https://img.alicdn.com/imgextra/i1/446338500/O1CN01pzORjx2Cf36Z3aW7S-446338500.jpg', '14', '2019-08-15 14:13:41', '2019-08-15 14:13:59', '0');
 INSERT INTO `t_goods_img` VALUES ('82', '4', 'https://img.alicdn.com/imgextra/i4/446338500/O1CN01LCJEM22Cf36VGewgG-446338500.jpg', '14', '2019-08-15 14:14:15', null, '0');
 INSERT INTO `t_goods_img` VALUES ('83', '4', 'https://gdp.alicdn.com/imgextra/i2/446338500/O1CN01jx2Cty2Cf34nXSceq_!!446338500.jpg', '14', '2019-08-15 14:14:20', null, '0');
-INSERT INTO `t_goods_img` VALUES ('84', '5', 'https://img.alicdn.com/imgextra/i1/2811185140/O1CN01UAGUiL1nqAKTXm69i_!!0-item_pic.jpg_430x430q90.jpg', '13', '2019-08-15 14:23:35', null, '0');
-INSERT INTO `t_goods_img` VALUES ('85', '5', 'https://img.alicdn.com/imgextra/i1/2811185140/O1CN01gyzY0z1nqAKXZxtI0_!!2811185140.jpg_430x430q90.jpg', '13', '2019-08-15 14:23:53', null, '0');
-INSERT INTO `t_goods_img` VALUES ('86', '5', 'https://img.alicdn.com/imgextra/i4/2811185140/O1CN01R6LjLZ1nqAKVKbCju_!!2811185140.jpg_430x430q90.jpg', '13', '2019-08-15 14:23:57', null, '0');
-INSERT INTO `t_goods_img` VALUES ('87', '5', 'https://img.alicdn.com/imgextra/i1/2811185140/O1CN01xKSM8B1nqAKI8fjUq_!!0-item_pic.jpg_430x430q90.jpg', '13', '2019-08-15 14:24:11', null, '0');
-INSERT INTO `t_goods_img` VALUES ('88', '5', 'https://img.alicdn.com/imgextra/i2/2811185140/O1CN01jaOhV01nqAKHBkwbR_!!2811185140.jpg_430x430q90.jpg', '13', '2019-08-15 14:24:51', null, '0');
+INSERT INTO `t_goods_img` VALUES ('84', '5', 'https://img.alicdn.com/imgextra/i1/2811185140/O1CN01UAGUiL1nqAKTXm69i_!!0-item_pic.jpg', '13', '2019-08-15 14:23:35', '2019-08-30 15:22:12', '0');
+INSERT INTO `t_goods_img` VALUES ('85', '5', 'https://img.alicdn.com/imgextra/i1/2811185140/O1CN01gyzY0z1nqAKXZxtI0_!!2811185140.jpg', '13', '2019-08-15 14:23:53', '2019-08-30 15:22:15', '0');
+INSERT INTO `t_goods_img` VALUES ('86', '5', 'https://img.alicdn.com/imgextra/i4/2811185140/O1CN01R6LjLZ1nqAKVKbCju_!!2811185140.jpg', '13', '2019-08-15 14:23:57', '2019-08-30 15:22:18', '0');
+INSERT INTO `t_goods_img` VALUES ('87', '5', 'https://img.alicdn.com/imgextra/i1/2811185140/O1CN01xKSM8B1nqAKI8fjUq_!!0-item_pic.jpg', '13', '2019-08-15 14:24:11', '2019-08-30 15:22:21', '0');
+INSERT INTO `t_goods_img` VALUES ('88', '5', 'https://img.alicdn.com/imgextra/i2/2811185140/O1CN01jaOhV01nqAKHBkwbR_!!2811185140.jpg', '13', '2019-08-15 14:24:51', '2019-08-30 15:22:29', '0');
 INSERT INTO `t_goods_img` VALUES ('89', '5', 'https://img.alicdn.com/imgextra/i4/2811185140/O1CN011nqAFHfLgA1lFbR_!!2811185140.jpg', '14', '2019-08-15 14:24:57', null, '0');
 INSERT INTO `t_goods_img` VALUES ('90', '5', 'https://img.alicdn.com/imgextra/i4/2811185140/O1CN01mcL6aA1nqAKVXeDSj_!!2811185140.jpg', '14', '2019-08-15 14:25:14', null, '0');
 INSERT INTO `t_goods_img` VALUES ('91', '5', 'https://img.alicdn.com/imgextra/i4/2811185140/O1CN011wjMIU1nqAKVdmkX0_!!2811185140.jpg', '14', '2019-08-15 14:25:25', null, '0');
@@ -2249,11 +2249,11 @@ INSERT INTO `t_goods_img` VALUES ('103', '5', 'https://img.alicdn.com/imgextra/i
 INSERT INTO `t_goods_img` VALUES ('104', '5', 'https://img.alicdn.com/imgextra/i4/2811185140/O1CN01GgJz3X1nqAKVdmsvn_!!2811185140.jpg', '14', '2019-08-15 14:27:38', null, '0');
 INSERT INTO `t_goods_img` VALUES ('105', '5', 'https://img.alicdn.com/imgextra/i1/2811185140/O1CN01QdL32Y1nqAKNvPxYl_!!2811185140.jpg', '14', '2019-08-15 14:28:14', null, '0');
 INSERT INTO `t_goods_img` VALUES ('106', '5', 'https://img.alicdn.com/imgextra/i3/2811185140/O1CN01Qc7UNq1nqAJn3q7UW_!!2811185140.jpg', '14', '2019-08-15 14:28:24', null, '0');
-INSERT INTO `t_goods_img` VALUES ('107', '6', '//img.alicdn.com/imgextra/i3/2200699039036/O1CN01fgQX1S2GcXMi8ilge_!!2200699039036.jpg_430x430q90.jpg', '13', '2019-08-15 14:34:10', '2019-08-15 14:35:52', '0');
-INSERT INTO `t_goods_img` VALUES ('108', '6', 'https://img.alicdn.com/imgextra/i4/2200699039036/O1CN01NQA9yq2GcXOyS7JpK_!!0-item_pic.jpg_430x430q90.jpg', '13', '2019-08-15 14:34:39', '2019-08-15 14:35:52', '0');
-INSERT INTO `t_goods_img` VALUES ('109', '6', 'https://img.alicdn.com/imgextra/i2/2200699039036/O1CN01OlSqaU2GcXMu3wEy1_!!2200699039036.jpg_430x430q90.jpg', '13', '2019-08-15 14:35:13', '2019-08-15 14:35:52', '0');
-INSERT INTO `t_goods_img` VALUES ('110', '6', 'https://img.alicdn.com/imgextra/i1/2200699039036/O1CN016o5C4o2GcXOy4VYZ3_!!2200699039036.jpg_430x430q90.jpg', '13', '2019-08-15 14:35:21', '2019-08-15 14:35:52', '0');
-INSERT INTO `t_goods_img` VALUES ('111', '6', 'https://img.alicdn.com/imgextra/i4/2200699039036/O1CN01bcfZZr2GcXNJZl6YH_!!2200699039036.jpg_430x430q90.jpg', '13', '2019-08-15 14:35:29', '2019-08-15 14:35:52', '0');
+INSERT INTO `t_goods_img` VALUES ('107', '6', '//img.alicdn.com/imgextra/i3/2200699039036/O1CN01fgQX1S2GcXMi8ilge_!!2200699039036.jpg', '13', '2019-08-15 14:34:10', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('108', '6', 'https://img.alicdn.com/imgextra/i4/2200699039036/O1CN01NQA9yq2GcXOyS7JpK_!!0-item_pic.jpg', '13', '2019-08-15 14:34:39', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('109', '6', 'https://img.alicdn.com/imgextra/i2/2200699039036/O1CN01OlSqaU2GcXMu3wEy1_!!2200699039036.jpg', '13', '2019-08-15 14:35:13', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('110', '6', 'https://img.alicdn.com/imgextra/i1/2200699039036/O1CN016o5C4o2GcXOy4VYZ3_!!2200699039036.jpg', '13', '2019-08-15 14:35:21', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('111', '6', 'https://img.alicdn.com/imgextra/i4/2200699039036/O1CN01bcfZZr2GcXNJZl6YH_!!2200699039036.jpg', '13', '2019-08-15 14:35:29', '2019-08-30 15:24:45', '0');
 INSERT INTO `t_goods_img` VALUES ('112', '6', 'https://img.alicdn.com/imgextra/i4/2200699039036/O1CN01UJBPgw2GcXNy4rXiR_!!2200699039036.jpg', '14', '2019-08-15 14:41:18', null, '0');
 INSERT INTO `t_goods_img` VALUES ('113', '6', 'https://img.alicdn.com/imgextra/i1/2200699039036/O1CN012K4ZBD2GcXNuiQ0GK_!!2200699039036.jpg', '14', '2019-08-15 14:41:41', null, '0');
 INSERT INTO `t_goods_img` VALUES ('114', '6', 'https://img.alicdn.com/imgextra/i3/2200699039036/O1CN01nFy8ZW2GcXNHhqpmo_!!2200699039036.jpg', '14', '2019-08-15 14:41:50', null, '0');
@@ -2268,11 +2268,11 @@ INSERT INTO `t_goods_img` VALUES ('122', '6', 'https://img.alicdn.com/imgextra/i
 INSERT INTO `t_goods_img` VALUES ('123', '6', 'https://img.alicdn.com/imgextra/i4/2200699039036/O1CN01tbhNYm2GcXLdgdrp5_!!2200699039036.jpg', '14', '2019-08-15 14:43:30', null, '0');
 INSERT INTO `t_goods_img` VALUES ('124', '6', 'https://img.alicdn.com/imgextra/i4/2200699039036/O1CN010n2iSR2GcXLgJNvjk_!!2200699039036.jpg', '14', '2019-08-15 14:43:39', null, '0');
 INSERT INTO `t_goods_img` VALUES ('125', '6', 'https://img.alicdn.com/imgextra/i2/2200699039036/O1CN01Ez2h7r2GcXNW2U5az_!!2200699039036.jpg', '14', '2019-08-15 14:43:48', null, '0');
-INSERT INTO `t_goods_img` VALUES ('126', '7', 'https://img.alicdn.com/imgextra/i4/446338500/O1CN018eNmSM2Cf36wlFYho_!!0-item_pic.jpg_430x430q90.jpg', '13', '2019-08-15 14:54:35', null, '0');
-INSERT INTO `t_goods_img` VALUES ('127', '7', 'https://img.alicdn.com/imgextra/i3/446338500/O1CN01gRVIvr2Cf36zrxEov-446338500.jpg_430x430q90.jpg', '13', '2019-08-15 14:54:39', '2019-08-15 14:55:16', '0');
-INSERT INTO `t_goods_img` VALUES ('128', '7', 'https://img.alicdn.com/imgextra/i4/446338500/O1CN01tcFjWw2Cf36yuXER2-446338500.jpg_430x430q90.jpg', '13', '2019-08-15 14:55:25', null, '0');
-INSERT INTO `t_goods_img` VALUES ('129', '7', 'https://img.alicdn.com/imgextra/i4/446338500/O1CN01la9sAe2Cf36zrzzHb-446338500.jpg_430x430q90.jpg', '13', '2019-08-15 14:55:30', null, '0');
-INSERT INTO `t_goods_img` VALUES ('130', '7', 'https://img.alicdn.com/imgextra/i2/446338500/O1CN01iNStVr2Cf36p8smEa-446338500.jpg_430x430q90.jpg', '13', '2019-08-15 14:55:50', null, '0');
+INSERT INTO `t_goods_img` VALUES ('126', '7', 'https://img.alicdn.com/imgextra/i4/446338500/O1CN018eNmSM2Cf36wlFYho_!!0-item_pic.jpg', '13', '2019-08-15 14:54:35', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('127', '7', 'https://img.alicdn.com/imgextra/i3/446338500/O1CN01gRVIvr2Cf36zrxEov-446338500.jpg', '13', '2019-08-15 14:54:39', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('128', '7', 'https://img.alicdn.com/imgextra/i4/446338500/O1CN01tcFjWw2Cf36yuXER2-446338500.jpg', '13', '2019-08-15 14:55:25', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('129', '7', 'https://img.alicdn.com/imgextra/i4/446338500/O1CN01la9sAe2Cf36zrzzHb-446338500.jpg', '13', '2019-08-15 14:55:30', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('130', '7', 'https://img.alicdn.com/imgextra/i2/446338500/O1CN01iNStVr2Cf36p8smEa-446338500.jpg', '13', '2019-08-15 14:55:50', '2019-08-30 15:24:45', '0');
 INSERT INTO `t_goods_img` VALUES ('131', '7', 'https://img.alicdn.com/imgextra/i4/446338500/O1CN01Rcyh5q2Cf36w7Y9OU-446338500.jpg', '14', '2019-08-15 14:56:10', '2019-08-15 14:56:23', '0');
 INSERT INTO `t_goods_img` VALUES ('132', '7', 'https://img.alicdn.com/imgextra/i4/446338500/O1CN01hKb9wA2Cf36wQm3j3-446338500.jpg', '14', '2019-08-15 14:56:20', '2019-08-15 14:56:31', '0');
 INSERT INTO `t_goods_img` VALUES ('133', '7', 'https://img.alicdn.com/imgextra/i2/446338500/O1CN01er3AKu2Cf36p8r6Jp-446338500.jpg', '14', '2019-08-15 14:56:44', null, '0');
@@ -2280,11 +2280,11 @@ INSERT INTO `t_goods_img` VALUES ('134', '7', 'https://img.alicdn.com/imgextra/i
 INSERT INTO `t_goods_img` VALUES ('135', '7', 'https://img.alicdn.com/imgextra/i4/446338500/O1CN01QiVnAC2Cf36uhOf0b-446338500.jpg', '14', '2019-08-15 14:57:09', null, '0');
 INSERT INTO `t_goods_img` VALUES ('136', '7', 'https://img.alicdn.com/imgextra/i3/446338500/O1CN01e4vh2s2Cf36p8sduT-446338500.jpg', '14', '2019-08-15 14:57:25', null, '0');
 INSERT INTO `t_goods_img` VALUES ('137', '7', 'https://gdp.alicdn.com/imgextra/i2/446338500/O1CN01jx2Cty2Cf34nXSceq_!!446338500.jpg', '14', '2019-08-15 14:57:29', null, '0');
-INSERT INTO `t_goods_img` VALUES ('138', '8', 'https://img.alicdn.com/imgextra/i2/2629007270/O1CN01k0SFUa23ZhvNSc0Dl_!!0-item_pic.jpg_430x430q90.jpg', '13', '2019-08-15 15:02:15', null, '0');
-INSERT INTO `t_goods_img` VALUES ('139', '8', 'https://img.alicdn.com/imgextra/i2/2629007270/O1CN01nXZPRk23ZhvIcGcKa_!!2629007270.jpg_430x430q90.jpg', '13', '2019-08-15 15:02:33', null, '0');
-INSERT INTO `t_goods_img` VALUES ('140', '8', 'https://img.alicdn.com/imgextra/i4/2629007270/O1CN01VHZLOk23ZhvJriPzy_!!2629007270.jpg_430x430q90.jpg', '13', '2019-08-15 15:02:43', null, '0');
-INSERT INTO `t_goods_img` VALUES ('141', '8', 'https://img.alicdn.com/imgextra/i3/2629007270/O1CN01IOZPAh23ZhvM9GFjM_!!2629007270.jpg_430x430q90.jpg', '13', '2019-08-15 15:02:51', null, '0');
-INSERT INTO `t_goods_img` VALUES ('142', '8', 'https://img.alicdn.com/imgextra/i4/2629007270/O1CN01HuoTXe23ZhvKSrj4W_!!2629007270.jpg_430x430q90.jpg', '13', '2019-08-15 15:03:13', null, '0');
+INSERT INTO `t_goods_img` VALUES ('138', '8', 'https://img.alicdn.com/imgextra/i2/2629007270/O1CN01k0SFUa23ZhvNSc0Dl_!!0-item_pic.jpg', '13', '2019-08-15 15:02:15', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('139', '8', 'https://img.alicdn.com/imgextra/i2/2629007270/O1CN01nXZPRk23ZhvIcGcKa_!!2629007270.jpg', '13', '2019-08-15 15:02:33', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('140', '8', 'https://img.alicdn.com/imgextra/i4/2629007270/O1CN01VHZLOk23ZhvJriPzy_!!2629007270.jpg', '13', '2019-08-15 15:02:43', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('141', '8', 'https://img.alicdn.com/imgextra/i3/2629007270/O1CN01IOZPAh23ZhvM9GFjM_!!2629007270.jpg', '13', '2019-08-15 15:02:51', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('142', '8', 'https://img.alicdn.com/imgextra/i4/2629007270/O1CN01HuoTXe23ZhvKSrj4W_!!2629007270.jpg', '13', '2019-08-15 15:03:13', '2019-08-30 15:24:45', '0');
 INSERT INTO `t_goods_img` VALUES ('143', '8', 'https://img.alicdn.com/imgextra/i3/2629007270/O1CN01xhBRKc23ZhvNEwlig_!!2629007270.jpg', '14', '2019-08-15 15:03:24', null, '0');
 INSERT INTO `t_goods_img` VALUES ('144', '8', 'https://img.alicdn.com/imgextra/i3/2629007270/O1CN0110vWMG23ZhvHYuNpN_!!2629007270.jpg', '14', '2019-08-15 15:03:44', null, '0');
 INSERT INTO `t_goods_img` VALUES ('145', '8', 'https://img.alicdn.com/imgextra/i4/2629007270/O1CN01D94yrH23ZhvIkqScd_!!2629007270.jpg', '14', '2019-08-15 15:03:54', null, '0');
@@ -2294,20 +2294,20 @@ INSERT INTO `t_goods_img` VALUES ('148', '8', 'https://img.alicdn.com/imgextra/i
 INSERT INTO `t_goods_img` VALUES ('149', '8', 'https://img.alicdn.com/imgextra/i4/2629007270/O1CN01NGHRu023ZhvLvsbeZ_!!2629007270.jpg', '14', '2019-08-15 15:04:46', null, '0');
 INSERT INTO `t_goods_img` VALUES ('150', '8', 'https://img.alicdn.com/imgextra/i3/2629007270/O1CN0114eSDE23ZhvKMHcBB_!!2629007270.jpg', '14', '2019-08-15 15:04:55', null, '0');
 INSERT INTO `t_goods_img` VALUES ('151', '8', 'https://img.alicdn.com/imgextra/i4/2629007270/O1CN01otmcrO23ZhvIVzhzO_!!2629007270.jpg', '14', '2019-08-15 15:05:10', null, '0');
-INSERT INTO `t_goods_img` VALUES ('152', '9', 'https://img.alicdn.com/imgextra/i2/1917047079/O1CN019ajfWy22AEI5uRNZK_!!2-item_pic.png_430x430q90.jpg', '13', '2019-08-15 15:44:55', null, '0');
-INSERT INTO `t_goods_img` VALUES ('153', '9', 'https://img.alicdn.com/imgextra/i4/1917047079/O1CN01ywo48P22AEIBjewsL_!!1917047079.jpeg_430x430q90.jpg', '13', '2019-08-15 15:45:05', null, '0');
-INSERT INTO `t_goods_img` VALUES ('154', '9', 'https://img.alicdn.com/imgextra/i1/1917047079/O1CN01jRWwWw22AEIAVOrqe_!!1917047079.jpeg_430x430q90.jpg', '13', '2019-08-15 15:45:14', null, '0');
-INSERT INTO `t_goods_img` VALUES ('155', '9', 'https://img.alicdn.com/imgextra/i3/1917047079/O1CN01p16cL822AEIAVNWi3_!!1917047079.jpeg_430x430q90.jpg', '13', '2019-08-15 15:45:42', null, '0');
+INSERT INTO `t_goods_img` VALUES ('152', '9', 'https://img.alicdn.com/imgextra/i2/1917047079/O1CN019ajfWy22AEI5uRNZK_!!2-item_pic.png', '13', '2019-08-15 15:44:55', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('153', '9', 'https://img.alicdn.com/imgextra/i4/1917047079/O1CN01ywo48P22AEIBjewsL_!!1917047079.jpeg', '13', '2019-08-15 15:45:05', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('154', '9', 'https://img.alicdn.com/imgextra/i1/1917047079/O1CN01jRWwWw22AEIAVOrqe_!!1917047079.jpeg', '13', '2019-08-15 15:45:14', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('155', '9', 'https://img.alicdn.com/imgextra/i3/1917047079/O1CN01p16cL822AEIAVNWi3_!!1917047079.jpeg', '13', '2019-08-15 15:45:42', '2019-08-30 15:24:45', '0');
 INSERT INTO `t_goods_img` VALUES ('156', '9', 'https://img.alicdn.com/imgextra/i2/1917047079/O1CN01rftKD222AEFVidi5b_!!1917047079.jpg', '14', '2019-08-15 15:45:53', null, '0');
 INSERT INTO `t_goods_img` VALUES ('157', '9', 'https://img.alicdn.com/imgextra/i2/1917047079/O1CN01LeEd2222AEIibc8JU_!!1917047079.jpg', '14', '2019-08-15 15:46:09', null, '0');
 INSERT INTO `t_goods_img` VALUES ('158', '9', 'https://img.alicdn.com/imgextra/i4/1917047079/O1CN019UE6cd22AEHIByvuV_!!1917047079.jpg', '14', '2019-08-15 15:46:22', null, '0');
 INSERT INTO `t_goods_img` VALUES ('159', '9', 'https://img.alicdn.com/imgextra/i2/1917047079/O1CN018aUmY822AEIXqXb7S_!!1917047079.jpg', '14', '2019-08-15 15:46:33', null, '0');
 INSERT INTO `t_goods_img` VALUES ('160', '9', 'https://img.alicdn.com/imgextra/i4/1917047079/O1CN01s4QQgX22AEIfWsN6B_!!1917047079.jpg', '14', '2019-08-15 15:46:39', null, '0');
-INSERT INTO `t_goods_img` VALUES ('161', '10', 'https://img.alicdn.com/imgextra/i3/1114511827/O1CN01sDqDwp1PMoAFg5BVG_!!0-item_pic.jpg_430x430q90.jpg', '13', '2019-08-15 16:06:46', null, '0');
-INSERT INTO `t_goods_img` VALUES ('162', '10', 'https://img.alicdn.com/imgextra/i4/1114511827/O1CN01fJNJIo1PMoABtopXn_!!1114511827.jpg_430x430q90.jpg', '13', '2019-08-15 16:06:55', null, '0');
-INSERT INTO `t_goods_img` VALUES ('163', '10', 'https://img.alicdn.com/imgextra/i2/1114511827/O1CN01VMh7wV1PMo9tyAQ4m_!!1114511827.jpg_430x430q90.jpg', '13', '2019-08-15 16:07:03', null, '0');
-INSERT INTO `t_goods_img` VALUES ('164', '10', 'https://img.alicdn.com/imgextra/i4/1114511827/O1CN01CCrd8K1PMo9uGdHHh_!!1114511827.jpg_430x430q90.jpg', '13', '2019-08-15 16:07:11', null, '0');
-INSERT INTO `t_goods_img` VALUES ('165', '10', 'https://img.alicdn.com/imgextra/i3/1114511827/O1CN01D20c5F1PMo9n7bFNc_!!1114511827.png_430x430q90.jpg', '13', '2019-08-15 16:07:52', null, '0');
+INSERT INTO `t_goods_img` VALUES ('161', '10', 'https://img.alicdn.com/imgextra/i3/1114511827/O1CN01sDqDwp1PMoAFg5BVG_!!0-item_pic.jpg', '13', '2019-08-15 16:06:46', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('162', '10', 'https://img.alicdn.com/imgextra/i4/1114511827/O1CN01fJNJIo1PMoABtopXn_!!1114511827.jpg', '13', '2019-08-15 16:06:55', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('163', '10', 'https://img.alicdn.com/imgextra/i2/1114511827/O1CN01VMh7wV1PMo9tyAQ4m_!!1114511827.jpg', '13', '2019-08-15 16:07:03', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('164', '10', 'https://img.alicdn.com/imgextra/i4/1114511827/O1CN01CCrd8K1PMo9uGdHHh_!!1114511827.jpg', '13', '2019-08-15 16:07:11', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('165', '10', 'https://img.alicdn.com/imgextra/i3/1114511827/O1CN01D20c5F1PMo9n7bFNc_!!1114511827.png', '13', '2019-08-15 16:07:52', '2019-08-30 15:24:45', '0');
 INSERT INTO `t_goods_img` VALUES ('166', '10', 'https://img.alicdn.com/imgextra/i3/1114511827/O1CN01hIFPea1PMoA1Jn7VO_!!1114511827.jpg', '14', '2019-08-15 16:08:02', null, '0');
 INSERT INTO `t_goods_img` VALUES ('167', '10', 'https://img.alicdn.com/imgextra/i1/1114511827/O1CN011GHMbC1PMo9vr1Jpu_!!1114511827.jpg', '14', '2019-08-15 16:08:06', null, '0');
 INSERT INTO `t_goods_img` VALUES ('168', '10', 'https://img.alicdn.com/imgextra/i4/1114511827/O1CN01C7RPBt1PMo9xjVvA9_!!1114511827.jpg', '14', '2019-08-15 16:08:19', null, '0');
@@ -2325,11 +2325,11 @@ INSERT INTO `t_goods_img` VALUES ('179', '10', 'https://img.alicdn.com/imgextra/
 INSERT INTO `t_goods_img` VALUES ('180', '10', 'https://img.alicdn.com/imgextra/i4/1114511827/O1CN01Cft0fR1PMo9tTGoPl_!!1114511827.jpg', '14', '2019-08-15 16:10:52', null, '0');
 INSERT INTO `t_goods_img` VALUES ('181', '10', 'https://img.alicdn.com/imgextra/i4/1114511827/O1CN012YELFY1PMo9tTbkz1_!!1114511827.jpg', '14', '2019-08-15 16:11:03', null, '0');
 INSERT INTO `t_goods_img` VALUES ('182', '10', 'https://img.alicdn.com/imgextra/i3/1114511827/O1CN01gNUIYe1PMo9vVPaXQ_!!1114511827.jpg', '14', '2019-08-15 16:11:20', null, '0');
-INSERT INTO `t_goods_img` VALUES ('183', '11', '//img.alicdn.com/imgextra/i2/TB1wqMRNQzoK1RjSZFl1gqi4VXa_112400.jpg_430x430q90.jpg', '13', '2019-08-15 16:24:14', null, '0');
-INSERT INTO `t_goods_img` VALUES ('184', '11', '//img.alicdn.com/imgextra/i1/TB1qw7RNPTpK1RjSZKPXtC3UpXa_112414.jpg_430x430q90.jpg', '13', '2019-08-15 16:24:23', null, '0');
-INSERT INTO `t_goods_img` VALUES ('185', '11', '//img.alicdn.com/imgextra/i8/TB1uiAYNMHqK1RjSZFkXfd.WFXa_112352.jpg_430x430q90.jpg', '13', '2019-08-15 16:24:33', null, '0');
-INSERT INTO `t_goods_img` VALUES ('186', '11', '//img.alicdn.com/imgextra/i4/TB1yVcUNQPoK1RjSZKbytX1IXXa_112407.jpg_430x430q90.jpg', '13', '2019-08-15 16:24:41', null, '0');
-INSERT INTO `t_goods_img` VALUES ('187', '11', '//img.alicdn.com/imgextra/i7/TB1s2gONNTpK1RjSZFKUqG2wXXa_112344.jpg_430x430q90.jpg', '13', '2019-08-15 16:24:56', null, '0');
+INSERT INTO `t_goods_img` VALUES ('183', '11', '//img.alicdn.com/imgextra/i2/TB1wqMRNQzoK1RjSZFl1gqi4VXa_112400.jpg', '13', '2019-08-15 16:24:14', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('184', '11', '//img.alicdn.com/imgextra/i1/TB1qw7RNPTpK1RjSZKPXtC3UpXa_112414.jpg', '13', '2019-08-15 16:24:23', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('185', '11', '//img.alicdn.com/imgextra/i8/TB1uiAYNMHqK1RjSZFkXfd.WFXa_112352.jpg', '13', '2019-08-15 16:24:33', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('186', '11', '//img.alicdn.com/imgextra/i4/TB1yVcUNQPoK1RjSZKbytX1IXXa_112407.jpg', '13', '2019-08-15 16:24:41', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('187', '11', '//img.alicdn.com/imgextra/i7/TB1s2gONNTpK1RjSZFKUqG2wXXa_112344.jpg', '13', '2019-08-15 16:24:56', '2019-08-30 15:24:45', '0');
 INSERT INTO `t_goods_img` VALUES ('188', '11', 'https://img.alicdn.com/imgextra/i2/2838892713/O1CN01rl3ev41Vub4p7Vr5h_!!2838892713.jpg', '14', '2019-08-15 16:25:15', null, '0');
 INSERT INTO `t_goods_img` VALUES ('189', '11', 'https://img.alicdn.com/imgextra/i1/2838892713/O1CN01rjg9331Vub4jhteTA_!!2838892713.jpg', '14', '2019-08-15 16:25:33', null, '0');
 INSERT INTO `t_goods_img` VALUES ('190', '11', 'https://img.alicdn.com/imgextra/i4/2838892713/TB2vbKTgHArBKNjSZFLXXc_dVXa_!!2838892713.jpg', '14', '2019-08-15 16:25:37', null, '0');
@@ -2342,7 +2342,7 @@ INSERT INTO `t_goods_img` VALUES ('196', '11', 'https://img.alicdn.com/imgextra/
 INSERT INTO `t_goods_img` VALUES ('197', '11', 'https://img.alicdn.com/imgextra/i4/2838892713/O1CN017Javry1Vub3qUCocl_!!2838892713.jpg', '14', '2019-08-15 16:28:00', null, '0');
 INSERT INTO `t_goods_img` VALUES ('198', '11', 'https://img.alicdn.com/imgextra/i1/2838892713/O1CN01ZW1dho1Vub3ovU25Q_!!2838892713.jpg', '14', '2019-08-15 16:28:14', null, '0');
 INSERT INTO `t_goods_img` VALUES ('199', '11', 'https://img.alicdn.com/imgextra/i2/2838892713/O1CN01Mazrc41Vub3thGqJE_!!2838892713.jpg', '14', '2019-08-15 16:28:23', null, '0');
-INSERT INTO `t_goods_img` VALUES ('200', '11', 'https://img.alicdn.com/imgextra/i2/2838892713/O1CN01Mazrc41Vub3thGqJE_!!2838892713.jpg', '14', '2019-08-15 16:28:40', null, '0');
+INSERT INTO `t_goods_img` VALUES ('200', '11', 'https://img.alicdn.com/imgextra/i2/2838892713/O1CN01Mazrc41Vub3thGqJE_!!2838892713.jpg', '14', '2019-08-15 16:28:40', '2019-08-30 12:09:15', '1');
 INSERT INTO `t_goods_img` VALUES ('201', '11', 'https://img.alicdn.com/imgextra/i1/2838892713/O1CN01cYLY3y1Vub3rOUwzw_!!2838892713.jpg', '14', '2019-08-15 16:28:44', '2019-08-15 16:28:53', '0');
 INSERT INTO `t_goods_img` VALUES ('202', '11', 'https://img.alicdn.com/imgextra/i3/2838892713/O1CN01kHUAfl1Vub3qbcQtx_!!2838892713.jpg', '14', '2019-08-15 16:29:09', null, '0');
 INSERT INTO `t_goods_img` VALUES ('203', '11', 'https://img.alicdn.com/imgextra/i1/2838892713/O1CN01JJUwUh1Vub3qUFQka_!!2838892713.jpg', '14', '2019-08-15 16:29:11', '2019-08-15 16:29:19', '0');
@@ -2352,11 +2352,11 @@ INSERT INTO `t_goods_img` VALUES ('206', '11', 'https://img.alicdn.com/imgextra/
 INSERT INTO `t_goods_img` VALUES ('207', '11', 'https://img.alicdn.com/imgextra/i4/2838892713/O1CN01EToqko1Vub3proAK1_!!2838892713.jpg', '14', '2019-08-15 16:30:07', null, '0');
 INSERT INTO `t_goods_img` VALUES ('208', '11', 'https://img.alicdn.com/imgextra/i2/2838892713/O1CN01DMDtxt1Vub3qXnNN3_!!2838892713.jpg', '14', '2019-08-15 16:30:18', null, '0');
 INSERT INTO `t_goods_img` VALUES ('209', '11', 'https://img.alicdn.com/imgextra/i1/2838892713/O1CN01iP61yu1Vub3sLmVIE_!!2838892713.jpg', '14', '2019-08-15 16:30:28', null, '0');
-INSERT INTO `t_goods_img` VALUES ('210', '11', 'https://gdp.alicdn.com/imgextra/i4/2838892713/O1CN01sIXD8a1Vub4yQEf5w_!!2838892713.jpg', '14', '2019-08-15 16:30:55', null, '0');
-INSERT INTO `t_goods_img` VALUES ('211', '12', '//img.alicdn.com/imgextra/i3/92686194/O1CN01uNXCRm1vctmAUSvbj_!!92686194.png_430x430q90.jpg', '13', '2019-08-15 16:41:30', null, '0');
-INSERT INTO `t_goods_img` VALUES ('212', '12', '//img.alicdn.com/imgextra/i3/92686194/O1CN01XZt3Gf1vctmD581D9_!!92686194.png_430x430q90.jpg', '13', '2019-08-15 16:41:30', null, '0');
-INSERT INTO `t_goods_img` VALUES ('213', '12', '//img.alicdn.com/imgextra/i1/92686194/O1CN01VELE1Z1vctm7VzYcl_!!92686194.png_430x430q90.jpg', '13', '2019-08-15 16:41:30', null, '0');
-INSERT INTO `t_goods_img` VALUES ('214', '12', '//img.alicdn.com/imgextra/i1/92686194/O1CN01bjY4Ux1vctm8OdMek_!!92686194.png_430x430q90.jpg', '13', '2019-08-15 16:41:30', null, '0');
+INSERT INTO `t_goods_img` VALUES ('210', '11', 'https://gdp.alicdn.com/imgextra/i4/2838892713/O1CN01sIXD8a1Vub4yQEf5w_!!2838892713.jpg', '14', '2019-08-15 16:30:55', '2019-08-30 12:08:38', '0');
+INSERT INTO `t_goods_img` VALUES ('211', '12', '//img.alicdn.com/imgextra/i3/92686194/O1CN01uNXCRm1vctmAUSvbj_!!92686194.png', '13', '2019-08-15 16:41:30', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('212', '12', '//img.alicdn.com/imgextra/i3/92686194/O1CN01XZt3Gf1vctmD581D9_!!92686194.png', '13', '2019-08-15 16:41:30', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('213', '12', '//img.alicdn.com/imgextra/i1/92686194/O1CN01VELE1Z1vctm7VzYcl_!!92686194.png', '13', '2019-08-15 16:41:30', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('214', '12', '//img.alicdn.com/imgextra/i1/92686194/O1CN01bjY4Ux1vctm8OdMek_!!92686194.png', '13', '2019-08-15 16:41:30', '2019-08-30 15:24:45', '0');
 INSERT INTO `t_goods_img` VALUES ('215', '12', 'https://img.alicdn.com/imgextra/i1/92686194/O1CN01fjwlu31vctl8eHkRT_!!92686194.jpg', '14', '2019-08-15 16:42:12', null, '0');
 INSERT INTO `t_goods_img` VALUES ('216', '12', 'https://img.alicdn.com/imgextra/i4/92686194/O1CN01bf6Nda1vctl6IiNM5_!!92686194.jpg', '14', '2019-08-15 16:42:24', null, '0');
 INSERT INTO `t_goods_img` VALUES ('217', '12', 'https://img.alicdn.com/imgextra/i1/92686194/O1CN01FqMnjI1vctl6vEg0N_!!92686194.jpg', '14', '2019-08-15 16:42:36', null, '0');
@@ -2366,10 +2366,10 @@ INSERT INTO `t_goods_img` VALUES ('220', '12', 'https://img.alicdn.com/imgextra/
 INSERT INTO `t_goods_img` VALUES ('221', '12', 'https://img.alicdn.com/imgextra/i1/92686194/O1CN01gmHtjr1vctl6fI87r_!!92686194.jpg', '14', '2019-08-15 16:43:37', null, '0');
 INSERT INTO `t_goods_img` VALUES ('222', '12', 'https://img.alicdn.com/imgextra/i2/92686194/O1CN013FgG511vctl4CQY2m_!!92686194.jpg', '14', '2019-08-15 16:43:57', null, '0');
 INSERT INTO `t_goods_img` VALUES ('223', '12', 'https://gdp.alicdn.com/imgextra/i2/92686194/O1CN01rUezWX1vctjwHYdYq_!!92686194.jpg', '14', '2019-08-15 16:44:01', null, '0');
-INSERT INTO `t_goods_img` VALUES ('224', '13', 'https://img.alicdn.com/imgextra/i2/669690917/O1CN01zEdgi51Ie1k9gGxrP-669690917.jpg_430x430q90.jpg', '13', '2019-08-15 16:54:13', '2019-08-15 17:02:24', '0');
-INSERT INTO `t_goods_img` VALUES ('225', '13', 'https://img.alicdn.com/imgextra/i3/669690917/O1CN01JIXDRJ1Ie1ieLC1Wi_!!669690917.jpg_430x430q90.jpg', '13', '2019-08-15 16:54:13', '2019-08-15 17:02:31', '0');
-INSERT INTO `t_goods_img` VALUES ('226', '13', 'https://img.alicdn.com/imgextra/i4/669690917/O1CN01ZhaY1o1Ie1j2gfihs_!!669690917.jpg_430x430q90.jpg', '13', '2019-08-15 16:54:13', '2019-08-15 17:02:42', '0');
-INSERT INTO `t_goods_img` VALUES ('227', '13', 'https://img.alicdn.com/imgextra/i1/669690917/O1CN011lYJrC1Ie1j3rRIPd_!!669690917.jpg_430x430q90.jpg', '13', '2019-08-15 16:54:13', '2019-08-15 17:02:48', '0');
+INSERT INTO `t_goods_img` VALUES ('224', '13', 'https://img.alicdn.com/imgextra/i2/669690917/O1CN01zEdgi51Ie1k9gGxrP-669690917.jpg', '13', '2019-08-15 16:54:13', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('225', '13', 'https://img.alicdn.com/imgextra/i3/669690917/O1CN01JIXDRJ1Ie1ieLC1Wi_!!669690917.jpg', '13', '2019-08-15 16:54:13', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('226', '13', 'https://img.alicdn.com/imgextra/i4/669690917/O1CN01ZhaY1o1Ie1j2gfihs_!!669690917.jpg', '13', '2019-08-15 16:54:13', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('227', '13', 'https://img.alicdn.com/imgextra/i1/669690917/O1CN011lYJrC1Ie1j3rRIPd_!!669690917.jpg', '13', '2019-08-15 16:54:13', '2019-08-30 15:24:45', '0');
 INSERT INTO `t_goods_img` VALUES ('228', '13', 'https://img.alicdn.com/imgextra/i3/669690917/O1CN011Ie1edjPt4M2cC2_!!669690917.jpg', '14', '2019-08-15 16:55:26', null, '0');
 INSERT INTO `t_goods_img` VALUES ('229', '13', 'https://img.alicdn.com/imgextra/i4/669690917/O1CN011Ie1eetv16LkVsk_!!669690917.jpg', '14', '2019-08-15 16:55:41', null, '0');
 INSERT INTO `t_goods_img` VALUES ('230', '13', 'https://img.alicdn.com/imgextra/i3/669690917/O1CN011Ie1efCQkjlIMtG_!!669690917.jpg', '14', '2019-08-15 16:55:45', null, '0');
@@ -2382,47 +2382,47 @@ INSERT INTO `t_goods_img` VALUES ('236', '13', 'https://img.alicdn.com/imgextra/
 INSERT INTO `t_goods_img` VALUES ('237', '13', 'https://img.alicdn.com/imgextra/i2/669690917/O1CN011Ie1ee3szjYjpA1_!!669690917.jpg', '14', '2019-08-15 16:57:09', '2019-08-15 16:57:24', '0');
 INSERT INTO `t_goods_img` VALUES ('238', '13', 'https://img.alicdn.com/imgextra/i4/669690917/O1CN01A4Tv9i1Ie1i4kw9WN_!!669690917.jpg', '14', '2019-08-15 16:58:01', null, '0');
 INSERT INTO `t_goods_img` VALUES ('239', '13', 'https://gdp.alicdn.com/imgextra/i1/669690917/O1CN01gObffg1Ie1gZ9yeV0_!!669690917.jpg', '14', '2019-08-15 16:58:05', null, '0');
-INSERT INTO `t_goods_img` VALUES ('240', '14', 'https://img.alicdn.com/imgextra/i3/1917047079/TB16PsYXpzqK1RjSZSgXXcpAVXa_!!0-item_pic.jpg_430x430q90.jpg', '13', '2019-08-15 17:03:13', null, '0');
-INSERT INTO `t_goods_img` VALUES ('241', '14', 'https://img.alicdn.com/imgextra/i3/1917047079/TB2AHQYXwDqK1RjSZSyXXaxEVXa_!!1917047079.jpg_430x430q90.jpg', '13', '2019-08-15 17:03:13', null, '0');
-INSERT INTO `t_goods_img` VALUES ('242', '14', 'https://img.alicdn.com/imgextra/i3/1917047079/TB2.1oZXpzqK1RjSZFzXXXjrpXa_!!1917047079.jpg_430x430q90.jpg', '13', '2019-08-15 17:03:13', null, '0');
-INSERT INTO `t_goods_img` VALUES ('243', '14', 'https://img.alicdn.com/imgextra/i2/1917047079/TB2Pk7WXCzqK1RjSZPxXXc4tVXa_!!1917047079.jpg_430x430q90.jpg', '13', '2019-08-15 17:03:13', null, '0');
+INSERT INTO `t_goods_img` VALUES ('240', '14', 'https://img.alicdn.com/imgextra/i3/1917047079/TB16PsYXpzqK1RjSZSgXXcpAVXa_!!0-item_pic.jpg', '13', '2019-08-15 17:03:13', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('241', '14', 'https://img.alicdn.com/imgextra/i3/1917047079/TB2AHQYXwDqK1RjSZSyXXaxEVXa_!!1917047079.jpg', '13', '2019-08-15 17:03:13', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('242', '14', 'https://img.alicdn.com/imgextra/i3/1917047079/TB2.1oZXpzqK1RjSZFzXXXjrpXa_!!1917047079.jpg', '13', '2019-08-15 17:03:13', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('243', '14', 'https://img.alicdn.com/imgextra/i2/1917047079/TB2Pk7WXCzqK1RjSZPxXXc4tVXa_!!1917047079.jpg', '13', '2019-08-15 17:03:13', '2019-08-30 15:24:45', '0');
 INSERT INTO `t_goods_img` VALUES ('244', '14', 'https://img.alicdn.com/imgextra/i3/1917047079/O1CN0122AECuihtAd62Nw_!!1917047079.jpg', '14', '2019-08-15 17:03:47', null, '0');
 INSERT INTO `t_goods_img` VALUES ('245', '14', 'https://img.alicdn.com/imgextra/i4/1917047079/O1CN01s4QQgX22AEIfWsN6B_!!1917047079.jpg', '14', '2019-08-15 17:03:51', null, '0');
-INSERT INTO `t_goods_img` VALUES ('246', '15', 'https://img.alicdn.com/imgextra/i4/2838892713/O1CN01Xo2Xa91Vub4iFU3hG_!!2838892713.jpg_430x430q90.jpg', '13', '2019-08-15 17:07:56', null, '0');
-INSERT INTO `t_goods_img` VALUES ('247', '15', 'https://img.alicdn.com/imgextra/i4/2838892713/O1CN011oLtLv1Vub4dFXX4H_!!2838892713.png_430x430q90.jpg', '13', '2019-08-15 17:08:05', null, '0');
-INSERT INTO `t_goods_img` VALUES ('248', '15', 'https://img.alicdn.com/imgextra/i4/2838892713/O1CN0130Dmwv1Vub4XjKTAd_!!2838892713.png_430x430q90.jpg', '13', '2019-08-15 17:08:14', null, '0');
-INSERT INTO `t_goods_img` VALUES ('249', '15', 'https://img.alicdn.com/imgextra/i3/2838892713/O1CN01dQORQY1Vub4YeLpvZ_!!2838892713.jpg_430x430q90.jpg', '13', '2019-08-15 17:08:23', null, '0');
+INSERT INTO `t_goods_img` VALUES ('246', '15', 'https://img.alicdn.com/imgextra/i4/2838892713/O1CN01Xo2Xa91Vub4iFU3hG_!!2838892713.jpg', '13', '2019-08-15 17:07:56', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('247', '15', 'https://img.alicdn.com/imgextra/i4/2838892713/O1CN011oLtLv1Vub4dFXX4H_!!2838892713.png', '13', '2019-08-15 17:08:05', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('248', '15', 'https://img.alicdn.com/imgextra/i4/2838892713/O1CN0130Dmwv1Vub4XjKTAd_!!2838892713.png', '13', '2019-08-15 17:08:14', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('249', '15', 'https://img.alicdn.com/imgextra/i3/2838892713/O1CN01dQORQY1Vub4YeLpvZ_!!2838892713.jpg', '13', '2019-08-15 17:08:23', '2019-08-30 15:24:45', '0');
 INSERT INTO `t_goods_img` VALUES ('250', '15', 'https://img.alicdn.com/imgextra/i4/2838892713/O1CN01aeAX751Vub4njubTN_!!2838892713.jpg', '14', '2019-08-15 17:09:19', null, '0');
 INSERT INTO `t_goods_img` VALUES ('251', '15', 'https://img.alicdn.com/imgextra/i4/2838892713/O1CN0194CNoK1Vub4m2Yxhp_!!2838892713.jpg', '14', '2019-08-15 17:09:39', null, '0');
-INSERT INTO `t_goods_img` VALUES ('252', '16', 'https://img.alicdn.com/imgextra/i3/2838892713/O1CN01PM45hv1Vub4DRTMEn_!!2838892713.jpg_430x430q90.jpg', '13', '2019-08-15 17:13:44', null, '0');
-INSERT INTO `t_goods_img` VALUES ('253', '16', 'https://img.alicdn.com/imgextra/i1/2838892713/O1CN01GOEs1D1Vub4B1WQax_!!2838892713.jpg_430x430q90.jpg', '13', '2019-08-15 17:13:52', null, '0');
-INSERT INTO `t_goods_img` VALUES ('254', '16', 'https://img.alicdn.com/imgextra/i1/2838892713/O1CN01kH20pM1Vub4BTu26N_!!2838892713.jpg_430x430q90.jpg', '13', '2019-08-15 17:14:00', null, '0');
-INSERT INTO `t_goods_img` VALUES ('255', '16', 'https://img.alicdn.com/imgextra/i2/2838892713/O1CN01kZnLqC1Vub46rgpN2_!!2838892713.jpg_430x430q90.jpg', '13', '2019-08-15 17:14:08', null, '0');
+INSERT INTO `t_goods_img` VALUES ('252', '16', 'https://img.alicdn.com/imgextra/i3/2838892713/O1CN01PM45hv1Vub4DRTMEn_!!2838892713.jpg', '13', '2019-08-15 17:13:44', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('253', '16', 'https://img.alicdn.com/imgextra/i1/2838892713/O1CN01GOEs1D1Vub4B1WQax_!!2838892713.jpg', '13', '2019-08-15 17:13:52', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('254', '16', 'https://img.alicdn.com/imgextra/i1/2838892713/O1CN01kH20pM1Vub4BTu26N_!!2838892713.jpg', '13', '2019-08-15 17:14:00', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('255', '16', 'https://img.alicdn.com/imgextra/i2/2838892713/O1CN01kZnLqC1Vub46rgpN2_!!2838892713.jpg', '13', '2019-08-15 17:14:08', '2019-08-30 15:24:45', '0');
 INSERT INTO `t_goods_img` VALUES ('256', '16', 'https://img.alicdn.com/imgextra/i2/2838892713/O1CN018puRjp1Vub47eFxnB_!!2838892713.jpg', '14', '2019-08-15 17:14:21', null, '0');
 INSERT INTO `t_goods_img` VALUES ('257', '16', 'https://img.alicdn.com/imgextra/i4/2838892713/O1CN01qugAM81Vub47c037f_!!2838892713.jpg', '14', '2019-08-15 17:14:24', '2019-08-15 17:14:42', '0');
 INSERT INTO `t_goods_img` VALUES ('258', '16', 'https://img.alicdn.com/imgextra/i4/2838892713/O1CN01Y8T1Ip1Vub48lF2LZ_!!2838892713.jpg', '14', '2019-08-15 17:14:53', null, '0');
-INSERT INTO `t_goods_img` VALUES ('259', '17', 'https://img.alicdn.com/imgextra/i2/1806053478/O1CN01fDtrV31bYy2jhmEwi_!!1806053478.jpg_430x430q90.jpg', '13', '2019-08-20 16:37:21', null, '0');
-INSERT INTO `t_goods_img` VALUES ('260', '17', '//img.alicdn.com/imgextra/TB1j8i8f2ImBKNjSZFlL6U43FXa_430x430q90.jpg', '13', '2019-08-20 16:37:32', null, '0');
-INSERT INTO `t_goods_img` VALUES ('261', '17', '//img.alicdn.com/imgextra/TB1Llx0f8nTBKNjSZPfL6Tf1XXa_430x430q90.jpg', '13', '2019-08-20 16:38:17', null, '0');
-INSERT INTO `t_goods_img` VALUES ('262', '17', '//img.alicdn.com/imgextra/TB1gxw.jyCYBuNkSnaVL6UMsVXa_430x430q90.jpg', '13', '2019-08-20 16:38:23', null, '0');
+INSERT INTO `t_goods_img` VALUES ('259', '17', 'https://img.alicdn.com/imgextra/i2/1806053478/O1CN01fDtrV31bYy2jhmEwi_!!1806053478.jpg', '13', '2019-08-20 16:37:21', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('260', '17', '//img.alicdn.com/imgextra/TB1j8i8f2ImBKNjSZFlL6U43FXa', '13', '2019-08-20 16:37:32', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('261', '17', '//img.alicdn.com/imgextra/TB1Llx0f8nTBKNjSZPfL6Tf1XXa', '13', '2019-08-20 16:38:17', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('262', '17', '//img.alicdn.com/imgextra/TB1gxw.jyCYBuNkSnaVL6UMsVXa', '13', '2019-08-20 16:38:23', '2019-08-30 15:24:45', '0');
 INSERT INTO `t_goods_img` VALUES ('263', '17', 'https://img.alicdn.com/imgextra/i2/1806053478/O1CN01BzwXvj1bYy2hjSUla_!!1806053478.jpg', '14', '2019-08-20 16:38:30', '2019-08-20 16:38:46', '0');
 INSERT INTO `t_goods_img` VALUES ('264', '17', 'https://img.alicdn.com/imgextra/i3/1806053478/O1CN01acPn791bYy2gEpTyP_!!1806053478.jpg', '14', '2019-08-20 16:39:24', null, '0');
 INSERT INTO `t_goods_img` VALUES ('265', '17', 'https://img.alicdn.com/imgextra/i4/1806053478/O1CN01OFsIVW1bYy2hr1z5W_!!1806053478.jpg', '14', '2019-08-20 16:39:27', '2019-08-20 16:40:10', '0');
 INSERT INTO `t_goods_img` VALUES ('266', '17', '//gdp.alicdn.com/imgextra/i2/1806053478/O1CN01KPDjNy1bYxzhEwaRD_!!1806053478.jpg', '16', '2019-08-20 16:40:59', null, '0');
 INSERT INTO `t_goods_img` VALUES ('267', '18', 'https://gdp.alicdn.com/imgextra/i3/1806053478/O1CN01fOlwdw1bYy0L3wE3E_!!1806053478.jpg', '16', '2019-08-20 16:41:37', null, '0');
-INSERT INTO `t_goods_img` VALUES ('268', '18', 'https://img.alicdn.com/imgextra/i3/1806053478/O1CN01njrjnP1bYy0QkljQI_!!1806053478.jpg_430x430q90.jpg', '13', '2019-08-20 16:44:48', null, '0');
-INSERT INTO `t_goods_img` VALUES ('269', '18', 'https://img.alicdn.com/imgextra/i1/1806053478/O1CN01Lxiy5E1bYy3TWLXyp_!!1806053478.jpg_430x430q90.jpg', '13', '2019-08-20 16:45:04', null, '0');
-INSERT INTO `t_goods_img` VALUES ('270', '18', 'https://img.alicdn.com/imgextra/i3/1806053478/O1CN01njrjnP1bYy0QkljQI_!!1806053478.jpg_430x430q90.jpg', '13', '2019-08-20 16:45:16', null, '0');
-INSERT INTO `t_goods_img` VALUES ('271', '18', 'https://img.alicdn.com/imgextra/i3/1806053478/O1CN01fxJ7Os1bYy02Tvri0_!!1806053478.jpg_430x430q90.jpg', '13', '2019-08-20 16:45:54', null, '0');
+INSERT INTO `t_goods_img` VALUES ('268', '18', 'https://img.alicdn.com/imgextra/i3/1806053478/O1CN01njrjnP1bYy0QkljQI_!!1806053478.jpg', '13', '2019-08-20 16:44:48', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('269', '18', 'https://img.alicdn.com/imgextra/i1/1806053478/O1CN01Lxiy5E1bYy3TWLXyp_!!1806053478.jpg', '13', '2019-08-20 16:45:04', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('270', '18', 'https://img.alicdn.com/imgextra/i3/1806053478/O1CN01njrjnP1bYy0QkljQI_!!1806053478.jpg', '13', '2019-08-20 16:45:16', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('271', '18', 'https://img.alicdn.com/imgextra/i3/1806053478/O1CN01fxJ7Os1bYy02Tvri0_!!1806053478.jpg', '13', '2019-08-20 16:45:54', '2019-08-30 15:24:45', '0');
 INSERT INTO `t_goods_img` VALUES ('272', '18', 'https://img.alicdn.com/imgextra/i2/1806053478/O1CN01m9kmuC1bYy0Zbbjrn_!!1806053478.jpg', '14', '2019-08-20 16:46:05', null, '0');
 INSERT INTO `t_goods_img` VALUES ('273', '18', 'https://img.alicdn.com/imgextra/i4/1806053478/O1CN01cXKpof1bYy0XoxhuK_!!1806053478.jpg', '14', '2019-08-20 16:46:26', null, '0');
 INSERT INTO `t_goods_img` VALUES ('274', '18', 'https://img.alicdn.com/imgextra/i4/1806053478/O1CN01GZdlY21bYy0XjMyS7_!!1806053478.jpg', '14', '2019-08-20 16:47:01', null, '0');
 INSERT INTO `t_goods_img` VALUES ('275', '18', 'https://img.alicdn.com/imgextra/i1/1806053478/O1CN01WpP6EP1bYy0YoxaFd_!!1806053478.gif', '14', '2019-08-20 16:47:24', null, '0');
 INSERT INTO `t_goods_img` VALUES ('276', '19', 'https://gdp.alicdn.com/imgextra/i2/1806053478/O1CN010lLjfo1bYxzgcxe06_!!1806053478.jpg', '16', '2019-08-20 16:51:21', null, '0');
-INSERT INTO `t_goods_img` VALUES ('277', '19', 'https://img.alicdn.com/imgextra/i4/1806053478/O1CN01jEWKtr1bYy4NYO54p_!!0-item_pic.jpg_430x430q90.jpg', '13', '2019-08-20 16:51:39', null, '0');
-INSERT INTO `t_goods_img` VALUES ('278', '19', '//img.alicdn.com/imgextra/i2/1806053478/TB2g9DCqVXXXXaRXpXXXXXXXXXX_!!1806053478.jpg_430x430q90.jpg', '13', '2019-08-20 16:51:55', null, '0');
-INSERT INTO `t_goods_img` VALUES ('279', '19', 'https://img.alicdn.com/imgextra/i2/1806053478/O1CN014uY6jm1bYy3M2kTQ5_!!1806053478.jpg_430x430q90.jpg', '13', '2019-08-20 16:52:11', null, '0');
-INSERT INTO `t_goods_img` VALUES ('280', '19', '//img.alicdn.com/imgextra/i2/1806053478/O1CN012vj9QH1bYxzu8oiEg_!!1806053478.jpg_430x430q90.jpg', '13', '2019-08-20 16:52:29', null, '0');
+INSERT INTO `t_goods_img` VALUES ('277', '19', 'https://img.alicdn.com/imgextra/i4/1806053478/O1CN01jEWKtr1bYy4NYO54p_!!0-item_pic.jpg', '13', '2019-08-20 16:51:39', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('278', '19', '//img.alicdn.com/imgextra/i2/1806053478/TB2g9DCqVXXXXaRXpXXXXXXXXXX_!!1806053478.jpg', '13', '2019-08-20 16:51:55', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('279', '19', 'https://img.alicdn.com/imgextra/i2/1806053478/O1CN014uY6jm1bYy3M2kTQ5_!!1806053478.jpg', '13', '2019-08-20 16:52:11', '2019-08-30 15:24:45', '0');
+INSERT INTO `t_goods_img` VALUES ('280', '19', '//img.alicdn.com/imgextra/i2/1806053478/O1CN012vj9QH1bYxzu8oiEg_!!1806053478.jpg', '13', '2019-08-20 16:52:29', '2019-08-30 15:24:45', '0');
 INSERT INTO `t_goods_img` VALUES ('281', '19', 'https://img.alicdn.com/imgextra/i4/1806053478/TB2PeR5bCr85uJjSZPhXXbXgpXa_!!1806053478.jpg', '14', '2019-08-20 16:52:47', null, '0');
 INSERT INTO `t_goods_img` VALUES ('282', '19', 'https://img.alicdn.com/imgextra/i1/1806053478/O1CN01umk9Wj1bYy3DZ2MQd_!!1806053478.jpg', '14', '2019-08-20 16:53:25', null, '0');
 INSERT INTO `t_goods_img` VALUES ('283', '19', 'https://img.alicdn.com/imgextra/i3/1806053478/TB2Z_4JatYA11Bjy0FhXXbIwVXa_!!1806053478.jpg', '14', '2019-08-20 16:53:51', null, '0');
@@ -2843,14 +2843,14 @@ CREATE TABLE `t_goods_stock` (
   `update_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `is_delete` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `attr_id_2` (`sku_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='商品SKU库存';
+  KEY `sku_id` (`sku_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='商品SKU库存';
 
 -- ----------------------------
 -- Records of t_goods_stock
 -- ----------------------------
 INSERT INTO `t_goods_stock` VALUES ('1', '1', '2', '2019-08-21 15:27:27', '2019-08-21 19:06:44', '0');
-INSERT INTO `t_goods_stock` VALUES ('2', '2', '11', '2019-08-21 15:27:36', '2019-08-21 19:08:02', '0');
+INSERT INTO `t_goods_stock` VALUES ('2', '5', '11', '2019-08-21 15:27:36', '2019-08-26 14:52:52', '0');
 INSERT INTO `t_goods_stock` VALUES ('3', '6', '16', '2019-08-21 15:27:40', '2019-08-21 19:08:02', '0');
 INSERT INTO `t_goods_stock` VALUES ('4', '7', '35', '2019-08-21 15:28:23', '2019-08-21 19:08:02', '0');
 INSERT INTO `t_goods_stock` VALUES ('5', '8', '17', '2019-08-21 15:28:35', '2019-08-21 19:08:02', '0');
@@ -2865,6 +2865,36 @@ INSERT INTO `t_goods_stock` VALUES ('13', '16', '17', '2019-08-21 15:30:25', '20
 INSERT INTO `t_goods_stock` VALUES ('14', '2', '2', '2019-08-21 15:30:32', '2019-08-21 19:08:03', '0');
 INSERT INTO `t_goods_stock` VALUES ('15', '3', '2', '2019-08-21 15:30:46', '2019-08-21 19:08:03', '0');
 INSERT INTO `t_goods_stock` VALUES ('16', '4', '2', '2019-08-21 15:30:54', '2019-08-21 19:08:03', '0');
+INSERT INTO `t_goods_stock` VALUES ('17', '0', '0', '2019-08-26 11:11:14', null, '0');
+INSERT INTO `t_goods_stock` VALUES ('18', '0', '0', '2019-08-26 11:11:16', null, '0');
+INSERT INTO `t_goods_stock` VALUES ('19', '0', '0', '2019-08-26 11:11:17', null, '0');
+INSERT INTO `t_goods_stock` VALUES ('20', '0', '0', '2019-08-26 11:11:17', null, '0');
+INSERT INTO `t_goods_stock` VALUES ('21', '0', '0', '2019-08-26 11:11:18', null, '0');
+INSERT INTO `t_goods_stock` VALUES ('22', '0', '0', '2019-08-26 11:11:19', null, '0');
+INSERT INTO `t_goods_stock` VALUES ('23', '0', '0', '2019-08-26 11:11:19', null, '0');
+INSERT INTO `t_goods_stock` VALUES ('24', '0', '0', '2019-08-26 11:11:20', null, '0');
+
+-- ----------------------------
+-- Table structure for t_oreder_evaluate
+-- ----------------------------
+DROP TABLE IF EXISTS `t_oreder_evaluate`;
+CREATE TABLE `t_oreder_evaluate` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` int(11) DEFAULT NULL,
+  `goods_id` int(11) DEFAULT NULL,
+  `desc_score` float(2,1) DEFAULT '0.0' COMMENT '商品描述评分',
+  `evaluate_text` varchar(255) DEFAULT NULL COMMENT '评价',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `order_id` (`order_id`) USING BTREE,
+  KEY `goods_id` (`goods_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单商品评价表';
+
+-- ----------------------------
+-- Records of t_oreder_evaluate
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for t_region
@@ -6615,6 +6645,85 @@ INSERT INTO `t_store_brand` VALUES ('60', '55', '1', '0');
 INSERT INTO `t_store_brand` VALUES ('61', '56', '1', '0');
 INSERT INTO `t_store_brand` VALUES ('62', '57', '1', '0');
 INSERT INTO `t_store_brand` VALUES ('63', '58', '1', '0');
+
+-- ----------------------------
+-- Table structure for t_store_evaluate
+-- ----------------------------
+DROP TABLE IF EXISTS `t_store_evaluate`;
+CREATE TABLE `t_store_evaluate` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `store_id` int(11) DEFAULT NULL,
+  `desc_score` float(2,1) DEFAULT '0.0' COMMENT '描述评分',
+  `service_score` float(2,1) DEFAULT '0.0' COMMENT '服务评分',
+  `logistics_score` float(2,1) DEFAULT '0.0' COMMENT '描述评分',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `is_delete` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `store_id` (`store_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8 COMMENT='店铺评分';
+
+-- ----------------------------
+-- Records of t_store_evaluate
+-- ----------------------------
+INSERT INTO `t_store_evaluate` VALUES ('1', '1', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('2', '2', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('3', '3', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('4', '4', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('5', '5', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('6', '6', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('7', '7', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('8', '8', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('9', '9', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('10', '10', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('11', '11', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('12', '12', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('13', '13', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('14', '14', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('15', '15', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('16', '16', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('17', '17', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('18', '18', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('19', '19', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('20', '20', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('21', '21', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('22', '24', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('23', '25', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('24', '26', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('25', '27', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('26', '28', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('27', '32', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('28', '33', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('29', '34', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('30', '35', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('31', '36', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('32', '37', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('33', '38', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('34', '39', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('35', '40', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('36', '41', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('37', '42', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('38', '43', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('39', '44', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('40', '45', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('41', '46', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('42', '47', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('43', '48', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('44', '49', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('45', '50', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('46', '51', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('47', '52', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('48', '53', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('49', '54', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('50', '55', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('51', '56', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('52', '57', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('53', '58', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('54', '59', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('55', '60', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('56', '61', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('57', '62', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
+INSERT INTO `t_store_evaluate` VALUES ('58', '63', '0.0', '0.0', '0.0', '2019-08-27 10:48:24', null, '0');
 
 -- ----------------------------
 -- Table structure for t_user
