@@ -1,4 +1,4 @@
-package com.tmall.user.entity.dto;
+package com.tmall.common.dto;
 
 /**
  * 〈一句话功能简述〉<br>

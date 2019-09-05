@@ -94,4 +94,10 @@ public class GoodsServiceImpl implements GoodsService {
     public List<GoodsSkuDTO> findSku(int goodsId) {
         return goodsMapper.findSku(goodsId);
     }
+
+    @Override
+    public float getFreight(int goodsId, String cityCode) {
+        Float freight = goodsMapper.getFreight(goodsId, cityCode);
+        return freight == null ? 0 : freight;
+    }
 }

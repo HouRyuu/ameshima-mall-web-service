@@ -15,8 +15,8 @@ import com.tmall.common.redis.KeyPrefix;
  */
 public class UserKey extends BaseKeyPrefix {
 
-    public static final KeyPrefix TOKEN = new UserKey("token", 10, TimeUnit.MINUTES);
     public static final KeyPrefix CAPTCHA_REGISTER = new UserKey("captcha_register", 10, TimeUnit.MINUTES);
+    public static final KeyPrefix CAPTCHA_FORGET = new UserKey("captcha_forget", 10, TimeUnit.MINUTES);
 
     private UserKey(String prefix, long timeout, TimeUnit timeUnit) {
         super(prefix, timeout, timeUnit);

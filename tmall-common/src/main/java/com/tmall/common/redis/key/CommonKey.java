@@ -15,12 +15,10 @@ import com.tmall.common.redis.KeyPrefix;
  */
 public class CommonKey extends BaseKeyPrefix {
 
+    public static final KeyPrefix TOKEN = new CommonKey("token", 10, TimeUnit.MINUTES);
+
     private CommonKey(String prefix, long timeout, TimeUnit timeUnit) {
         super(prefix, timeout, timeUnit);
     }
-
-    public static final KeyPrefix REGISTER_CHECK_CODE = new CommonKey("registerCheckCode", 10, TimeUnit.MINUTES);
-
-    public static final KeyPrefix RETRIEVE_CHECK_CODE = new CommonKey("retrieveCheckCode", 10, TimeUnit.MINUTES);
 
 }

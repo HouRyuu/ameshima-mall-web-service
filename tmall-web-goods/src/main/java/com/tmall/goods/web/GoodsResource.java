@@ -102,4 +102,9 @@ public class GoodsResource {
         result.put("params", goodsService.findParams(goodsId));
         return AjaxResult.success(result);
     }
+
+    @GetMapping("/{goodsId}/{cityCode}/freight")
+    public AjaxResult freight(@PathVariable int goodsId, @PathVariable String cityCode) {
+        return AjaxResult.success(goodsService.getFreight(goodsId, cityCode));
+    }
 }

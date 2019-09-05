@@ -1,5 +1,7 @@
 package com.tmall.user.service.impl;
 
+import java.util.Objects;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -12,13 +14,18 @@ import com.tmall.common.constants.GlobalConfig;
 import com.tmall.common.constants.TmallConstant;
 import com.tmall.common.constants.UserErrResultEnum;
 import com.tmall.common.dto.AjaxResult;
+import com.tmall.common.dto.LoginUser;
 import com.tmall.common.redis.RedisClient;
+import com.tmall.common.redis.key.CommonKey;
+import com.tmall.common.utils.CheckUtil;
 import com.tmall.common.utils.CommonUtil;
-import com.tmall.user.entity.dto.LoginUser;
+import com.tmall.user.entity.dto.RegisterDTO;
 import com.tmall.user.entity.po.AccountPO;
 import com.tmall.user.keys.UserKey;
 import com.tmall.user.mapper.AccountMapper;
 import com.tmall.user.service.AccountService;
+
+import tk.mybatis.mapper.entity.Example;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -63,12 +70,13 @@ public class AccountServiceImpl implements AccountService {
             return AjaxResult.error(UserErrResultEnum.LOGIN_FAIL);
         }
         String token = CommonUtil.getUuid();
-        redisClient.set(UserKey.TOKEN, token, loginUser);
+        redisClient.set(CommonKey.TOKEN, token, loginUser);
         return AjaxResult.success(token);
     }
 
     @Override
     public AjaxResult sendRegisterCaptcha(String account) {
+        Assert.hasText(account, TmallConstant.PARAM_ERR_MSG);
         AccountPO accountPO = new AccountPO();
         accountPO.setAccount(account);
         if (accountMapper.selectCount(accountPO) > 0) {
@@ -79,5 +87,48 @@ public class AccountServiceImpl implements AccountService {
         LOGGER.info("向{}发送注册验证码=>{}", account, captcha);
         redisClient.set(UserKey.CAPTCHA_REGISTER, account, captcha);
         return AjaxResult.success(globalConfig.get(GlobalConfig.KEY_LIMIT_CAPTCHA));
+    }
+
+    @Override
+    public AjaxResult sendForgetCaptcha(String account) {
+        Assert.hasText(account, TmallConstant.PARAM_ERR_MSG);
+        AccountPO accountPO = new AccountPO();
+        accountPO.setAccount(account);
+        if (accountMapper.selectCount(accountPO) == 0) {
+            LOGGER.warn("手机号不存=>{}", account);
+            return AjaxResult.error(UserErrResultEnum.ACCOUNT_NOT_EXISTS);
+        }
+        String captcha = CommonUtil.createCaptcha();
+        LOGGER.info("向{}发送忘记密码验证码=>{}", account, captcha);
+        redisClient.set(UserKey.CAPTCHA_FORGET, account, captcha);
+        return AjaxResult.success(globalConfig.get(GlobalConfig.KEY_LIMIT_CAPTCHA));
+    }
+
+    @Override
+    public AjaxResult forgetPwd(RegisterDTO account) {
+        this.checkAccountInfo(account);
+        if (!Objects.equals(account.getCaptcha(), redisClient.get(UserKey.CAPTCHA_FORGET, account.getAccount()))) {
+            return AjaxResult.error(UserErrResultEnum.CAPTCHA_ERR);
+        }
+        AccountPO record = new AccountPO();
+        record.setPassword(DigestUtils.md5Hex(DigestUtils.md5(account.getPassword())));
+        Example example = new Example(AccountPO.class);
+        example.createCriteria().andEqualTo("account", account.getAccount()).andCondition("is_delete=0");
+        if (accountMapper.updateByExampleSelective(record, example) < 1) {
+            return AjaxResult.error(UserErrResultEnum.ACCOUNT_NOT_EXISTS);
+        }
+        record.setAccount(account.getAccount());
+        record.setPassword(account.getPassword());
+        return login(record);
+    }
+
+    private void checkAccountInfo(RegisterDTO account) {
+        Assert.isTrue(
+                account != null
+                        && !StringUtils.isAnyBlank(account.getAccount(), account.getPassword(), account.getCaptcha()),
+                TmallConstant.PARAM_ERR_MSG);
+        CheckUtil.checkMobile(account.getAccount());
+        CheckUtil.checkStrLength(account.getPassword(), 6, 32);
+        CheckUtil.checkStrLength(account.getCaptcha(), 6, 6);
     }
 }

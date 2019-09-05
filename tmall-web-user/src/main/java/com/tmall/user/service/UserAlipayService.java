@@ -1,6 +1,6 @@
 package com.tmall.user.service;
 
-import com.tmall.user.entity.dto.LoginUser;
+import com.tmall.common.dto.LoginUser;
 
 /**
  * 〈一句话功能简述〉<br>

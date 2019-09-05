@@ -29,4 +29,6 @@ public interface GoodsService {
 
     List<GoodsSkuDTO> findSku(int goodsId);
 
+    float getFreight(int goodsId, String cityCode);
+
 }

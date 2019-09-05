@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import com.tmall.user.interceptor.LoginInterceptor;
+import com.tmall.common.interceptor.LoginInterceptor;
 
 /***
  *

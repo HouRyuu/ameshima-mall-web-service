@@ -1,17 +1,20 @@
 package com.tmall.user.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.tmall.common.annotation.LoginRequire;
 import com.tmall.common.dto.AjaxResult;
+import com.tmall.common.dto.LoginInfo;
 import com.tmall.common.redis.RedisClient;
+import com.tmall.common.redis.key.CommonKey;
 import com.tmall.remote.goods.api.IGoodsService;
 import com.tmall.remote.goods.dto.GoodsDTO;
-import com.tmall.user.entity.dto.LoginInfo;
 import com.tmall.user.entity.dto.RegisterDTO;
 import com.tmall.user.entity.po.AccountPO;
-import com.tmall.user.keys.UserKey;
 import com.tmall.user.service.AccountService;
 import com.tmall.user.service.UserService;
 
@@ -24,7 +27,6 @@ import com.tmall.user.service.UserService;
  * @since [产品/模块版本] （可选）
  */
 @RestController
-@RequestMapping("/user")
 public class UserResource {
 
     @Autowired
@@ -60,7 +62,7 @@ public class UserResource {
     @LoginRequire
     @GetMapping("/logout")
     public AjaxResult logout() {
-        redisClient.removeKey(UserKey.TOKEN, LoginInfo.getToken());
+        redisClient.removeKey(CommonKey.TOKEN, LoginInfo.getToken());
         return AjaxResult.success();
     }
 
@@ -72,6 +74,16 @@ public class UserResource {
     @PostMapping("/register")
     public AjaxResult register(@RequestBody RegisterDTO registerInfo) {
         return userService.register(registerInfo);
+    }
+
+    @GetMapping("/sendForgetCaptcha")
+    public AjaxResult sendForgetCaptcha(String account) {
+        return accountService.sendForgetCaptcha(account);
+    }
+
+    @PostMapping("/forgetPwd")
+    public AjaxResult forgetPwd(@RequestBody RegisterDTO registerInfo) {
+        return accountService.forgetPwd(registerInfo);
     }
 
 }

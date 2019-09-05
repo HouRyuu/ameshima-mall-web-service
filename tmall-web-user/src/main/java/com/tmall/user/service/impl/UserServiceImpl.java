@@ -15,10 +15,11 @@ import com.alibaba.fastjson.JSON;
 import com.tmall.common.constants.TmallConstant;
 import com.tmall.common.constants.UserErrResultEnum;
 import com.tmall.common.dto.AjaxResult;
+import com.tmall.common.dto.LoginUser;
 import com.tmall.common.redis.RedisClient;
+import com.tmall.common.redis.key.CommonKey;
 import com.tmall.common.utils.CheckUtil;
 import com.tmall.common.utils.CommonUtil;
-import com.tmall.user.entity.dto.LoginUser;
 import com.tmall.user.entity.dto.RegisterDTO;
 import com.tmall.user.entity.po.AccountPO;
 import com.tmall.user.entity.po.UserPO;
@@ -68,7 +69,7 @@ public class UserServiceImpl implements UserService {
             loginUser.setAccountId(accountId);
             loginUser.setNickName(registerInfo.getNickName());
             String token = CommonUtil.getUuid();
-            redisClient.set(UserKey.TOKEN, token, loginUser);
+            redisClient.set(CommonKey.TOKEN, token, loginUser);
             return AjaxResult.success(token);
         } catch (DuplicateKeyException e) {
             LOGGER.error("Account exists. param=>{}", JSON.toJSONString(registerInfo), e);

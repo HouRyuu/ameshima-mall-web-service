@@ -1,7 +1,7 @@
 package com.tmall.user.mapper;
 
 import com.tmall.common.BaseMapper;
-import com.tmall.user.entity.dto.LoginUser;
+import com.tmall.common.dto.LoginUser;
 import com.tmall.user.entity.po.AccountPO;
 
 /**

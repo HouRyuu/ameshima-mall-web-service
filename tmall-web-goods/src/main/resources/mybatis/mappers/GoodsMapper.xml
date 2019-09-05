@@ -151,4 +151,16 @@
             t.is_delete = 0
         AND t.goods_id = #{goodsId}
     </select>
+
+
+    <select id="getFreight" resultType="Float">
+        SELECT
+            cost
+        FROM
+            t_goods_freight
+        WHERE
+            is_delete = 0
+        AND goods_id = #{goodsId}
+        AND target_city_code = #{cityCode}
+    </select>
 </mapper>

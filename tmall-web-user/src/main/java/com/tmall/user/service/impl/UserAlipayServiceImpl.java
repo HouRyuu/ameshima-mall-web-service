@@ -13,12 +13,13 @@ import com.alipay.api.response.AlipaySystemOauthTokenResponse;
 import com.alipay.api.response.AlipayUserInfoShareResponse;
 import com.tmall.common.constants.TmallConstant;
 import com.tmall.common.utils.AlipayUtil;
-import com.tmall.user.entity.dto.LoginUser;
+import com.tmall.common.dto.LoginUser;
 import com.tmall.user.entity.po.AccountPO;
 import com.tmall.user.entity.po.UserAlipayPO;
 import com.tmall.user.mapper.UserAlipayMapper;
 import com.tmall.user.service.AccountService;
 import com.tmall.user.service.UserAlipayService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -41,6 +42,7 @@ public class UserAlipayServiceImpl implements UserAlipayService {
     private AccountService accountService;
 
     @Override
+    @Transactional
     public LoginUser login(String authCode) {
         LOGGER.info("支付宝返回authCode=>{}", authCode);
         AlipaySystemOauthTokenRequest authRequest = new AlipaySystemOauthTokenRequest();

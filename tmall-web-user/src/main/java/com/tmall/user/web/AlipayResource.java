@@ -1,6 +1,5 @@
 package com.tmall.user.web;
 
-import com.tmall.common.constants.AlipayErrResultEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,11 +8,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alipay.api.AlipayApiException;
+import com.tmall.common.constants.AlipayErrResultEnum;
 import com.tmall.common.dto.AjaxResult;
+import com.tmall.common.dto.LoginUser;
 import com.tmall.common.redis.RedisClient;
+import com.tmall.common.redis.key.CommonKey;
 import com.tmall.common.utils.CommonUtil;
-import com.tmall.user.entity.dto.LoginUser;
-import com.tmall.user.keys.UserKey;
 import com.tmall.user.service.UserAlipayService;
 
 /**
@@ -25,7 +25,7 @@ import com.tmall.user.service.UserAlipayService;
  * @since [产品/模块版本] （可选）
  */
 @RestController
-@RequestMapping("/user/alipay")
+@RequestMapping("/alipay")
 public class AlipayResource {
 
     @Autowired
@@ -53,7 +53,7 @@ public class AlipayResource {
             return AjaxResult.error(AlipayErrResultEnum.AUTH_FAIL);
         }
         String token = CommonUtil.getUuid();
-        redisClient.set(UserKey.TOKEN, token, loginInfo);
+        redisClient.set(CommonKey.TOKEN, token, loginInfo);
         return AjaxResult.success(token);
     }
 }

@@ -1,4 +1,4 @@
-package com.tmall.user.interceptor;
+package com.tmall.common.interceptor;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -16,11 +16,11 @@ import com.alibaba.fastjson.JSON;
 import com.tmall.common.annotation.LoginRequire;
 import com.tmall.common.constants.UserErrResultEnum;
 import com.tmall.common.dto.AjaxResult;
+import com.tmall.common.dto.LoginInfo;
+import com.tmall.common.dto.LoginUser;
 import com.tmall.common.redis.RedisClient;
+import com.tmall.common.redis.key.CommonKey;
 import com.tmall.common.utils.WebUtil;
-import com.tmall.user.entity.dto.LoginInfo;
-import com.tmall.user.entity.dto.LoginUser;
-import com.tmall.user.keys.UserKey;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -47,12 +47,12 @@ public class LoginInterceptor implements HandlerInterceptor {
         LOGGER.info("ip->{}，请求地址：{}->{}，token->{}", ip, request.getMethod(), url, token);
         LoginUser loginUser = null;
         if (StringUtils.isNotBlank(token)) {
-            loginUser = redisClient.get(UserKey.TOKEN, token);
+            loginUser = redisClient.get(CommonKey.TOKEN, token);
             if (loginUser != null) {
                 // 将登录信息存入本地线程供业务使用并更新cookie及redis过期时间
                 LoginInfo.putToken(token);
                 LoginInfo.put(loginUser);
-                redisClient.set(UserKey.TOKEN, token, loginUser);
+                redisClient.set(CommonKey.TOKEN, token, loginUser);
             }
         }
         if (handler instanceof HandlerMethod

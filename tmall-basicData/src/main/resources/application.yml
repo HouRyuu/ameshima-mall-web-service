@@ -1,10 +1,10 @@
 server:
-  port: 8081
-  context-path: /user/
+  port: 8085
+  context-path: /basic/
 
 spring:
   application:
-    name: tmall-user
+    name: tmall-basicData
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: com.mysql.jdbc.Driver

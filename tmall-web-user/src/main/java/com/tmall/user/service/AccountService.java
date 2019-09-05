@@ -1,7 +1,7 @@
 package com.tmall.user.service;
 
 import com.tmall.common.dto.AjaxResult;
-import com.tmall.user.entity.dto.LoginUser;
+import com.tmall.user.entity.dto.RegisterDTO;
 import com.tmall.user.entity.po.AccountPO;
 
 /**
@@ -26,4 +26,13 @@ public interface AccountService {
      */
     AjaxResult sendRegisterCaptcha(String account);
 
+    /**
+     * 发送忘记密码验证码
+     *
+     * @param account 账号
+     * @return 发送间隔秒
+     */
+    AjaxResult sendForgetCaptcha(String account);
+
+    AjaxResult forgetPwd(RegisterDTO account);
 }
