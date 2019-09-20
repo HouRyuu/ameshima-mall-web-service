@@ -1,4 +1,4 @@
-package com.tmall.goods.entity.dto;
+package com.tmall.store.entity.dto;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -8,7 +8,7 @@ package com.tmall.goods.entity.dto;
  * @see [相关类/方法]（可选）
  * @since [产品/模块版本] （可选）
  */
-public class GoodsBrandDTO {
+public class StoreBrandDTO {
 
     private int storeId;
     private String brandName;

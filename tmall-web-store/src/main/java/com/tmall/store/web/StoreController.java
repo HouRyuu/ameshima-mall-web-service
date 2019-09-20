@@ -2,11 +2,11 @@ package com.tmall.store.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tmall.common.dto.AjaxResult;
 import com.tmall.store.service.StoreBannerService;
+import com.tmall.store.service.StoreBrandService;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -17,15 +17,21 @@ import com.tmall.store.service.StoreBannerService;
  * @since [产品/模块版本] （可选）
  */
 @RestController
-@RequestMapping("/store")
 public class StoreController {
 
     @Autowired
     private StoreBannerService storeBannerService;
+    @Autowired
+    private StoreBrandService storeBrandService;
 
     @GetMapping("/index/banner")
     public AjaxResult indexBanner() {
         return AjaxResult.success(storeBannerService.findIndexBanner());
+    }
+
+    @GetMapping("/index/brand")
+    public AjaxResult indexBrands() {
+        return AjaxResult.success(storeBrandService.findIndexBrands());
     }
 
 }

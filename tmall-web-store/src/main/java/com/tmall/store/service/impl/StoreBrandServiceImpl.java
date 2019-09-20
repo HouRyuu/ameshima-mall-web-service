@@ -1,4 +1,4 @@
-package com.tmall.goods.service.impl;
+package com.tmall.store.service.impl;
 
 import java.util.List;
 
@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.tmall.common.constants.GlobalConfig;
 import com.tmall.common.redis.RedisClient;
-import com.tmall.goods.entity.dto.GoodsBrandDTO;
-import com.tmall.goods.keys.GoodsKey;
-import com.tmall.goods.mapper.GoodsBrandMapper;
-import com.tmall.goods.service.GoodsBrandService;
+import com.tmall.store.entity.dto.StoreBrandDTO;
+import com.tmall.store.keys.StoreKey;
+import com.tmall.store.mapper.StoreBrandMapper;
+import com.tmall.store.service.StoreBrandService;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -22,21 +22,21 @@ import com.tmall.goods.service.GoodsBrandService;
  * @since [产品/模块版本] （可选）
  */
 @Service
-public class GoodsBrandServiceImpl implements GoodsBrandService {
+public class StoreBrandServiceImpl implements StoreBrandService {
 
     @Autowired
     private RedisClient redisClient;
     @Autowired
-    private GoodsBrandMapper goodsBrandMapper;
+    private StoreBrandMapper storeBrandMapper;
     @Autowired
     private GlobalConfig globalConfig;
 
     @Override
-    public List<GoodsBrandDTO> findIndexBrands() {
-        return redisClient.get(GoodsKey.INDEX_BRANDS, null, () -> {
-            GoodsBrandDTO queryParam = new GoodsBrandDTO();
+    public List<StoreBrandDTO> findIndexBrands() {
+        return redisClient.get(StoreKey.INDEX_BRANDS, null, () -> {
+            StoreBrandDTO queryParam = new StoreBrandDTO();
             queryParam.setIsIndexShow(1);
-            int brandCount = goodsBrandMapper.getStoreBrandCount(queryParam);
+            int brandCount = storeBrandMapper.getStoreBrandCount(queryParam);
             if (brandCount == 0) {
                 return null;
             }
@@ -47,7 +47,7 @@ public class GoodsBrandServiceImpl implements GoodsBrandService {
             }
             queryParam.setFirstIndex(firstIndex);
             queryParam.setShowCount(showCount);
-            return goodsBrandMapper.findStoreBrands(queryParam);
+            return storeBrandMapper.findStoreBrands(queryParam);
         });
     }
 }

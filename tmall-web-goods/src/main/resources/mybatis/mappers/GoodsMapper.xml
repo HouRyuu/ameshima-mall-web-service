@@ -163,4 +163,42 @@
         AND goods_id = #{goodsId}
         AND target_city_code = #{cityCode}
     </select>
+
+    <select id="findEsGoods" resultType="EsGoodsDTO">
+        SELECT
+            t.id,
+            t.`name`,
+            t8.price,
+            t.img_url,
+            t1.`name` store,
+            t2.brand_name brand,
+            GROUP_CONCAT(DISTINCT t3.category_id) categoryIds,
+            GROUP_CONCAT(DISTINCT t4.`name`) categories,
+            CONCAT(
+                GROUP_CONCAT(DISTINCT t4.`name`),
+                ',',
+                GROUP_CONCAT(DISTINCT t5.`name`),
+                ',',
+                GROUP_CONCAT(DISTINCT t7.`name`)
+            ) allCategories
+        FROM
+            t_goods t
+        INNER JOIN t_store t1 ON t1.id = t.store_id
+        AND t1.is_delete = 0
+        INNER JOIN t_goods_brand t2 ON t2.id = t.brand_id
+        AND t2.is_delete = 0
+        INNER JOIN t_goods_category_relation t3 ON t3.goods_id = t.id
+        INNER JOIN t_goods_category t4 ON t4.id = t3.category_id
+        AND t4.is_delete = 0 -- 4
+        INNER JOIN t_goods_category t5 ON t5.id = t4.pid
+        AND t5.is_delete = 0 -- 3
+        INNER JOIN t_goods_category t6 ON t6.id = t5.pid
+        AND t6.is_delete = 0 -- 2
+        INNER JOIN t_goods_category t7 ON t7.id = t6.pid
+        AND t7.is_delete = 0 -- 1
+        INNER JOIN t_goods_sku t8 ON t8.goods_id = t.id
+        AND t8.is_delete = 0
+        GROUP BY
+            t.id
+    </select>
 </mapper>

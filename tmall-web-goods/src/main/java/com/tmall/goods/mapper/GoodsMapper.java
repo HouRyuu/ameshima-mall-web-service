@@ -35,4 +35,6 @@ public interface GoodsMapper extends BaseMapper<GoodsPO> {
 
     Float getFreight(@Param("goodsId") int goodsId, @Param("cityCode") String cityCode);
 
+    List<EsGoodsDTO> findEsGoods();
+
 }

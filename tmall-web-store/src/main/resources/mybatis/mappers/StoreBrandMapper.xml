@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <!--suppress ALL -->
-<mapper namespace="com.tmall.goods.mapper.GoodsBrandMapper">
+<mapper namespace="com.tmall.store.mapper.StoreBrandMapper">
 
-    <select id="getStoreBrandCount" parameterType="GoodsBrandDTO" resultType="int">
+    <select id="getStoreBrandCount" resultType="int">
         SELECT
         count(1)
         FROM
@@ -15,11 +15,11 @@
         WHERE
         t.is_delete = 0
         <if test="isIndexShow != null">
-        AND t.is_index_show = #{isIndexShow}
+            AND t.is_index_show = #{isIndexShow}
         </if>
     </select>
 
-    <select id="findStoreBrands" parameterType="GoodsBrandDTO" resultType="GoodsBrandDTO">
+    <select id="findStoreBrands" resultType="StoreBrandDTO">
         SELECT
         t.store_id,
         t2.brand_name,

@@ -9,7 +9,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringBootApplication
 @EnableEurekaClient
-@EnableFeignClients("com.tmall.remote.*")
+@EnableFeignClients({"com.tmall.remote.order.*"})
 @ComponentScan("com.tmall")
 @MapperScan("com.tmall.*.mapper")
 public class TmallWebGoodsApplication {

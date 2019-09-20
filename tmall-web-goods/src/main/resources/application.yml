@@ -1,5 +1,6 @@
 server:
   port: 8082
+  context-path: /goods/
 
 spring:
   application:
@@ -16,6 +17,14 @@ spring:
     password: ;463*
   jackson:
     default-property-inclusion: non_null
+  data:
+    elasticsearch:
+#      cluster-name: tmall-web-service
+      cluster-nodes: localhost:9300
+      properties:
+        transport:
+          tcp:
+            connection_timeout: 120s
 
 eureka:
   client:

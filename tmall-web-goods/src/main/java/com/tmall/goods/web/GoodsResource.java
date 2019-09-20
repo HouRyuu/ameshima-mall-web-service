@@ -12,6 +12,7 @@ import com.tmall.common.constants.GlobalConfig;
 import com.tmall.common.dto.AjaxResult;
 import com.tmall.goods.entity.dto.GoodsImgDTO;
 import com.tmall.goods.entity.dto.GuessLikeQueryDTO;
+import com.tmall.goods.entity.dto.QueryGoodsDTO;
 import com.tmall.goods.service.GoodsAttrService;
 import com.tmall.goods.service.GoodsCategoryService;
 import com.tmall.goods.service.GoodsPromoteService;
@@ -27,7 +28,6 @@ import com.tmall.remote.goods.dto.GoodsDTO;
  * @since [产品/模块版本] （可选）
  */
 @RestController
-@RequestMapping("/goods")
 public class GoodsResource {
 
     @Autowired
@@ -107,4 +107,15 @@ public class GoodsResource {
     public AjaxResult freight(@PathVariable int goodsId, @PathVariable String cityCode) {
         return AjaxResult.success(goodsService.getFreight(goodsId, cityCode));
     }
+
+    @PostMapping("/indexGoods")
+    public AjaxResult indexGoods(@RequestBody QueryGoodsDTO queryParam) {
+        return AjaxResult.success(goodsService.indexGoods(queryParam));
+    }
+
+    @PostMapping("/findBrandsAndCategories")
+    public AjaxResult findBrandsAndCategories(@RequestBody QueryGoodsDTO queryParam) {
+        return AjaxResult.success(goodsService.findBrandsAndCategories(queryParam));
+    }
+
 }

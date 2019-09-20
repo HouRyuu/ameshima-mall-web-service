@@ -38,6 +38,8 @@ public class GlobalConfig {
     public static final String INDEX_BRAND_SHOW_COUNT = "index_brandShowCount";
     public static final String INDEX_GUESS_LIKE_COUNT = "index_guessLikeCount";
 
+    public static final String SEARCH_PAGE_SIZE = "search_pageSize";
+
     @Autowired
     private GlobalConfigMapper globalConfigMapper;
 

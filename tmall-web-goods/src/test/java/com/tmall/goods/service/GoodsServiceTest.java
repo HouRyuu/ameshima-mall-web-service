@@ -1,0 +1,55 @@
+package com.tmall.goods.service;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.alibaba.fastjson.JSON;
+import com.tmall.common.dto.PageResult;
+import com.tmall.goods.entity.dto.EsGoodsDTO;
+import com.tmall.goods.entity.dto.QueryGoodsDTO;
+import com.tmall.goods.es.repository.GoodsRepository;
+import com.tmall.goods.mapper.GoodsMapper;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class GoodsServiceTest {
+
+    @Autowired
+    private GoodsService goodsService;
+    @Autowired
+    private GoodsRepository goodsRepository;
+    @Autowired
+    private GoodsMapper goodsMapper;
+
+    @Before
+    public void initGoods() {
+        goodsRepository.deleteAll();
+        List<EsGoodsDTO> esGoodsList = goodsMapper.findEsGoods();
+        goodsRepository.save(esGoodsList);
+    }
+
+    @Test
+    public void indexGoods() throws Exception {
+        QueryGoodsDTO queryParam = new QueryGoodsDTO();
+        queryParam.setWord("电器");
+        queryParam.setPageIndex(0);
+        // queryParam.setOrderField("price");
+        // queryParam.setOrderType("DESC");
+        // queryParam.setMinPrice(new BigDecimal(6000));
+        queryParam.setBrand("Apple/苹果");
+        // queryParam.setCategory("手机");
+        PageResult<EsGoodsDTO> esGoodsDTOS = goodsService.indexGoods(queryParam);
+        System.out.println(JSON.toJSONString(esGoodsDTOS));
+        Map<String, Set<String>> brandsAndCategories = goodsService.findBrandsAndCategories(queryParam);
+        System.out.println(JSON.toJSONString(brandsAndCategories));
+    }
+
+}

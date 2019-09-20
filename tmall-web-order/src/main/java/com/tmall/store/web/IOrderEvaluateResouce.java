@@ -18,7 +18,7 @@ import com.tmall.store.service.OrderEvaluateService;
  * @since [产品/模块版本] （可选）
  */
 @RestController
-@RequestMapping("/order/evaluate")
+@RequestMapping("/evaluate")
 public class IOrderEvaluateResouce implements IOrderEvaluateService {
 
     @Autowired

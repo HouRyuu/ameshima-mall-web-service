@@ -16,6 +16,7 @@ import com.tmall.common.redis.KeyPrefix;
 public class StoreKey extends BaseKeyPrefix {
 
     public static final KeyPrefix INDEX_BANNER = new StoreKey("index_banner", 2, TimeUnit.HOURS);
+    public static final KeyPrefix INDEX_BRANDS = new StoreKey("index_brands", 2, TimeUnit.HOURS);
 
     private StoreKey(String prefix, long timeout, TimeUnit timeUnit) {
         super(prefix, timeout, timeUnit);

@@ -18,7 +18,7 @@ import com.tmall.store.service.StoreEvaluateService;
  * @since [产品/模块版本] （可选）
  */
 @RestController
-@RequestMapping("/store/evaluate")
+@RequestMapping("/evaluate")
 public class StoreEvaluateController {
 
     @Autowired

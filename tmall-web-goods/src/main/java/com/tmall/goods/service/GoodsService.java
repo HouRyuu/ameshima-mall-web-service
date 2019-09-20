@@ -1,7 +1,10 @@
 package com.tmall.goods.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import com.tmall.common.dto.PageResult;
 import com.tmall.goods.entity.dto.*;
 import com.tmall.remote.goods.dto.GoodsDTO;
 
@@ -30,5 +33,9 @@ public interface GoodsService {
     List<GoodsSkuDTO> findSku(int goodsId);
 
     float getFreight(int goodsId, String cityCode);
+
+    PageResult<EsGoodsDTO> indexGoods(QueryGoodsDTO queryParam);
+
+    Map<String, Set<String>> findBrandsAndCategories(QueryGoodsDTO queryParam);
 
 }
