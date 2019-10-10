@@ -1,4 +1,6 @@
-package com.tmall.common.constants;
+package com.tmall.goods.constants;
+
+import com.tmall.common.constants.IErrResult;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -8,14 +10,13 @@ package com.tmall.common.constants;
  * @see [相关类/方法]（可选）
  * @since [产品/模块版本] （可选）
  */
-public enum UserErrResultEnum implements IErrResult {
-    LOGIN_FAIL(200, "手机号或密码错误"), NOT_LOGIN(201, "未登录"), INVALID_LOGIN(202, "登录已失效"), CAPTCHA_ERR(203,
-            "验证码错误"), REG_FAIL(204, "注册失败"), REG_ACCOUNT_EXISTS(205, "手机号已被注册"), ACCOUNT_NOT_EXISTS(206, "手机号不存在");
+public enum GoodsErrResultEnum implements IErrResult {
+    ADD_CART_FAIL(300, "超过库存数量了哦"), DEL_CART_FAIL(301, "删除失败，请稍后再试");
 
     private int errCode;
     private String errMsg;
 
-    UserErrResultEnum(int errCode, String errMsg) {
+    GoodsErrResultEnum(int errCode, String errMsg) {
         this.errCode = errCode;
         this.errMsg = errMsg;
     }

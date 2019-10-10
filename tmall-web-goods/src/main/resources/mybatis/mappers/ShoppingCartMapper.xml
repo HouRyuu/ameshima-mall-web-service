@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--suppress ALL -->
+<mapper namespace="com.tmall.goods.mapper.ShoppingCartMapper">
+
+    <select id="getCartCount" resultType="int">
+        SELECT
+            count(1)
+        FROM
+            t_shopping_cart t
+        INNER JOIN t_goods_sku t1 ON t1.id = t.sku_id
+        AND t1.is_delete = 0
+        WHERE
+            t.is_delete = 0
+        AND t.account_id = #{accountId}
+    </select>
+
+    <insert id="add">
+        REPLACE INTO t_shopping_cart (
+            id,
+            account_id,
+            sku_id,
+            attrs_json,
+            amount
+        ) SELECT
+            t1.id,
+            #{accountId},
+            #{skuId},
+            #{attrsJson},
+            #{amount} + IFNULL(t1.amount, 0)
+        FROM
+          t_goods_sku t
+        LEFT JOIN t_shopping_cart t1 ON t1.account_id = #{accountId}
+        AND t1.sku_id = #{skuId}
+        WHERE
+          t.is_delete = 0
+        AND t.id = #{skuId}
+        AND t.quantity >= #{amount} + IFNULL(t1.amount, 0)
+    </insert>
+
+    <select id="findGoods" resultType="CartGoodsDTO">
+        SELECT
+            t.id,
+            t2.store_id,
+            t2.store_name,
+            t1.goods_id,
+            t2.img_url,
+            t2.`name`,
+            t1.price,
+            t1.market_price,
+            t.sku_id,
+            t1.attrs,
+            t.attrs_json,
+            t.amount,
+	        t1.quantity,
+            t1.is_delete state
+        FROM
+            t_shopping_cart t
+        INNER JOIN t_goods_sku t1 ON t1.id = t.sku_id
+        INNER JOIN t_goods t2 ON t2.id = t1.goods_id
+        WHERE
+            t.is_delete = 0
+        AND t.account_id = #{accountId}
+        ORDER BY
+            t1.is_delete ASC,
+            t.update_time DESC,
+            t.create_time DESC
+    </select>
+
+    <update id="remove">
+        UPDATE t_shopping_cart
+        SET is_delete = 0
+        WHERE
+        id IN
+        <foreach collection="ids" open="(" separator="," close=")" item="id">
+            #{id}
+        </foreach>
+        AND account_id = #{accountId}
+    </update>
+
+</mapper>

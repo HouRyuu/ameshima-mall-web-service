@@ -40,6 +40,9 @@ public class GlobalConfig {
 
     public static final String SEARCH_PAGE_SIZE = "search_pageSize";
 
+    public static final String CART_PAGE_SIZE = "cart_pageSize";
+
+
     @Autowired
     private GlobalConfigMapper globalConfigMapper;
 
