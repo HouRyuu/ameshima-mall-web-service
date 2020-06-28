@@ -64,18 +64,30 @@
         ORDER BY
             t1.is_delete ASC,
             t.update_time DESC,
-            t.create_time DESC
+            t.id DESC
     </select>
 
     <update id="remove">
         UPDATE t_shopping_cart
-        SET is_delete = 0
+        SET is_delete = 1
         WHERE
         id IN
         <foreach collection="ids" open="(" separator="," close=")" item="id">
             #{id}
         </foreach>
         AND account_id = #{accountId}
+        AND is_delete = 0
+    </update>
+
+    <update id="updateAmount">
+        UPDATE t_shopping_cart t
+        INNER JOIN t_goods_sku t1 ON t1.id = t.sku_id
+        AND t1.is_delete = 0
+        SET amount = #{amount}
+        WHERE
+            t.id = #{cartId}
+            AND t.account_id = #{accountId}
+            AND t1.quantity >= #{amount}
     </update>
 
 </mapper>

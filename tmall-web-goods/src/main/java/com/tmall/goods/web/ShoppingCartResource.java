@@ -47,8 +47,13 @@ public class ShoppingCartResource {
     @LoginRequire
     @PostMapping("/remove")
     public AjaxResult remove(@RequestBody Map<String, Set<Integer>> idMap) {
-        shoppingCartService.remove(idMap.get("ids"));
-        return AjaxResult.success();
+        return shoppingCartService.remove(idMap.get("ids"));
+    }
+
+    @LoginRequire
+    @PutMapping("/{cartId}/amount/{amount}/update")
+    public AjaxResult updateAmount(@PathVariable int cartId, @PathVariable int amount) {
+        return shoppingCartService.updateAmount(cartId, amount);
     }
 
 }

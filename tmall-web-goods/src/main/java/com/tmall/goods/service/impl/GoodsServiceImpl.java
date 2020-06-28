@@ -92,6 +92,9 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public GoodsDTO getGoods(int goodsId) {
         GoodsDTO result = goodsMapper.getGoods(goodsId);
+        if (result == null) {
+            return null;
+        }
         int evaluateCount = 0;
         try {
             evaluateCount = orderEvaluateService.count(goodsId);

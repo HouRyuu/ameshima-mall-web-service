@@ -25,4 +25,5 @@ public interface ShoppingCartService {
 
     AjaxResult remove(Set<Integer> ids);
 
+    AjaxResult updateAmount(int cartId, int amount);
 }

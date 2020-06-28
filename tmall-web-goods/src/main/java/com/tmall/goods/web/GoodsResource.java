@@ -3,6 +3,7 @@ package com.tmall.goods.web;
 import java.util.List;
 import java.util.Map;
 
+import com.tmall.goods.constants.GoodsErrResultEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,11 +39,6 @@ public class GoodsResource {
     private GoodsPromoteService goodsPromoteService;
     @Autowired
     private GoodsAttrService goodsAttrService;
-
-    @GetMapping("/hello")
-    public String hello() {
-        return "hello Goods";
-    }
 
     @GetMapping("/getGoods/{id}")
     public GoodsDTO getGoods(@PathVariable Integer id) {
@@ -85,7 +81,11 @@ public class GoodsResource {
     @GetMapping("/{goodsId}/detail")
     public AjaxResult detail(@PathVariable int goodsId) {
         Map<String, Object> result = Maps.newHashMap();
-        result.put("goods", goodsService.getGoods(goodsId));
+        GoodsDTO goods = goodsService.getGoods(goodsId);
+        if (goods == null) {
+            return AjaxResult.error(GoodsErrResultEnum.GOODS_NOT_EXISTS);
+        }
+        result.put("goods", goods);
         result.put("attrs", goodsAttrService.findGoodsAttrList(goodsId));
         result.put("skus", goodsService.findSku(goodsId));
         List<GoodsImgDTO> imgList = goodsService.findImgs(goodsId);

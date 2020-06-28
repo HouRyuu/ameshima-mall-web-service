@@ -1,6 +1,4 @@
-package com.tmall.goods.constants;
-
-import com.tmall.common.constants.IErrResult;
+package com.tmall.common.constants;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -10,24 +8,25 @@ import com.tmall.common.constants.IErrResult;
  * @see [相关类/方法]（可选）
  * @since [产品/模块版本] （可选）
  */
-public enum GoodsErrResultEnum implements IErrResult {
-    ADD_CART_FAIL(300, "超过库存数量了哦"), DEL_CART_FAIL(301, "删除失败，请稍后再试"), GOODS_NOT_EXISTS(302, "商品不存在");
+public enum CommonErrResult implements IErrResult {
+
+    OPERATE_FAIL(500, "啊哦，操作失败啦。重新操作下试试吧^_^");
 
     private int errCode;
     private String errMsg;
 
-    GoodsErrResultEnum(int errCode, String errMsg) {
+    CommonErrResult(int errCode, String errMsg) {
         this.errCode = errCode;
         this.errMsg = errMsg;
     }
 
     @Override
     public int errCode() {
-        return errCode;
+        return 0;
     }
 
     @Override
     public String errMsg() {
-        return errMsg;
+        return null;
     }
 }

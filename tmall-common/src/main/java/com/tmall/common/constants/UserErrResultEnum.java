@@ -9,7 +9,7 @@ package com.tmall.common.constants;
  * @since [产品/模块版本] （可选）
  */
 public enum UserErrResultEnum implements IErrResult {
-    LOGIN_FAIL(200, "手机号或密码错误"), NOT_LOGIN(201, "未登录"), INVALID_LOGIN(202, "登录已失效"), CAPTCHA_ERR(203,
+    LOGIN_FAIL(200, "手机号或密码错误"), NOT_LOGIN(201, "先去登录吧，亲~"), INVALID_LOGIN(202, "登录已失效"), CAPTCHA_ERR(203,
             "验证码错误"), REG_FAIL(204, "注册失败"), REG_ACCOUNT_EXISTS(205, "手机号已被注册"), ACCOUNT_NOT_EXISTS(206, "手机号不存在");
 
     private int errCode;
