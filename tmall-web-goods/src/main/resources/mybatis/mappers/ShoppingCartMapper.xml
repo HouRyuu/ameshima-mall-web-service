@@ -10,6 +10,7 @@
             t_shopping_cart t
         INNER JOIN t_goods_sku t1 ON t1.id = t.sku_id
         AND t1.is_delete = 0
+	    AND t1.quantity > 0
         WHERE
             t.is_delete = 0
         AND t.account_id = #{accountId}
@@ -40,30 +41,35 @@
 
     <select id="findGoods" resultType="CartGoodsDTO">
         SELECT
-            t.id,
-            t2.store_id,
-            t2.store_name,
-            t1.goods_id,
-            t2.img_url,
-            t2.`name`,
-            t1.price,
-            t1.market_price,
-            t.sku_id,
-            t1.attrs,
-            t.attrs_json,
-            t.amount,
-	        t1.quantity,
-            t1.is_delete state
+            *
         FROM
-            t_shopping_cart t
-        INNER JOIN t_goods_sku t1 ON t1.id = t.sku_id
-        INNER JOIN t_goods t2 ON t2.id = t1.goods_id
-        WHERE
-            t.is_delete = 0
-        AND t.account_id = #{accountId}
+            (
+            SELECT
+                t.id,
+                t2.store_id,
+                t2.store_name,
+                t1.goods_id,
+                t2.img_url,
+                t2.`name`,
+                t1.price,
+                t1.market_price,
+                t.sku_id,
+                t1.attrs,
+                t.attrs_json,
+                t.amount,
+                t1.quantity,
+                t1.is_delete
+                OR 0 > t1.quantity state
+            FROM
+                t_shopping_cart t
+                INNER JOIN t_goods_sku t1 ON t1.id = t.sku_id
+                INNER JOIN t_goods t2 ON t2.id = t1.goods_id
+            WHERE
+                t.is_delete = 0
+                AND t.account_id = #{accountId}
+            ) t
         ORDER BY
-            t1.is_delete ASC,
-            t.update_time DESC,
+            t.state,
             t.id DESC
     </select>
 
@@ -88,6 +94,15 @@
             t.id = #{cartId}
             AND t.account_id = #{accountId}
             AND t1.quantity >= #{amount}
+    </update>
+
+    <update id="removeFailCart">
+        UPDATE t_shopping_cart t
+        INNER JOIN t_goods_sku t1 ON t1.id = t.sku_id
+        SET t.is_delete = 1
+        WHERE
+        t.account_id = #{accountId}
+        AND ( t1.is_delete = 1 OR 1 > t1.quantity )
     </update>
 
 </mapper>

@@ -52,7 +52,10 @@ public class AlipayResource {
         if (loginInfo == null) {
             return AjaxResult.error(AlipayErrResultEnum.AUTH_FAIL);
         }
-        String token = CommonUtil.getUuid();
+        String token;
+        do {
+            token = CommonUtil.getUuid();
+        } while (redisClient.get(CommonKey.TOKEN, token) != null);
         redisClient.set(CommonKey.TOKEN, token, loginInfo);
         return AjaxResult.success(token);
     }

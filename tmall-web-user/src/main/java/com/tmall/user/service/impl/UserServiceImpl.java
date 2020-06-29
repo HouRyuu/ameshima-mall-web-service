@@ -68,7 +68,10 @@ public class UserServiceImpl implements UserService {
             LoginUser loginUser = new LoginUser();
             loginUser.setAccountId(accountId);
             loginUser.setNickName(registerInfo.getNickName());
-            String token = CommonUtil.getUuid();
+            String token;
+            do {
+                token = CommonUtil.getUuid();
+            } while (redisClient.get(CommonKey.TOKEN, token) != null);
             redisClient.set(CommonKey.TOKEN, token, loginUser);
             return AjaxResult.success(token);
         } catch (DuplicateKeyException e) {

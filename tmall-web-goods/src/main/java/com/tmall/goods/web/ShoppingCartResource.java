@@ -3,6 +3,7 @@ package com.tmall.goods.web;
 import java.util.Map;
 import java.util.Set;
 
+import com.tmall.common.dto.LoginInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,31 +30,38 @@ public class ShoppingCartResource {
     @LoginRequire
     @PostMapping("/add")
     public AjaxResult add(@RequestBody ShoppingCartDTO param) {
+        param.setAccountId(LoginInfo.get().getAccountId());
         return shoppingCartService.add(param);
     }
 
     @LoginRequire
     @GetMapping("/getCartCount")
     public AjaxResult getCartCount() {
-        return AjaxResult.success(shoppingCartService.getCartCount());
+        return AjaxResult.success(shoppingCartService.getCartCount(LoginInfo.get().getAccountId()));
     }
 
     @LoginRequire
     @GetMapping("/findGoods")
     public AjaxResult findGoods() {
-        return AjaxResult.success(shoppingCartService.findGoods());
+        return AjaxResult.success(shoppingCartService.findGoods(LoginInfo.get().getAccountId()));
     }
 
     @LoginRequire
     @PostMapping("/remove")
     public AjaxResult remove(@RequestBody Map<String, Set<Integer>> idMap) {
-        return shoppingCartService.remove(idMap.get("ids"));
+        return shoppingCartService.remove(idMap.get("ids"), LoginInfo.get().getAccountId());
     }
 
     @LoginRequire
     @PutMapping("/{cartId}/amount/{amount}/update")
     public AjaxResult updateAmount(@PathVariable int cartId, @PathVariable int amount) {
-        return shoppingCartService.updateAmount(cartId, amount);
+        return shoppingCartService.updateAmount(cartId, amount, LoginInfo.get().getAccountId());
+    }
+
+    @LoginRequire
+    @DeleteMapping("/fail/remove")
+    public AjaxResult removeFailCart() {
+        return shoppingCartService.removeFailCart(LoginInfo.get().getAccountId());
     }
 
 }

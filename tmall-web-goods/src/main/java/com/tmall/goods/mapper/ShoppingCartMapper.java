@@ -29,4 +29,6 @@ public interface ShoppingCartMapper extends BaseMapper<ShoppingCartPO> {
     int remove(@Param("ids") Set<Integer> ids, @Param("accountId") int accountId);
 
     void updateAmount(@Param("cartId") int cartId, @Param("amount") int amount, @Param("accountId") int accountId);
+
+    void removeFailCart(@Param("accountId") int accountId);
 }

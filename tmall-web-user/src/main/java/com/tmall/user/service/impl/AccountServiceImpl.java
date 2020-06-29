@@ -69,7 +69,10 @@ public class AccountServiceImpl implements AccountService {
         if (loginUser == null) {
             return AjaxResult.error(UserErrResultEnum.LOGIN_FAIL);
         }
-        String token = CommonUtil.getUuid();
+        String token;
+        do {
+            token = CommonUtil.getUuid();
+        } while (redisClient.get(CommonKey.TOKEN, token) != null);
         redisClient.set(CommonKey.TOKEN, token, loginUser);
         return AjaxResult.success(token);
     }

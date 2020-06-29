@@ -18,7 +18,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tmall.common.constants.TmallConstant;
 import com.tmall.common.dto.AjaxResult;
-import com.tmall.common.dto.LoginInfo;
 import com.tmall.goods.constants.GoodsErrResultEnum;
 import com.tmall.goods.entity.dto.CartGoodsDTO;
 import com.tmall.goods.entity.dto.ShoppingCartDTO;
@@ -44,9 +43,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public AjaxResult add(ShoppingCartDTO param) {
-        if (param != null) {
-            param.setAccountId(LoginInfo.get().getAccountId());
-        }
         Assert.isTrue(param != null && param.getSkuId() != 0 && StringUtils.isNotBlank(param.getAttrsJson())
                 && param.getAmount() != 0, TmallConstant.PARAM_ERR_MSG);
         if (shoppingCartMapper.add(param) > 0) {
@@ -56,13 +52,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public int getCartCount() {
-        return shoppingCartMapper.getCartCount(LoginInfo.get().getAccountId());
+    public int getCartCount(int accountId) {
+        return shoppingCartMapper.getCartCount(accountId);
     }
 
     @Override
-    public Collection<ShopCartVO> findGoods() {
-        List<CartGoodsDTO> goodsList = shoppingCartMapper.findGoods(LoginInfo.get().getAccountId());
+    public Collection<ShopCartVO> findGoods(int accountId) {
+        List<CartGoodsDTO> goodsList = shoppingCartMapper.findGoods(accountId);
         Map<ShopCartVO, ShopCartVO> cartMap = Maps.newLinkedHashMap();
         ShopCartVO shopCart, temp;
         for (CartGoodsDTO goods : goodsList) {
@@ -79,9 +75,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public AjaxResult remove(Set<Integer> ids) {
+    public AjaxResult remove(Set<Integer> ids, int accountId) {
         Assert.isTrue(!CollectionUtils.isEmpty(ids), TmallConstant.PARAM_ERR_MSG);
-        int accountId = LoginInfo.get().getAccountId();
         try {
             shoppingCartMapper.remove(ids, accountId);
             return AjaxResult.success();
@@ -93,15 +88,25 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public AjaxResult updateAmount(int cartId, int amount) {
+    public AjaxResult updateAmount(int cartId, int amount, int accountId) {
         Assert.isTrue(cartId > 0 && amount > 0, TmallConstant.PARAM_ERR_MSG);
-        int accountId = LoginInfo.get().getAccountId();
         try {
             shoppingCartMapper.updateAmount(cartId, amount, accountId);
             return AjaxResult.success();
         } catch (Exception e) {
             LOGGER.error("Update shopping-cart's amount Fail. Param => {cartId:{}, amount:{}, accountId:{}}", cartId,
                     amount, accountId, e);
+            return AjaxResult.error(CommonErrResult.OPERATE_FAIL);
+        }
+    }
+
+    @Override
+    public AjaxResult removeFailCart(int accountId) {
+        try {
+            shoppingCartMapper.removeFailCart(accountId);
+            return AjaxResult.success();
+        } catch (Exception e) {
+            LOGGER.error("Remove fail cart's goods was Fail. Param => {accountId:{}}", accountId, e);
             return AjaxResult.error(CommonErrResult.OPERATE_FAIL);
         }
     }

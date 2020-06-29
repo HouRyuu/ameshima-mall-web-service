@@ -19,11 +19,13 @@ public interface ShoppingCartService {
 
     AjaxResult add(ShoppingCartDTO param);
 
-    int getCartCount();
+    int getCartCount(int accountId);
 
-    Collection<ShopCartVO> findGoods();
+    Collection<ShopCartVO> findGoods(int accountId);
 
-    AjaxResult remove(Set<Integer> ids);
+    AjaxResult remove(Set<Integer> ids, int accountId);
 
-    AjaxResult updateAmount(int cartId, int amount);
+    AjaxResult updateAmount(int cartId, int amount, int accountId);
+
+    AjaxResult removeFailCart(int accountId);
 }
