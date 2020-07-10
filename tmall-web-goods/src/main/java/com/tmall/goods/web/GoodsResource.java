@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tmall.common.constants.GlobalConfig;
-import com.tmall.common.dto.AjaxResult;
+import com.tmall.common.dto.PublicResult;
 import com.tmall.goods.entity.dto.GoodsImgDTO;
 import com.tmall.goods.entity.dto.GuessLikeQueryDTO;
 import com.tmall.goods.entity.dto.QueryGoodsDTO;
@@ -49,41 +49,41 @@ public class GoodsResource {
     }
 
     @GetMapping("/findSecondCategories")
-    public AjaxResult findSecondCategories() {
-        return AjaxResult.success(goodsCategoryService.findSecondCategories());
+    public PublicResult findSecondCategories() {
+        return PublicResult.success(goodsCategoryService.findSecondCategories());
     }
 
     @GetMapping("/{pid}/findCategories")
-    public AjaxResult findCategoriesByPid(@PathVariable int pid) {
-        return AjaxResult.success(goodsCategoryService.findCategoriesByPid(pid));
+    public PublicResult findCategoriesByPid(@PathVariable int pid) {
+        return PublicResult.success(goodsCategoryService.findCategoriesByPid(pid));
     }
 
     @GetMapping("/indexPromotePlate")
-    public AjaxResult indexPromotePlate() {
-        return AjaxResult.success(goodsPromoteService.findPromotes());
+    public PublicResult indexPromotePlate() {
+        return PublicResult.success(goodsPromoteService.findPromotes());
     }
 
     @GetMapping("/{promoteId}/findPromoteGoods")
-    public AjaxResult findPromoteGoods(@PathVariable int promoteId) {
-        return AjaxResult.success(goodsService.findByPromote(promoteId));
+    public PublicResult findPromoteGoods(@PathVariable int promoteId) {
+        return PublicResult.success(goodsService.findByPromote(promoteId));
     }
 
     @PostMapping("/guessLike")
-    public AjaxResult guessLike(@RequestBody GuessLikeQueryDTO queryParam) {
-        return AjaxResult.success(goodsService.findByCategories(queryParam));
+    public PublicResult guessLike(@RequestBody GuessLikeQueryDTO queryParam) {
+        return PublicResult.success(goodsService.findByCategories(queryParam));
     }
 
     @GetMapping("/{storeId}/storeGoods")
-    public AjaxResult storeGoods(@PathVariable int storeId) {
-        return AjaxResult.success(goodsService.storeGoods(storeId));
+    public PublicResult storeGoods(@PathVariable int storeId) {
+        return PublicResult.success(goodsService.storeGoods(storeId));
     }
 
     @GetMapping("/{goodsId}/detail")
-    public AjaxResult detail(@PathVariable int goodsId) {
+    public PublicResult detail(@PathVariable int goodsId) {
         Map<String, Object> result = Maps.newHashMap();
         GoodsDTO goods = goodsService.getGoods(goodsId);
         if (goods == null) {
-            return AjaxResult.error(GoodsErrResultEnum.GOODS_NOT_EXISTS);
+            return PublicResult.error(GoodsErrResultEnum.GOODS_NOT_EXISTS);
         }
         result.put("goods", goods);
         result.put("attrs", goodsAttrService.findGoodsAttrList(goodsId));
@@ -100,22 +100,22 @@ public class GoodsResource {
         result.put("coverImgs", coverImgs);
         result.put("detailImgs", detailImgs);
         result.put("params", goodsService.findParams(goodsId));
-        return AjaxResult.success(result);
+        return PublicResult.success(result);
     }
 
     @GetMapping("/{goodsId}/{cityCode}/freight")
-    public AjaxResult freight(@PathVariable int goodsId, @PathVariable String cityCode) {
-        return AjaxResult.success(goodsService.getFreight(goodsId, cityCode));
+    public PublicResult freight(@PathVariable int goodsId, @PathVariable String cityCode) {
+        return PublicResult.success(goodsService.getFreight(goodsId, cityCode));
     }
 
     @PostMapping("/indexGoods")
-    public AjaxResult indexGoods(@RequestBody QueryGoodsDTO queryParam) {
-        return AjaxResult.success(goodsService.indexGoods(queryParam));
+    public PublicResult indexGoods(@RequestBody QueryGoodsDTO queryParam) {
+        return PublicResult.success(goodsService.indexGoods(queryParam));
     }
 
     @PostMapping("/findBrandsAndCategories")
-    public AjaxResult findBrandsAndCategories(@RequestBody QueryGoodsDTO queryParam) {
-        return AjaxResult.success(goodsService.findBrandsAndCategories(queryParam));
+    public PublicResult findBrandsAndCategories(@RequestBody QueryGoodsDTO queryParam) {
+        return PublicResult.success(goodsService.findBrandsAndCategories(queryParam));
     }
 
 }

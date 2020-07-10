@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tmall.common.dto.AjaxResult;
+import com.tmall.common.dto.PublicResult;
 import com.tmall.store.service.StoreEvaluateService;
 
 /**
@@ -25,8 +25,8 @@ public class StoreEvaluateController {
     private StoreEvaluateService storeEvaluateService;
 
     @GetMapping("/{storeId}/getEvaluate")
-    public AjaxResult getEvaluate(@PathVariable int storeId) {
-        return AjaxResult.success(storeEvaluateService.getStoreEvaluate(storeId));
+    public PublicResult getEvaluate(@PathVariable int storeId) {
+        return PublicResult.success(storeEvaluateService.getStoreEvaluate(storeId));
     }
 
 }

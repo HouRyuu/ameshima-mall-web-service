@@ -10,38 +10,39 @@ import com.tmall.common.constants.IErrResult;
  * @see [相关类/方法]（可选）
  * @since [产品/模块版本] （可选）
  */
-public class AjaxResult {
+@SuppressWarnings("unchecked")
+public class PublicResult<T> {
 
     private int errCode;
     private String errMsg;
-    private Object data;
+    private T data;
 
-    private AjaxResult() {
+    private PublicResult() {
     }
 
-    public AjaxResult(int errCode, String errMsg) {
+    public PublicResult(int errCode, String errMsg) {
         this.errCode = errCode;
         this.errMsg = errMsg;
     }
 
-    public AjaxResult(Object data) {
+    public PublicResult(T data) {
         this.data = data;
     }
 
-    public static AjaxResult error(int errCode, String errMsg) {
-        return new AjaxResult(errCode, errMsg);
+    public static <T> PublicResult<T> error(int errCode, String errMsg) {
+        return new PublicResult(errCode, errMsg);
     }
 
-    public static AjaxResult error(IErrResult errResult) {
-        return new AjaxResult(errResult.errCode(), errResult.errMsg());
+    public static <T> PublicResult<T> error(IErrResult errResult) {
+        return new PublicResult(errResult.errCode(), errResult.errMsg());
     }
 
-    public static AjaxResult success() {
-        return new AjaxResult();
+    public static PublicResult success() {
+        return new PublicResult();
     }
 
-    public static AjaxResult success(Object data) {
-        return new AjaxResult(data);
+    public static <T> PublicResult<T> success(T data) {
+        return new PublicResult(data);
     }
 
     public int getErrCode() {
@@ -64,7 +65,7 @@ public class AjaxResult {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 }

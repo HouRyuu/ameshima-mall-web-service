@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tmall.common.annotation.LoginRequire;
-import com.tmall.common.dto.AjaxResult;
+import com.tmall.common.dto.PublicResult;
 import com.tmall.common.dto.LoginInfo;
 import com.tmall.common.redis.RedisClient;
 import com.tmall.common.redis.key.CommonKey;
@@ -50,39 +50,39 @@ public class UserResource {
 
     @LoginRequire
     @GetMapping("/loginInfo")
-    public AjaxResult loginInfo() {
-        return AjaxResult.success(LoginInfo.get());
+    public PublicResult loginInfo() {
+        return PublicResult.success(LoginInfo.get());
     }
 
     @PostMapping("/login")
-    public AjaxResult login(@RequestBody AccountPO account) {
+    public PublicResult login(@RequestBody AccountPO account) {
         return accountService.login(account);
     }
 
     @LoginRequire
     @GetMapping("/logout")
-    public AjaxResult logout() {
+    public PublicResult logout() {
         redisClient.removeKey(CommonKey.TOKEN, LoginInfo.getToken());
-        return AjaxResult.success();
+        return PublicResult.success();
     }
 
     @GetMapping("/sendRegisterCaptcha")
-    public AjaxResult sendRegisterCaptcha(String account) {
+    public PublicResult sendRegisterCaptcha(String account) {
         return accountService.sendRegisterCaptcha(account);
     }
 
     @PostMapping("/register")
-    public AjaxResult register(@RequestBody RegisterDTO registerInfo) {
+    public PublicResult register(@RequestBody RegisterDTO registerInfo) {
         return userService.register(registerInfo);
     }
 
     @GetMapping("/sendForgetCaptcha")
-    public AjaxResult sendForgetCaptcha(String account) {
+    public PublicResult sendForgetCaptcha(String account) {
         return accountService.sendForgetCaptcha(account);
     }
 
     @PostMapping("/forgetPwd")
-    public AjaxResult forgetPwd(@RequestBody RegisterDTO registerInfo) {
+    public PublicResult forgetPwd(@RequestBody RegisterDTO registerInfo) {
         return accountService.forgetPwd(registerInfo);
     }
 

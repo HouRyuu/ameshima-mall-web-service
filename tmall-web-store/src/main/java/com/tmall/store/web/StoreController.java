@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tmall.common.dto.AjaxResult;
+import com.tmall.common.dto.PublicResult;
 import com.tmall.store.service.StoreBannerService;
 import com.tmall.store.service.StoreBrandService;
 
@@ -25,13 +25,13 @@ public class StoreController {
     private StoreBrandService storeBrandService;
 
     @GetMapping("/index/banner")
-    public AjaxResult indexBanner() {
-        return AjaxResult.success(storeBannerService.findIndexBanner());
+    public PublicResult indexBanner() {
+        return PublicResult.success(storeBannerService.findIndexBanner());
     }
 
     @GetMapping("/index/brand")
-    public AjaxResult indexBrands() {
-        return AjaxResult.success(storeBrandService.findIndexBrands());
+    public PublicResult indexBrands() {
+        return PublicResult.success(storeBrandService.findIndexBrands());
     }
 
 }

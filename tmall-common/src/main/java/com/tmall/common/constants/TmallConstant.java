@@ -23,4 +23,7 @@ public final class TmallConstant {
 
     public static final short REGION_LEVEL_PROVINCE = 2;
 
+    public static final short YES = 1;
+    public static final short NO = 0;
+
 }

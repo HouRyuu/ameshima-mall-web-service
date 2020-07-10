@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tmall.basicData.entity.dto.RegionDTO;
 import com.tmall.basicData.service.RegionService;
 import com.tmall.common.constants.TmallConstant;
-import com.tmall.common.dto.AjaxResult;
+import com.tmall.common.dto.PublicResult;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -27,13 +27,13 @@ public class RegionResource {
     private RegionService regionService;
 
     @GetMapping("/provinces")
-    private AjaxResult provinces() {
-        return AjaxResult.success(regionService.findRegion(new RegionDTO(TmallConstant.REGION_LEVEL_PROVINCE)));
+    private PublicResult provinces() {
+        return PublicResult.success(regionService.findRegion(new RegionDTO(TmallConstant.REGION_LEVEL_PROVINCE)));
     }
 
     @GetMapping("/{parentCode}/findByParent")
-    private AjaxResult findByParent(@PathVariable String parentCode) {
-        return AjaxResult.success(regionService.findRegion(new RegionDTO(parentCode)));
+    private PublicResult findByParent(@PathVariable String parentCode) {
+        return PublicResult.success(regionService.findRegion(new RegionDTO(parentCode)));
     }
 
 }

@@ -1,7 +1,9 @@
 package com.tmall.user.service;
 
+import java.util.List;
+
 import com.tmall.common.dto.PublicResult;
-import com.tmall.user.entity.dto.RegisterDTO;
+import com.tmall.user.entity.dto.AddressDTO;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -11,8 +13,12 @@ import com.tmall.user.entity.dto.RegisterDTO;
  * @see [相关类/方法]（可选）
  * @since [产品/模块版本] （可选）
  */
-public interface UserService {
+public interface AddressService {
 
-    PublicResult<String> register(RegisterDTO registerInfo);
+    PublicResult save(AddressDTO address, int accountId);
+
+    PublicResult remove(int id, int accountId);
+
+    List<AddressDTO> findList(int accountId);
 
 }

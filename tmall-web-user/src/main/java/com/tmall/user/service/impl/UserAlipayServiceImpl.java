@@ -1,10 +1,14 @@
 package com.tmall.user.service.impl;
 
+import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.alibaba.fastjson.JSON;
 import com.alipay.api.request.AlipaySystemOauthTokenRequest;
@@ -12,14 +16,13 @@ import com.alipay.api.request.AlipayUserInfoShareRequest;
 import com.alipay.api.response.AlipaySystemOauthTokenResponse;
 import com.alipay.api.response.AlipayUserInfoShareResponse;
 import com.tmall.common.constants.TmallConstant;
-import com.tmall.common.utils.AlipayUtil;
 import com.tmall.common.dto.LoginUser;
+import com.tmall.common.utils.AlipayUtil;
 import com.tmall.user.entity.po.AccountPO;
 import com.tmall.user.entity.po.UserAlipayPO;
 import com.tmall.user.mapper.UserAlipayMapper;
 import com.tmall.user.service.AccountService;
 import com.tmall.user.service.UserAlipayService;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -34,15 +37,16 @@ public class UserAlipayServiceImpl implements UserAlipayService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserAlipayServiceImpl.class);
 
-    @Autowired
+    @Resource
     private UserAlipayMapper userAlipayMapper;
-    @Autowired
+    @Resource
     private AlipayUtil alipayUtil;
-    @Autowired
+    @Resource
     private AccountService accountService;
+    @Resource
+    private TransactionTemplate transactionTemplate;
 
     @Override
-    @Transactional
     public LoginUser login(String authCode) {
         LOGGER.info("支付宝返回authCode=>{}", authCode);
         AlipaySystemOauthTokenRequest authRequest = new AlipaySystemOauthTokenRequest();
@@ -57,22 +61,7 @@ public class UserAlipayServiceImpl implements UserAlipayService {
                         oauthTokenResponse.getAccessToken());
                 LOGGER.info("获取支付宝用户信息=>{}", JSON.toJSONString(userinfoShareResponse));
                 if (userinfoShareResponse.isSuccess()) {
-                    UserAlipayPO userAlipay = new UserAlipayPO();
-                    userAlipay.setUserId(userinfoShareResponse.getUserId());
-                    userAlipay = userAlipayMapper.selectOne(userAlipay);
-                    if (userAlipay == null) {
-                        AccountPO account = new AccountPO();
-                        account.setFirstUserType(TmallConstant.ACCOUNT_TYPE_ALIPAY);
-                        accountService.create(account);
-                        userAlipay = new UserAlipayPO();
-                        userAlipay.setAccountId(account.getId());
-                    }
-                    BeanUtils.copyProperties(userinfoShareResponse, userAlipay);
-                    userAlipayMapper.saveOrUpdate(userAlipay);
-                    LoginUser loginInfo = new LoginUser();
-                    BeanUtils.copyProperties(userAlipay, loginInfo);
-                    loginInfo.setAccountType(TmallConstant.ACCOUNT_TYPE_ALIPAY);
-                    return loginInfo;
+                    return getLoginInfo(userinfoShareResponse);
                 }
                 throw new RuntimeException(userinfoShareResponse.getSubMsg());
             }
@@ -82,4 +71,29 @@ public class UserAlipayServiceImpl implements UserAlipayService {
         }
         return null;
     }
+
+    private LoginUser getLoginInfo(AlipayUserInfoShareResponse userinfoShareResponse) {
+        final UserAlipayPO[] userAlipay = { new UserAlipayPO() };
+        userAlipay[0].setUserId(userinfoShareResponse.getUserId());
+        userAlipay[0] = userAlipayMapper.selectOne(userAlipay[0]);
+        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
+                if (userAlipay[0] == null) {
+                    AccountPO account = new AccountPO();
+                    account.setFirstUserType(TmallConstant.ACCOUNT_TYPE_ALIPAY);
+                    accountService.create(account);
+                    userAlipay[0] = new UserAlipayPO();
+                    userAlipay[0].setAccountId(account.getId());
+                }
+                BeanUtils.copyProperties(userinfoShareResponse, userAlipay[0]);
+                userAlipayMapper.saveOrUpdate(userAlipay[0]);
+            }
+        });
+        LoginUser loginInfo = new LoginUser();
+        BeanUtils.copyProperties(userAlipay[0], loginInfo);
+        loginInfo.setAccountType(TmallConstant.ACCOUNT_TYPE_ALIPAY);
+        return loginInfo;
+    }
+
 }

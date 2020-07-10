@@ -3,7 +3,7 @@ package com.tmall.goods.service;
 import java.util.Collection;
 import java.util.Set;
 
-import com.tmall.common.dto.AjaxResult;
+import com.tmall.common.dto.PublicResult;
 import com.tmall.goods.entity.dto.ShoppingCartDTO;
 import com.tmall.goods.entity.vo.ShopCartVO;
 
@@ -17,15 +17,15 @@ import com.tmall.goods.entity.vo.ShopCartVO;
  */
 public interface ShoppingCartService {
 
-    AjaxResult add(ShoppingCartDTO param);
+    PublicResult add(ShoppingCartDTO param);
 
     int getCartCount(int accountId);
 
     Collection<ShopCartVO> findGoods(int accountId);
 
-    AjaxResult remove(Set<Integer> ids, int accountId);
+    PublicResult remove(Set<Integer> ids, int accountId);
 
-    AjaxResult updateAmount(int cartId, int amount, int accountId);
+    PublicResult updateAmount(int cartId, int amount, int accountId);
 
-    AjaxResult removeFailCart(int accountId);
+    PublicResult removeFailCart(int accountId);
 }

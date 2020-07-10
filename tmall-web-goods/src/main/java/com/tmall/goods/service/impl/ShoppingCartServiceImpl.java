@@ -17,7 +17,7 @@ import org.springframework.util.CollectionUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tmall.common.constants.TmallConstant;
-import com.tmall.common.dto.AjaxResult;
+import com.tmall.common.dto.PublicResult;
 import com.tmall.goods.constants.GoodsErrResultEnum;
 import com.tmall.goods.entity.dto.CartGoodsDTO;
 import com.tmall.goods.entity.dto.ShoppingCartDTO;
@@ -42,13 +42,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private ShoppingCartMapper shoppingCartMapper;
 
     @Override
-    public AjaxResult add(ShoppingCartDTO param) {
+    public PublicResult add(ShoppingCartDTO param) {
         Assert.isTrue(param != null && param.getSkuId() != 0 && StringUtils.isNotBlank(param.getAttrsJson())
                 && param.getAmount() != 0, TmallConstant.PARAM_ERR_MSG);
         if (shoppingCartMapper.add(param) > 0) {
-            return AjaxResult.success();
+            return PublicResult.success();
         }
-        return AjaxResult.error(GoodsErrResultEnum.ADD_CART_FAIL);
+        return PublicResult.error(GoodsErrResultEnum.ADD_CART_FAIL);
     }
 
     @Override
@@ -75,39 +75,39 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public AjaxResult remove(Set<Integer> ids, int accountId) {
+    public PublicResult remove(Set<Integer> ids, int accountId) {
         Assert.isTrue(!CollectionUtils.isEmpty(ids), TmallConstant.PARAM_ERR_MSG);
         try {
             shoppingCartMapper.remove(ids, accountId);
-            return AjaxResult.success();
+            return PublicResult.success();
         } catch (Exception e) {
             LOGGER.error("Remove shopping-cart Fail. Param => {ids:{}, accountId:{}}", StringUtils.join(ids), accountId,
                     e);
-            return AjaxResult.error(GoodsErrResultEnum.DEL_CART_FAIL);
+            return PublicResult.error(GoodsErrResultEnum.DEL_CART_FAIL);
         }
     }
 
     @Override
-    public AjaxResult updateAmount(int cartId, int amount, int accountId) {
+    public PublicResult updateAmount(int cartId, int amount, int accountId) {
         Assert.isTrue(cartId > 0 && amount > 0, TmallConstant.PARAM_ERR_MSG);
         try {
             shoppingCartMapper.updateAmount(cartId, amount, accountId);
-            return AjaxResult.success();
+            return PublicResult.success();
         } catch (Exception e) {
             LOGGER.error("Update shopping-cart's amount Fail. Param => {cartId:{}, amount:{}, accountId:{}}", cartId,
                     amount, accountId, e);
-            return AjaxResult.error(CommonErrResult.OPERATE_FAIL);
+            return PublicResult.error(CommonErrResult.OPERATE_FAIL);
         }
     }
 
     @Override
-    public AjaxResult removeFailCart(int accountId) {
+    public PublicResult removeFailCart(int accountId) {
         try {
             shoppingCartMapper.removeFailCart(accountId);
-            return AjaxResult.success();
+            return PublicResult.success();
         } catch (Exception e) {
             LOGGER.error("Remove fail cart's goods was Fail. Param => {accountId:{}}", accountId, e);
-            return AjaxResult.error(CommonErrResult.OPERATE_FAIL);
+            return PublicResult.error(CommonErrResult.OPERATE_FAIL);
         }
     }
 }

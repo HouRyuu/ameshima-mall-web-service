@@ -10,11 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.tmall.common.constants.GlobalConfig;
 import com.tmall.common.constants.TmallConstant;
 import com.tmall.common.constants.UserErrResultEnum;
-import com.tmall.common.dto.AjaxResult;
 import com.tmall.common.dto.LoginUser;
+import com.tmall.common.dto.PublicResult;
 import com.tmall.common.redis.RedisClient;
 import com.tmall.common.redis.key.CommonKey;
 import com.tmall.common.utils.CheckUtil;
@@ -44,11 +43,9 @@ public class AccountServiceImpl implements AccountService {
     private AccountMapper accountMapper;
     @Autowired
     private RedisClient redisClient;
-    @Autowired
-    private GlobalConfig globalConfig;
 
     @Override
-    public Integer create(AccountPO account) {
+    public int create(AccountPO account) {
         Assert.notNull(account, "account can not be null.");
         if (StringUtils.isBlank(account.getAccount())) {
             account.setAccount(CommonUtil.getUuid());
@@ -61,64 +58,64 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AjaxResult login(AccountPO account) {
+    public PublicResult<String> login(AccountPO account) {
         Assert.isTrue(account != null && !StringUtils.isAnyBlank(account.getAccount(), account.getPassword()),
                 TmallConstant.PARAM_ERR_MSG);
         account.setPassword(DigestUtils.md5Hex(DigestUtils.md5(account.getPassword())));
         LoginUser loginUser = accountMapper.login(account);
         if (loginUser == null) {
-            return AjaxResult.error(UserErrResultEnum.LOGIN_FAIL);
+            return PublicResult.error(UserErrResultEnum.LOGIN_FAIL);
         }
         String token;
         do {
             token = CommonUtil.getUuid();
         } while (redisClient.get(CommonKey.TOKEN, token) != null);
         redisClient.set(CommonKey.TOKEN, token, loginUser);
-        return AjaxResult.success(token);
+        return PublicResult.success(token);
     }
 
     @Override
-    public AjaxResult sendRegisterCaptcha(String account) {
+    public PublicResult sendRegisterCaptcha(String account) {
         Assert.hasText(account, TmallConstant.PARAM_ERR_MSG);
         AccountPO accountPO = new AccountPO();
         accountPO.setAccount(account);
         if (accountMapper.selectCount(accountPO) > 0) {
             LOGGER.warn("手机号已被注册=>{}", account);
-            return AjaxResult.error(UserErrResultEnum.REG_ACCOUNT_EXISTS);
+            return PublicResult.error(UserErrResultEnum.REG_ACCOUNT_EXISTS);
         }
         String captcha = CommonUtil.createCaptcha();
         LOGGER.info("向{}发送注册验证码=>{}", account, captcha);
         redisClient.set(UserKey.CAPTCHA_REGISTER, account, captcha);
-        return AjaxResult.success(globalConfig.get(GlobalConfig.KEY_LIMIT_CAPTCHA));
+        return PublicResult.success();
     }
 
     @Override
-    public AjaxResult sendForgetCaptcha(String account) {
+    public PublicResult sendForgetCaptcha(String account) {
         Assert.hasText(account, TmallConstant.PARAM_ERR_MSG);
         AccountPO accountPO = new AccountPO();
         accountPO.setAccount(account);
         if (accountMapper.selectCount(accountPO) == 0) {
             LOGGER.warn("手机号不存=>{}", account);
-            return AjaxResult.error(UserErrResultEnum.ACCOUNT_NOT_EXISTS);
+            return PublicResult.error(UserErrResultEnum.ACCOUNT_NOT_EXISTS);
         }
         String captcha = CommonUtil.createCaptcha();
         LOGGER.info("向{}发送忘记密码验证码=>{}", account, captcha);
         redisClient.set(UserKey.CAPTCHA_FORGET, account, captcha);
-        return AjaxResult.success(globalConfig.get(GlobalConfig.KEY_LIMIT_CAPTCHA));
+        return PublicResult.success();
     }
 
     @Override
-    public AjaxResult forgetPwd(RegisterDTO account) {
+    public PublicResult<String> forgetPwd(RegisterDTO account) {
         this.checkAccountInfo(account);
         if (!Objects.equals(account.getCaptcha(), redisClient.get(UserKey.CAPTCHA_FORGET, account.getAccount()))) {
-            return AjaxResult.error(UserErrResultEnum.CAPTCHA_ERR);
+            return PublicResult.error(UserErrResultEnum.CAPTCHA_ERR);
         }
         AccountPO record = new AccountPO();
         record.setPassword(DigestUtils.md5Hex(DigestUtils.md5(account.getPassword())));
         Example example = new Example(AccountPO.class);
         example.createCriteria().andEqualTo("account", account.getAccount()).andCondition("is_delete=0");
         if (accountMapper.updateByExampleSelective(record, example) < 1) {
-            return AjaxResult.error(UserErrResultEnum.ACCOUNT_NOT_EXISTS);
+            return PublicResult.error(UserErrResultEnum.ACCOUNT_NOT_EXISTS);
         }
         record.setAccount(account.getAccount());
         record.setPassword(account.getPassword());

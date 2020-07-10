@@ -25,4 +25,11 @@ public class CheckUtil {
         Assert.isTrue(len >= min && len <= max, str + "长度不在范围内");
     }
 
+    public static void checkStrLength(int min, int max,String ...strs) {
+        for (String str : strs) {
+            int len = str.length();
+            Assert.isTrue(len >= min && len <= max, str + "长度不在范围内");
+        }
+    }
+
 }

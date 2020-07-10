@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alipay.api.AlipayApiException;
 import com.tmall.common.constants.AlipayErrResultEnum;
-import com.tmall.common.dto.AjaxResult;
+import com.tmall.common.dto.PublicResult;
 import com.tmall.common.dto.LoginUser;
 import com.tmall.common.redis.RedisClient;
 import com.tmall.common.redis.key.CommonKey;
@@ -34,7 +34,7 @@ public class AlipayResource {
     private RedisClient redisClient;
 
     @GetMapping("/auth")
-    public AjaxResult alipayBusinessLogin(@RequestParam("auth_code") String authCode) throws AlipayApiException {
+    public PublicResult alipayBusinessLogin(@RequestParam("auth_code") String authCode) throws AlipayApiException {
         // String appId = request.getParameter("app_id");
         // String source = request.getParameter("source");
         // String appAuthCode = request.getParameter("auth_code");
@@ -50,13 +50,13 @@ public class AlipayResource {
         }
         LoginUser loginInfo = userAlipayService.login(authCode);
         if (loginInfo == null) {
-            return AjaxResult.error(AlipayErrResultEnum.AUTH_FAIL);
+            return PublicResult.error(AlipayErrResultEnum.AUTH_FAIL);
         }
         String token;
         do {
             token = CommonUtil.getUuid();
         } while (redisClient.get(CommonKey.TOKEN, token) != null);
         redisClient.set(CommonKey.TOKEN, token, loginInfo);
-        return AjaxResult.success(token);
+        return PublicResult.success(token);
     }
 }
