@@ -32,23 +32,23 @@ public class AddressServiceImpl implements AddressService {
     private AddressMapper addressMapper;
 
     @Override
-    public PublicResult save(AddressDTO address, int accountId) {
+    public PublicResult<Integer> save(AddressDTO address, int accountId) {
         this.validAddress(address);
         AddressPO addressPO = convertDtoToPo(address);
         Example example = new Example(AddressPO.class);
-        Example.Criteria criteria = example.createCriteria().andEqualTo("accountId", accountId).andEqualTo("isDelete",
-                TmallConstant.YES);
+        Example.Criteria criteria = example.createCriteria().andEqualTo("accountId", accountId)
+                .andCondition("is_delete=", TmallConstant.NO);
         if (address.getId() == null) {
             if (addressMapper.selectCountByExample(example) == 0) {
                 addressPO.setIsDefault(TmallConstant.YES);
             }
             addressPO.setAccountId(accountId);
             addressMapper.insertSelective(addressPO);
-            return PublicResult.success();
+            return PublicResult.success(addressPO.getId());
         }
         criteria.andEqualTo("id", address.getId());
         addressMapper.updateByExampleSelective(addressPO, example);
-        return PublicResult.success();
+        return PublicResult.success(address.getId());
     }
 
     @Override

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.tmall.common.annotation.LoginRequire;
 import org.springframework.web.bind.annotation.*;
 
 import com.tmall.common.dto.LoginInfo;
@@ -27,16 +28,19 @@ public class AddressSource {
     private AddressService addressService;
 
     @PutMapping("/save")
+    @LoginRequire
     public PublicResult save(@RequestBody AddressDTO address) {
         return addressService.save(address, LoginInfo.get().getAccountId());
     }
 
-    @DeleteMapping("/{id}/remove")
+    @DeleteMapping("/{id}")
+    @LoginRequire
     public PublicResult remove(int id) {
         return addressService.remove(id, LoginInfo.get().getAccountId());
     }
 
     @GetMapping("/list")
+    @LoginRequire
     public PublicResult<List<AddressDTO>> findList() {
         return PublicResult.success(addressService.findList(LoginInfo.get().getAccountId()));
     }

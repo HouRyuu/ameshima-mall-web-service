@@ -7,7 +7,8 @@
         SELECT
             region_level,
             region_code,
-            region_name
+            region_name,
+            parent_code
         FROM
             `t_region`
         WHERE

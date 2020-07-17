@@ -15,7 +15,7 @@ import com.tmall.user.entity.dto.AddressDTO;
  */
 public interface AddressService {
 
-    PublicResult save(AddressDTO address, int accountId);
+    PublicResult<Integer> save(AddressDTO address, int accountId);
 
     PublicResult remove(int id, int accountId);
 

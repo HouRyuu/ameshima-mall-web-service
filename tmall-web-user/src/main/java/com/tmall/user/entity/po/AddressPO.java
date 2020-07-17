@@ -3,6 +3,7 @@ package com.tmall.user.entity.po;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import com.tmall.common.po.BasePO;
 
@@ -14,6 +15,7 @@ import com.tmall.common.po.BasePO;
  * @see [相关类/方法]（可选）
  * @since [产品/模块版本] （可选）
  */
+@Table(name="t_address")
 public class AddressPO extends BasePO {
 
     @Id
