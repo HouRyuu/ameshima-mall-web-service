@@ -28,7 +28,7 @@ import com.tmall.common.po.GlobalConfigPO;
 public class GlobalConfig {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalConfig.class);
-    private static final char CONNECTOR = '_';
+    public static final char CONNECTOR = '_';
     public static final String KEY_LIMIT_CAPTCHA = "limit_captcha";
 
     public static final int GOODS_IMG_TYPE_COVER = 13;
@@ -41,6 +41,8 @@ public class GlobalConfig {
     public static final String SEARCH_PAGE_SIZE = "search_pageSize";
 
     public static final String CART_PAGE_SIZE = "cart_pageSize";
+
+    public static final String ADDRESS_MAX_COUNT = "address_maxCount";
 
 
     @Autowired

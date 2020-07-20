@@ -6,8 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.alibaba.fastjson.JSON;
@@ -18,7 +16,6 @@ import com.alipay.api.response.AlipayUserInfoShareResponse;
 import com.tmall.common.constants.TmallConstant;
 import com.tmall.common.dto.LoginUser;
 import com.tmall.common.utils.AlipayUtil;
-import com.tmall.user.entity.po.AccountPO;
 import com.tmall.user.entity.po.UserAlipayPO;
 import com.tmall.user.mapper.UserAlipayMapper;
 import com.tmall.user.service.AccountService;
@@ -73,27 +70,27 @@ public class UserAlipayServiceImpl implements UserAlipayService {
     }
 
     private LoginUser getLoginInfo(AlipayUserInfoShareResponse userinfoShareResponse) {
-        final UserAlipayPO[] userAlipay = { new UserAlipayPO() };
-        userAlipay[0].setUserId(userinfoShareResponse.getUserId());
-        userAlipay[0] = userAlipayMapper.selectOne(userAlipay[0]);
-        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-            @Override
-            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
-                if (userAlipay[0] == null) {
-                    AccountPO account = new AccountPO();
-                    account.setFirstUserType(TmallConstant.ACCOUNT_TYPE_ALIPAY);
-                    accountService.create(account);
-                    userAlipay[0] = new UserAlipayPO();
-                    userAlipay[0].setAccountId(account.getId());
-                }
-                BeanUtils.copyProperties(userinfoShareResponse, userAlipay[0]);
-                userAlipayMapper.saveOrUpdate(userAlipay[0]);
+        UserAlipayPO userAlipayPO = new UserAlipayPO();
+        userAlipayPO.setUserId(userinfoShareResponse.getUserId());
+        userAlipayPO = userAlipayMapper.selectOne(userAlipayPO);
+        if (userAlipayPO == null) {
+            userAlipayPO = new UserAlipayPO();
+        }
+        final UserAlipayPO userAlipay = userAlipayPO;
+        return transactionTemplate.execute((status) -> {
+            LoginUser loginUser = new LoginUser();
+            loginUser.setAccountType(TmallConstant.ACCOUNT_TYPE_ALIPAY);
+            loginUser.setAvatar(userinfoShareResponse.getAvatar());
+            loginUser.setNickName(userinfoShareResponse.getNickName());
+            loginUser.setGender(userinfoShareResponse.getGender());
+            if (userAlipay.getId() == null) {
+                userAlipay.setAccountId(accountService.create(loginUser));
             }
+            loginUser.setAccountId(userAlipay.getAccountId());
+            BeanUtils.copyProperties(userinfoShareResponse, userAlipay);
+            userAlipayMapper.saveOrUpdate(userAlipay);
+            return loginUser;
         });
-        LoginUser loginInfo = new LoginUser();
-        BeanUtils.copyProperties(userAlipay[0], loginInfo);
-        loginInfo.setAccountType(TmallConstant.ACCOUNT_TYPE_ALIPAY);
-        return loginInfo;
     }
 
 }

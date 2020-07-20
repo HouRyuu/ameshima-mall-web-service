@@ -7,28 +7,12 @@
         SELECT
         t.id account_id,
         t.first_user_type account_type,
-        CASE t.first_user_type
-        WHEN 0 THEN
         t1.avatar
-        WHEN 1 THEN
-        t2.avatar
-        END avatar,
-        CASE t.first_user_type
-        WHEN 0 THEN
         t1.nick_name
-        WHEN 1 THEN
-        t2.nick_name
-        END nick_name,
-        CASE t.first_user_type
-        WHEN 0 THEN
         t1.gender
-        WHEN 1 THEN
-        t2.gender
-        END gender
         FROM
         t_account t
         LEFT JOIN t_user t1 ON t.id = t1.account_id
-        LEFT JOIN t_user_alipay t2 ON t.id = t2.account_id
         WHERE
         t.is_delete = 0
         AND t.account = #{account}

@@ -1,5 +1,6 @@
 package com.tmall.common;
 
+import com.tmall.common.po.BasePO;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.common.MySqlMapper;
 
@@ -11,5 +12,5 @@ import tk.mybatis.mapper.common.MySqlMapper;
  * @see [相关类/方法]（可选）
  * @since [产品/模块版本] （可选）
  */
-public interface BaseMapper<T> extends Mapper<T>, MySqlMapper<T> {
+public interface BaseMapper<T extends BasePO> extends Mapper<T>, MySqlMapper<T> {
 }

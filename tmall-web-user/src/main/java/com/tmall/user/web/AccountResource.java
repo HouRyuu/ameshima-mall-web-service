@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tmall.common.annotation.LoginRequire;
-import com.tmall.common.dto.PublicResult;
 import com.tmall.common.dto.LoginInfo;
+import com.tmall.common.dto.PublicResult;
 import com.tmall.common.redis.RedisClient;
 import com.tmall.common.redis.key.CommonKey;
 import com.tmall.remote.goods.api.IGoodsService;
@@ -16,7 +16,8 @@ import com.tmall.remote.goods.dto.GoodsDTO;
 import com.tmall.user.entity.dto.RegisterDTO;
 import com.tmall.user.entity.po.AccountPO;
 import com.tmall.user.service.AccountService;
-import com.tmall.user.service.UserService;
+
+import javax.annotation.Resource;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -27,16 +28,14 @@ import com.tmall.user.service.UserService;
  * @since [产品/模块版本] （可选）
  */
 @RestController
-public class UserResource {
+public class AccountResource {
 
-    @Autowired
+    @Resource
     private IGoodsService goodsService;
-    @Autowired
+    @Resource
     private RedisClient redisClient;
-    @Autowired
+    @Resource
     private AccountService accountService;
-    @Autowired
-    private UserService userService;
 
     @GetMapping("/hello")
     public String hello() {
@@ -73,7 +72,7 @@ public class UserResource {
 
     @PostMapping("/register")
     public PublicResult register(@RequestBody RegisterDTO registerInfo) {
-        return userService.register(registerInfo);
+        return accountService.register(registerInfo);
     }
 
     @GetMapping("/sendForgetCaptcha")

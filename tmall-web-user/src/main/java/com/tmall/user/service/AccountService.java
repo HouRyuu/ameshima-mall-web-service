@@ -1,5 +1,6 @@
 package com.tmall.user.service;
 
+import com.tmall.common.dto.LoginUser;
 import com.tmall.common.dto.PublicResult;
 import com.tmall.user.entity.dto.RegisterDTO;
 import com.tmall.user.entity.po.AccountPO;
@@ -14,9 +15,11 @@ import com.tmall.user.entity.po.AccountPO;
  */
 public interface AccountService {
 
-    int create(AccountPO account);
+    int create(LoginUser account);
 
     PublicResult<String> login(AccountPO account);
+
+    PublicResult<String> register(RegisterDTO registerInfo);
 
     /**
      * 发送注册验证码

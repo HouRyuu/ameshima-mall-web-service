@@ -1,7 +1,6 @@
 package com.tmall.user.service;
 
-import com.tmall.common.dto.PublicResult;
-import com.tmall.user.entity.dto.RegisterDTO;
+import com.tmall.common.dto.LoginUser;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -13,6 +12,6 @@ import com.tmall.user.entity.dto.RegisterDTO;
  */
 public interface UserService {
 
-    PublicResult<String> register(RegisterDTO registerInfo);
+    int createUser(LoginUser user);
 
 }
