@@ -164,7 +164,7 @@
         SELECT
             t.id,
             t.`name`,
-            t8.price,
+            min(t8.price) price,
             t.img_url,
             t1.`name` store,
             t2.brand_name brand,

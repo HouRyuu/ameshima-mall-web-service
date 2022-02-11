@@ -7,8 +7,8 @@
         SELECT
         t.id account_id,
         t.first_user_type account_type,
-        t1.avatar
-        t1.nick_name
+        t1.avatar,
+        t1.nick_name,
         t1.gender
         FROM
         t_account t

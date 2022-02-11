@@ -35,7 +35,7 @@ public class AddressSource {
 
     @DeleteMapping("/{id}")
     @LoginRequire
-    public PublicResult remove(int id) {
+    public PublicResult remove(@PathVariable int id) {
         return addressService.remove(id, LoginInfo.get().getAccountId());
     }
 

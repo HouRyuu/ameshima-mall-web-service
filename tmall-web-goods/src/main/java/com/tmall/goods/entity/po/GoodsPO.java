@@ -1,5 +1,7 @@
 package com.tmall.goods.entity.po;
 
+import com.tmall.common.po.BasePO;
+
 import java.math.BigDecimal;
 
 import javax.persistence.Id;
@@ -14,7 +16,7 @@ import javax.persistence.Table;
  * @since [产品/模块版本] （可选）
  */
 @Table(name = "t_goods")
-public class GoodsPO {
+public class GoodsPO extends BasePO {
 
     @Id
     private Integer id;
@@ -23,7 +25,6 @@ public class GoodsPO {
     private BigDecimal price;
     private BigDecimal promoPrice;
     private String location;
-    private int isDelete;
 
     public GoodsPO() {
     }
@@ -78,13 +79,5 @@ public class GoodsPO {
 
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    public int getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(int isDelete) {
-        this.isDelete = isDelete;
     }
 }

@@ -33,6 +33,7 @@ public class AddressPO extends BasePO {
     private String detailedAddress;
     private short isDefault;
 
+
     public Integer getId() {
         return id;
     }
