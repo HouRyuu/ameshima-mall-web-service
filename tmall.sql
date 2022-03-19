@@ -6976,6 +6976,23 @@ VALUES
 /*!40000 ALTER TABLE `t_user_alipay` ENABLE KEYS */;
 UNLOCK TABLES;
 
+-- auto-generated definition
+create table t_shopping_cart
+(
+    id          int auto_increment
+        primary key,
+    account_id  int                                  null comment '账户id',
+    sku_id      int                                  null,
+    attrs_json  varchar(256)                         null comment '属性json',
+    amount      int                                  null comment '数量',
+    state       tinyint(1) default 1                 null comment '是否有效 1有效 0无效',
+    create_time datetime   default CURRENT_TIMESTAMP null,
+    update_time datetime                             null on update CURRENT_TIMESTAMP,
+    is_delete   tinyint(1) default 0                 null,
+    index idx_account_id(account_id),
+    index idx_sku_id(sku_id)
+) comment '购物车' charset = utf8;
+
 
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
@@ -6984,3 +7001,8 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- msql 5.6以上默认开启了ONLY_FULL_GROUP_BY，需关闭
+SELECT @@GLOBAL.sql_mode;
+set @@global.sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'
+select @@session.sql_mode;
+set @@session.sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'

@@ -20,6 +20,7 @@ public class ShoppingCartPO extends BasePO {
     private Integer id;
     private Integer accountId;
     private Integer skuId;
+    private String attrsJson;
     private Integer amount;
     private Short state;
 
@@ -45,6 +46,14 @@ public class ShoppingCartPO extends BasePO {
 
     public void setSkuId(Integer skuId) {
         this.skuId = skuId;
+    }
+
+    public String getAttrsJson() {
+        return attrsJson;
+    }
+
+    public void setAttrsJson(String attrsJson) {
+        this.attrsJson = attrsJson;
     }
 
     public Integer getAmount() {

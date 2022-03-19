@@ -4,10 +4,12 @@ import java.util.Objects;
 
 import javax.annotation.Resource;
 
+import com.tmall.common.constants.GlobalConfig;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -52,6 +54,8 @@ public class AccountServiceImpl implements AccountService {
     private UserService userService;
     @Resource
     private TransactionTemplate transactionTemplate;
+    @Resource
+    private GlobalConfig globalConfig;
 
     @Override
     public int create(LoginUser account) {
@@ -132,7 +136,7 @@ public class AccountServiceImpl implements AccountService {
         String captcha = CommonUtil.createCaptcha();
         LOGGER.info("向{}发送注册验证码=>{}", account, captcha);
         redisClient.set(UserKey.CAPTCHA_REGISTER, account, captcha);
-        return PublicResult.success();
+        return PublicResult.success(globalConfig.get(GlobalConfig.KEY_LIMIT_CAPTCHA));
     }
 
     @Override
@@ -147,7 +151,7 @@ public class AccountServiceImpl implements AccountService {
         String captcha = CommonUtil.createCaptcha();
         LOGGER.info("向{}发送忘记密码验证码=>{}", account, captcha);
         redisClient.set(UserKey.CAPTCHA_FORGET, account, captcha);
-        return PublicResult.success();
+        return PublicResult.success(globalConfig.get(GlobalConfig.KEY_LIMIT_CAPTCHA));
     }
 
     @Override
