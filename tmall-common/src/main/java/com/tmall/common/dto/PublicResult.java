@@ -34,10 +34,10 @@ public class PublicResult<T> {
     }
 
     public static <T> PublicResult<T> error(IErrResult errResult) {
-        return new PublicResult(errResult.errCode(), errResult.errMsg());
+        return new PublicResult<>(errResult.errCode(), errResult.errMsg());
     }
 
-    public static PublicResult success() {
+    public static PublicResult<?>  success() {
         return new PublicResult();
     }
 

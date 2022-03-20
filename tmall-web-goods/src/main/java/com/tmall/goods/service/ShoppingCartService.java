@@ -17,15 +17,15 @@ import com.tmall.goods.entity.vo.ShopCartVO;
  */
 public interface ShoppingCartService {
 
-    PublicResult add(ShoppingCartDTO param);
+    PublicResult<?>  add(ShoppingCartDTO param);
 
     int getCartCount(int accountId);
 
     Collection<ShopCartVO> findGoods(int accountId);
 
-    PublicResult remove(Set<Integer> ids, int accountId);
+    PublicResult<?>  remove(Set<Integer> ids, int accountId);
 
-    PublicResult updateAmount(int cartId, int amount, int accountId);
+    PublicResult<?>  updateAmount(int cartId, int amount, int accountId);
 
-    PublicResult removeFailCart(int accountId);
+    PublicResult<?>  removeFailCart(int accountId);
 }

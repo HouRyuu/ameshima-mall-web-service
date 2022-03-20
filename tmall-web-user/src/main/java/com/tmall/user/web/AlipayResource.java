@@ -34,7 +34,7 @@ public class AlipayResource {
     private RedisClient redisClient;
 
     @GetMapping("/auth")
-    public PublicResult alipayBusinessLogin(@RequestParam("auth_code") String authCode) throws AlipayApiException {
+    public PublicResult<?>  alipayBusinessLogin(@RequestParam("auth_code") String authCode) throws AlipayApiException {
         // String appId = request.getParameter("app_id");
         // String source = request.getParameter("source");
         // String appAuthCode = request.getParameter("auth_code");

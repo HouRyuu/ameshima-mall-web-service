@@ -125,7 +125,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public PublicResult sendRegisterCaptcha(String account) {
+    public PublicResult<?>  sendRegisterCaptcha(String account) {
         Assert.hasText(account, TmallConstant.PARAM_ERR_MSG);
         AccountPO accountPO = new AccountPO();
         accountPO.setAccount(account);
@@ -140,7 +140,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public PublicResult sendForgetCaptcha(String account) {
+    public PublicResult<?>  sendForgetCaptcha(String account) {
         Assert.hasText(account, TmallConstant.PARAM_ERR_MSG);
         AccountPO accountPO = new AccountPO();
         accountPO.setAccount(account);

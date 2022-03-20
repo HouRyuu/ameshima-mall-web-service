@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 public class GoodsSkuDTO {
 
     private int id;
+    private int goodsId;
     private String attrs;
     private BigDecimal price;
     private BigDecimal marketPrice;
@@ -24,6 +25,14 @@ public class GoodsSkuDTO {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(int goodsId) {
+        this.goodsId = goodsId;
     }
 
     public String getAttrs() {

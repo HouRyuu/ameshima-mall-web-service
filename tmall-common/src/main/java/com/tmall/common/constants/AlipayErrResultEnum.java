@@ -9,7 +9,7 @@ package com.tmall.common.constants;
  * @since [产品/模块版本] （可选）
  */
 public enum AlipayErrResultEnum implements IErrResult {
-    AUTH_FAIL(100, "支付宝授权失败");
+    AUTH_FAIL(100, "Alipayの授権はエラーになりました");
 
     private int errCode;
     private String errMsg;

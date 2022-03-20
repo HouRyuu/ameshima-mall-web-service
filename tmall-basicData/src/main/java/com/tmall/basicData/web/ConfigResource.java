@@ -24,7 +24,7 @@ public class ConfigResource {
     private GlobalConfig globalConfig;
 
     @GetMapping("/{category}/{name}")
-    public PublicResult getValue(@PathVariable String category, @PathVariable String name) {
+    public PublicResult<?>  getValue(@PathVariable String category, @PathVariable String name) {
         return PublicResult.success(globalConfig.get(category + GlobalConfig.CONNECTOR + name));
     }
 

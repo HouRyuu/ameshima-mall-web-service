@@ -42,7 +42,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private ShoppingCartMapper shoppingCartMapper;
 
     @Override
-    public PublicResult add(ShoppingCartDTO param) {
+    public PublicResult<?>  add(ShoppingCartDTO param) {
         Assert.isTrue(param != null && param.getSkuId() != 0 && StringUtils.isNotBlank(param.getAttrsJson())
                 && param.getAmount() != 0, TmallConstant.PARAM_ERR_MSG);
         if (shoppingCartMapper.add(param) > 0) {
@@ -75,7 +75,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public PublicResult remove(Set<Integer> ids, int accountId) {
+    public PublicResult<?>  remove(Set<Integer> ids, int accountId) {
         Assert.isTrue(!CollectionUtils.isEmpty(ids), TmallConstant.PARAM_ERR_MSG);
         try {
             shoppingCartMapper.remove(ids, accountId);
@@ -83,12 +83,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         } catch (Exception e) {
             LOGGER.error("Remove shopping-cart Fail. Param => {ids:{}, accountId:{}}", StringUtils.join(ids), accountId,
                     e);
-            return PublicResult.error(GoodsErrResultEnum.DEL_CART_FAIL);
+            return PublicResult.error(CommonErrResult.OPERATE_FAIL);
         }
     }
 
     @Override
-    public PublicResult updateAmount(int cartId, int amount, int accountId) {
+    public PublicResult<?>  updateAmount(int cartId, int amount, int accountId) {
         Assert.isTrue(cartId > 0 && amount > 0, TmallConstant.PARAM_ERR_MSG);
         try {
             shoppingCartMapper.updateAmount(cartId, amount, accountId);
@@ -101,7 +101,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public PublicResult removeFailCart(int accountId) {
+    public PublicResult<?>  removeFailCart(int accountId) {
         try {
             shoppingCartMapper.removeFailCart(accountId);
             return PublicResult.success();

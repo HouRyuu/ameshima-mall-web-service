@@ -49,39 +49,39 @@ public class AccountResource {
 
     @LoginRequire
     @GetMapping("/loginInfo")
-    public PublicResult loginInfo() {
+    public PublicResult<?>  loginInfo() {
         return PublicResult.success(LoginInfo.get());
     }
 
     @PostMapping("/login")
-    public PublicResult login(@RequestBody AccountPO account) {
+    public PublicResult<?>  login(@RequestBody AccountPO account) {
         return accountService.login(account);
     }
 
     @LoginRequire
     @GetMapping("/logout")
-    public PublicResult logout() {
+    public PublicResult<?>  logout() {
         redisClient.removeKey(CommonKey.TOKEN, LoginInfo.getToken());
         return PublicResult.success();
     }
 
     @GetMapping("/sendRegisterCaptcha")
-    public PublicResult sendRegisterCaptcha(String account) {
+    public PublicResult<?>  sendRegisterCaptcha(String account) {
         return accountService.sendRegisterCaptcha(account);
     }
 
     @PostMapping("/register")
-    public PublicResult register(@RequestBody RegisterDTO registerInfo) {
+    public PublicResult<?>  register(@RequestBody RegisterDTO registerInfo) {
         return accountService.register(registerInfo);
     }
 
     @GetMapping("/sendForgetCaptcha")
-    public PublicResult sendForgetCaptcha(String account) {
+    public PublicResult<?>  sendForgetCaptcha(String account) {
         return accountService.sendForgetCaptcha(account);
     }
 
     @PostMapping("/forgetPwd")
-    public PublicResult forgetPwd(@RequestBody RegisterDTO registerInfo) {
+    public PublicResult<?>  forgetPwd(@RequestBody RegisterDTO registerInfo) {
         return accountService.forgetPwd(registerInfo);
     }
 

@@ -13,4 +13,15 @@
             AND is_delete =0
     </select>
 
+    <update id="setDefault">
+        update t_address t left join t_address t1 on t.account_id = t1.account_id
+            set t.is_default=1,
+                t1.is_default=0
+        where t.account_id = #{accountId}
+          and t.id = #{id}
+          and t.is_default = 0
+          and t1.is_delete = 0
+          and t1.is_default = 1
+    </update>
+
 </mapper>

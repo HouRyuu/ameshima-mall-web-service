@@ -10,7 +10,8 @@ package com.tmall.common.constants;
  */
 public enum CommonErrResult implements IErrResult {
 
-    OPERATE_FAIL(500, "啊哦，操作失败啦。重新操作下试试吧^_^");
+    OPERATE_FAIL(500, "エラーが発生してしまいました。しばらく待ってからしてみてください^_^"),
+    ERR＿REQUEST(250, "異常なリクエスト");
 
     private int errCode;
     private String errMsg;

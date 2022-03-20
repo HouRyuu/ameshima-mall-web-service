@@ -1,13 +1,13 @@
 package com.tmall.goods.mapper;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.tmall.common.BaseMapper;
 import com.tmall.goods.entity.dto.*;
 import com.tmall.goods.entity.po.GoodsPO;
 import com.tmall.remote.goods.dto.GoodsDTO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -31,10 +31,12 @@ public interface GoodsMapper extends BaseMapper<GoodsPO> {
 
     List<GoodsParamDTO> findParams(@Param("goodsId") int goodsId);
 
-    List<GoodsSkuDTO> findSku(@Param("goodsId") int goodsId);
+    List<GoodsSkuDTO> findSku(GoodsSkuDTO param);
 
     Float getFreight(@Param("goodsId") int goodsId, @Param("cityCode") String cityCode);
 
     List<EsGoodsDTO> findEsGoods();
+
+    List<CartGoodsDTO> goodsBySkus(@Param("skuIds") Set<Integer> skuIds);
 
 }

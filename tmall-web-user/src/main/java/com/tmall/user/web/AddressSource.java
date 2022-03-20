@@ -27,22 +27,29 @@ public class AddressSource {
     @Resource
     private AddressService addressService;
 
-    @PutMapping("/save")
     @LoginRequire
-    public PublicResult save(@RequestBody AddressDTO address) {
+    @PutMapping("/save")
+    public PublicResult<?>  save(@RequestBody AddressDTO address) {
         return addressService.save(address, LoginInfo.get().getAccountId());
     }
 
-    @DeleteMapping("/{id}")
     @LoginRequire
-    public PublicResult remove(@PathVariable int id) {
+    @DeleteMapping("/{id}")
+    public PublicResult<?>  remove(@PathVariable int id) {
         return addressService.remove(id, LoginInfo.get().getAccountId());
     }
 
-    @GetMapping("/list")
     @LoginRequire
+    @GetMapping("/list")
     public PublicResult<List<AddressDTO>> findList() {
         return PublicResult.success(addressService.findList(LoginInfo.get().getAccountId()));
     }
+
+    @LoginRequire
+    @PutMapping("/{id}/default")
+    public PublicResult<?>  setDefault(@PathVariable int id) {
+        return addressService.setDefault(id, LoginInfo.get().getAccountId());
+    }
+
 
 }

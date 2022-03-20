@@ -11,7 +11,8 @@ import com.tmall.common.constants.IErrResult;
  * @since [产品/模块版本] （可选）
  */
 public enum GoodsErrResultEnum implements IErrResult {
-    ADD_CART_FAIL(300, "超过库存数量了哦"), DEL_CART_FAIL(301, "删除失败，请稍后再试"), GOODS_NOT_EXISTS(302, "商品不存在");
+    ADD_CART_FAIL(300, "在庫を超えましたよ"),
+    BUY_CACHE_NOT_EXISTS(301, "長い間操作していないので、改めて購入してください");
 
     private int errCode;
     private String errMsg;

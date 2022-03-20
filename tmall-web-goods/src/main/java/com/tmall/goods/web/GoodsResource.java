@@ -1,9 +1,15 @@
 package com.tmall.goods.web;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.tmall.common.annotation.LoginRequire;
+import com.tmall.common.constants.CommonErrResult;
+import com.tmall.common.utils.CheckUtil;
 import com.tmall.goods.constants.GoodsErrResultEnum;
+import com.tmall.goods.entity.dto.ShoppingCartDTO;
+import com.tmall.goods.entity.vo.ShopCartVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,41 +55,41 @@ public class GoodsResource {
     }
 
     @GetMapping("/findSecondCategories")
-    public PublicResult findSecondCategories() {
+    public PublicResult<?> findSecondCategories() {
         return PublicResult.success(goodsCategoryService.findSecondCategories());
     }
 
     @GetMapping("/{pid}/findCategories")
-    public PublicResult findCategoriesByPid(@PathVariable int pid) {
+    public PublicResult<?> findCategoriesByPid(@PathVariable int pid) {
         return PublicResult.success(goodsCategoryService.findCategoriesByPid(pid));
     }
 
     @GetMapping("/indexPromotePlate")
-    public PublicResult indexPromotePlate() {
+    public PublicResult<?> indexPromotePlate() {
         return PublicResult.success(goodsPromoteService.findPromotes());
     }
 
     @GetMapping("/{promoteId}/findPromoteGoods")
-    public PublicResult findPromoteGoods(@PathVariable int promoteId) {
+    public PublicResult<?> findPromoteGoods(@PathVariable int promoteId) {
         return PublicResult.success(goodsService.findByPromote(promoteId));
     }
 
     @PostMapping("/guessLike")
-    public PublicResult guessLike(@RequestBody GuessLikeQueryDTO queryParam) {
+    public PublicResult<?> guessLike(@RequestBody GuessLikeQueryDTO queryParam) {
         return PublicResult.success(goodsService.findByCategories(queryParam));
     }
 
     @GetMapping("/{storeId}/storeGoods")
-    public PublicResult storeGoods(@PathVariable int storeId) {
+    public PublicResult<?> storeGoods(@PathVariable int storeId) {
         return PublicResult.success(goodsService.storeGoods(storeId));
     }
 
     @GetMapping("/{goodsId}/detail")
-    public PublicResult detail(@PathVariable int goodsId) {
+    public PublicResult<?> detail(@PathVariable int goodsId) {
         Map<String, Object> result = Maps.newHashMap();
         GoodsDTO goods = goodsService.getGoods(goodsId);
         if (goods == null) {
-            return PublicResult.error(GoodsErrResultEnum.GOODS_NOT_EXISTS);
+            return PublicResult.error(CommonErrResult.ERR＿REQUEST);
         }
         result.put("goods", goods);
         result.put("attrs", goodsAttrService.findGoodsAttrList(goodsId));
@@ -104,18 +110,41 @@ public class GoodsResource {
     }
 
     @GetMapping("/{goodsId}/{cityCode}/freight")
-    public PublicResult freight(@PathVariable int goodsId, @PathVariable String cityCode) {
+    public PublicResult<?> freight(@PathVariable int goodsId, @PathVariable String cityCode) {
         return PublicResult.success(goodsService.getFreight(goodsId, cityCode));
     }
 
     @PostMapping("/indexGoods")
-    public PublicResult indexGoods(@RequestBody QueryGoodsDTO queryParam) {
+    public PublicResult<?> indexGoods(@RequestBody QueryGoodsDTO queryParam) {
         return PublicResult.success(goodsService.indexGoods(queryParam));
     }
 
     @PostMapping("/findBrandsAndCategories")
-    public PublicResult findBrandsAndCategories(@RequestBody QueryGoodsDTO queryParam) {
+    public PublicResult<?> findBrandsAndCategories(@RequestBody QueryGoodsDTO queryParam) {
         return PublicResult.success(goodsService.findBrandsAndCategories(queryParam));
+    }
+
+    @LoginRequire
+    @PutMapping("/cacheBuySkus")
+    public PublicResult<?> cacheBuySkus(@RequestBody List<ShoppingCartDTO> skuList) {
+        return goodsService.cacheBuySkus(skuList);
+    }
+
+    @LoginRequire
+    @GetMapping("/goodsBySkus")
+    public PublicResult<Collection<ShopCartVO>> goodsBySkus() {
+        Collection<ShopCartVO> shopCarts = goodsService.goodsBySkus();
+        PublicResult<Collection<ShopCartVO>> result = CheckUtil.notEmpty(shopCarts, GoodsErrResultEnum.BUY_CACHE_NOT_EXISTS);
+        if (result != null) {
+            return result;
+        }
+        return PublicResult.success(goodsService.goodsBySkus());
+    }
+
+    @LoginRequire
+    @PutMapping("/cacheBuySkus/{skuId}/updateAmount/{amount}")
+    public PublicResult<?> updateCacheBuySkusAmount(@PathVariable int skuId, @PathVariable int amount) {
+        return goodsService.updateCacheBuySkusAmount(skuId, amount);
     }
 
 }

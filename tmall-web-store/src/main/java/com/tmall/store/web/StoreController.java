@@ -25,12 +25,12 @@ public class StoreController {
     private StoreBrandService storeBrandService;
 
     @GetMapping("/index/banner")
-    public PublicResult indexBanner() {
+    public PublicResult<?>  indexBanner() {
         return PublicResult.success(storeBannerService.findIndexBanner());
     }
 
     @GetMapping("/index/brand")
-    public PublicResult indexBrands() {
+    public PublicResult<?>  indexBrands() {
         return PublicResult.success(storeBrandService.findIndexBrands());
     }
 

@@ -27,7 +27,7 @@ public interface AccountService {
      * @param account 账号
      * @return 发送间隔秒
      */
-    PublicResult sendRegisterCaptcha(String account);
+    PublicResult<?>  sendRegisterCaptcha(String account);
 
     /**
      * 发送忘记密码验证码
@@ -35,7 +35,7 @@ public interface AccountService {
      * @param account 账号
      * @return 发送间隔秒
      */
-    PublicResult sendForgetCaptcha(String account);
+    PublicResult<?>  sendForgetCaptcha(String account);
 
     PublicResult<String> forgetPwd(RegisterDTO account);
 }

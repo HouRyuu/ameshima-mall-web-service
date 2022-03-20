@@ -17,8 +17,10 @@ public interface AddressService {
 
     PublicResult<Integer> save(AddressDTO address, int accountId);
 
-    PublicResult remove(int id, int accountId);
+    PublicResult<?>  remove(int id, int accountId);
 
     List<AddressDTO> findList(int accountId);
+
+    PublicResult<?>  setDefault(int id, int accountId);
 
 }

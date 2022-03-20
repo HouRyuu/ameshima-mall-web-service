@@ -19,4 +19,6 @@ import com.tmall.user.entity.po.AddressPO;
 public interface AddressMapper extends BaseMapper<AddressPO> {
 
     List<AddressDTO> findAll(@Param("accountId") int accountId);
+
+    int setDefault(@Param("id") int id, @Param("accountId") int accountId);
 }

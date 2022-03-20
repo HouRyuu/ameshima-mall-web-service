@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.tmall.common.constants.CommonErrResult;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -52,10 +53,10 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public PublicResult remove(int id, int accountId) {
+    public PublicResult<?>  remove(int id, int accountId) {
         Example example = new Example(AddressPO.class);
         example.createCriteria().andEqualTo("id", id).andEqualTo("accountId", accountId).andEqualTo("isDelete",
-                TmallConstant.YES);
+                TmallConstant.YES).andEqualTo("isDefault", TmallConstant.NO);
         AddressPO addressPO = new AddressPO();
         addressPO.setIsDelete(TmallConstant.YES);
         addressMapper.updateByExampleSelective(addressPO, example);
@@ -65,6 +66,14 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public List<AddressDTO> findList(int accountId) {
         return addressMapper.findAll(accountId);
+    }
+
+    @Override
+    public PublicResult<?>  setDefault(int id, int accountId) {
+        if (addressMapper.setDefault(id, accountId) > 0) {
+            return PublicResult.success();
+        }
+        return PublicResult.error(CommonErrResult.OPERATE_FAIL);
     }
 
     private void validAddress(AddressDTO address) {

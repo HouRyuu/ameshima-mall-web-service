@@ -1,9 +1,15 @@
 package com.tmall.goods.service.impl;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
+import com.tmall.common.constants.CommonErrResult;
+import com.tmall.common.dto.LoginInfo;
+import com.tmall.common.dto.PublicResult;
+import com.tmall.common.utils.CheckUtil;
+import com.tmall.goods.constants.GoodsErrResultEnum;
+import com.tmall.goods.entity.vo.ShopCartVO;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -37,6 +43,7 @@ import com.tmall.goods.mapper.GoodsMapper;
 import com.tmall.goods.service.GoodsService;
 import com.tmall.remote.goods.dto.GoodsDTO;
 import com.tmall.remote.order.api.IOrderEvaluateService;
+import org.springframework.util.CollectionUtils;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -117,7 +124,9 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public List<GoodsSkuDTO> findSku(int goodsId) {
-        return goodsMapper.findSku(goodsId);
+        GoodsSkuDTO param = new GoodsSkuDTO();
+        param.setGoodsId(goodsId);
+        return goodsMapper.findSku(param);
     }
 
     @Override
@@ -162,9 +171,79 @@ public class GoodsServiceImpl implements GoodsService {
         return result;
     }
 
+    @Override
+    public PublicResult<?> cacheBuySkus(List<ShoppingCartDTO> skuList) {
+        Assert.notEmpty(skuList, TmallConstant.PARAM_ERR_MSG);
+        PublicResult<?> result = CheckUtil.isTrue(!CollectionUtils.isEmpty(skuList)
+                && redisClient.set(GoodsKey.USER_BUY_SKUS, LoginInfo.get().getAccountId(), skuList));
+        if (result == null) {
+            return PublicResult.success();
+        }
+        return result;
+    }
+
+    @Override
+    public PublicResult<?> updateCacheBuySkusAmount(int skuId, int amount) {
+        PublicResult<?> result = CheckUtil.isTrue(skuId > 0 && amount > 0);
+        if (result != null) {
+            return result;
+        }
+        GoodsSkuDTO param = new GoodsSkuDTO();
+        param.setId(skuId);
+        List<GoodsSkuDTO> skuList = goodsMapper.findSku(param);
+        Assert.notEmpty(skuList, TmallConstant.PARAM_ERR_MSG);
+        if (amount > skuList.get(0).getQuantity()) {
+            return PublicResult.error(GoodsErrResultEnum.ADD_CART_FAIL);
+        }
+        List<ShoppingCartDTO> skus = redisClient.get(GoodsKey.USER_BUY_SKUS, LoginInfo.get().getAccountId());
+        result = CheckUtil.notEmpty(skus, GoodsErrResultEnum.ADD_CART_FAIL);
+        if (result != null) {
+            return result;
+        }
+        boolean isChange = false;
+        for (ShoppingCartDTO shoppingCartDTO : skus) {
+            if (skuId == shoppingCartDTO.getSkuId()) {
+                shoppingCartDTO.setAmount(amount);
+                isChange = true;
+                break;
+            }
+        }
+        if (!isChange) {
+            return PublicResult.error(CommonErrResult.ERR＿REQUEST);
+        }
+        return cacheBuySkus(skus);
+    }
+
+    @Override
+    public Collection<ShopCartVO> goodsBySkus() {
+        List<ShoppingCartDTO> skus = redisClient.get(GoodsKey.USER_BUY_SKUS, LoginInfo.get().getAccountId());
+        if (CollectionUtils.isEmpty(skus)) {
+            return Collections.emptyList();
+        }
+        Map<Integer, ShoppingCartDTO> skuMap = skus.stream().collect(Collectors.toMap(ShoppingCartDTO::getSkuId, shoppingCartDTO -> shoppingCartDTO));
+        List<CartGoodsDTO> goodsList = goodsMapper.goodsBySkus(skuMap.keySet());
+        Map<ShopCartVO, ShopCartVO> cartMap = Maps.newLinkedHashMap();
+        ShopCartVO shopCart, temp;
+        ShoppingCartDTO cartTemp;
+        for (CartGoodsDTO goods : goodsList) {
+            cartTemp = skuMap.get(goods.getSkuId());
+            goods.setAttrsJson(cartTemp.getAttrsJson());
+            goods.setAmount(cartTemp.getAmount());
+            temp = new ShopCartVO(goods.getStoreId(), goods.getStoreName(), goods.getState());
+            shopCart = cartMap.get(temp);
+            if (shopCart == null) {
+                shopCart = temp;
+                shopCart.setGoodsList(Lists.newArrayList());
+                cartMap.put(temp, shopCart);
+            }
+            shopCart.getGoodsList().add(goods);
+        }
+        return cartMap.values();
+    }
+
     /**
      * 构建ES查询对象
-     * 
+     *
      * @param queryParam 查询参数
      * @return ES查询对象
      */

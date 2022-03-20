@@ -25,7 +25,7 @@ public class StoreEvaluateController {
     private StoreEvaluateService storeEvaluateService;
 
     @GetMapping("/{storeId}/getEvaluate")
-    public PublicResult getEvaluate(@PathVariable int storeId) {
+    public PublicResult<?>  getEvaluate(@PathVariable int storeId) {
         return PublicResult.success(storeEvaluateService.getStoreEvaluate(storeId));
     }
 

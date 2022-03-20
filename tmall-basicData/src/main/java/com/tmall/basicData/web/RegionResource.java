@@ -27,12 +27,12 @@ public class RegionResource {
     private RegionService regionService;
 
     @GetMapping("/provinces")
-    private PublicResult provinces() {
+    private PublicResult<?>  provinces() {
         return PublicResult.success(regionService.findRegion(new RegionDTO(TmallConstant.REGION_LEVEL_PROVINCE)));
     }
 
     @GetMapping("/{parentCode}/findByParent")
-    private PublicResult findByParent(@PathVariable String parentCode) {
+    private PublicResult<?>  findByParent(@PathVariable String parentCode) {
         return PublicResult.success(regionService.findRegion(new RegionDTO(parentCode)));
     }
 
