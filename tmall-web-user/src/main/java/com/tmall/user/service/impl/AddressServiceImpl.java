@@ -37,7 +37,7 @@ public class AddressServiceImpl implements AddressService {
         this.validAddress(address);
         AddressPO addressPO = convertDtoToPo(address);
         Example example = new Example(AddressPO.class);
-        Example.Criteria criteria = example.createCriteria().andEqualTo("accountId", accountId)
+        example.and().andEqualTo("accountId", accountId)
                 .andCondition("is_delete=", TmallConstant.NO);
         if (address.getId() == null) {
             if (addressMapper.selectCountByExample(example) == 0) {
@@ -47,15 +47,15 @@ public class AddressServiceImpl implements AddressService {
             addressMapper.insertSelective(addressPO);
             return PublicResult.success(addressPO.getId());
         }
-        criteria.andEqualTo("id", address.getId());
+        example.and().andEqualTo("id", address.getId());
         addressMapper.updateByExampleSelective(addressPO, example);
         return PublicResult.success(address.getId());
     }
 
     @Override
-    public PublicResult<?>  remove(int id, int accountId) {
+    public PublicResult<?> remove(int id, int accountId) {
         Example example = new Example(AddressPO.class);
-        example.createCriteria().andEqualTo("id", id).andEqualTo("accountId", accountId).andEqualTo("isDelete",
+        example.createCriteria().andEqualTo("id", id).andEqualTo("accountId", accountId).andCondition("is_delete=",
                 TmallConstant.YES).andEqualTo("isDefault", TmallConstant.NO);
         AddressPO addressPO = new AddressPO();
         addressPO.setIsDelete(TmallConstant.YES);
@@ -69,7 +69,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public PublicResult<?>  setDefault(int id, int accountId) {
+    public PublicResult<?> setDefault(int id, int accountId) {
         if (addressMapper.setDefault(id, accountId) > 0) {
             return PublicResult.success();
         }

@@ -3,6 +3,7 @@ package com.tmall.goods.web;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.tmall.common.annotation.LoginRequire;
 import com.tmall.common.constants.CommonErrResult;
@@ -109,9 +110,9 @@ public class GoodsResource {
         return PublicResult.success(result);
     }
 
-    @GetMapping("/{goodsId}/{cityCode}/freight")
-    public PublicResult<?> freight(@PathVariable int goodsId, @PathVariable String cityCode) {
-        return PublicResult.success(goodsService.getFreight(goodsId, cityCode));
+    @PostMapping("/{cityCode}/freight")
+    public PublicResult<?> freight(@RequestBody Set<Integer> goodsIds, @PathVariable String cityCode) {
+        return PublicResult.success(goodsService.getFreight(goodsIds, cityCode));
     }
 
     @PostMapping("/indexGoods")

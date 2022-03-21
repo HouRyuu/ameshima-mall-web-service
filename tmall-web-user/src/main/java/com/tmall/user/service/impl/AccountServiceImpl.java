@@ -163,7 +163,7 @@ public class AccountServiceImpl implements AccountService {
         AccountPO record = new AccountPO();
         record.setPassword(DigestUtils.md5Hex(DigestUtils.md5(account.getPassword())));
         Example example = new Example(AccountPO.class);
-        example.createCriteria().andEqualTo("account", account.getAccount()).andCondition("is_delete=0");
+        example.and().andEqualTo("account", account.getAccount()).andCondition("is_delete=0");
         if (accountMapper.updateByExampleSelective(record, example) < 1) {
             return PublicResult.error(UserErrResultEnum.ACCOUNT_NOT_EXISTS);
         }

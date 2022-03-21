@@ -11,6 +11,7 @@
         WHERE
             account_id = #{accountId}
             AND is_delete =0
+        order by is_default desc
     </select>
 
     <update id="setDefault">

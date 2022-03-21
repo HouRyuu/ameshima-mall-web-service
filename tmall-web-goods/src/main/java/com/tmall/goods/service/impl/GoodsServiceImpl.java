@@ -1,5 +1,6 @@
 package com.tmall.goods.service.impl;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
@@ -9,7 +10,9 @@ import com.tmall.common.dto.LoginInfo;
 import com.tmall.common.dto.PublicResult;
 import com.tmall.common.utils.CheckUtil;
 import com.tmall.goods.constants.GoodsErrResultEnum;
+import com.tmall.goods.entity.po.GoodsFreightPO;
 import com.tmall.goods.entity.vo.ShopCartVO;
+import com.tmall.goods.mapper.GoodsFreightMapper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -44,6 +47,7 @@ import com.tmall.goods.service.GoodsService;
 import com.tmall.remote.goods.dto.GoodsDTO;
 import com.tmall.remote.order.api.IOrderEvaluateService;
 import org.springframework.util.CollectionUtils;
+import tk.mybatis.mapper.entity.Example;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -68,6 +72,8 @@ public class GoodsServiceImpl implements GoodsService {
     private IOrderEvaluateService orderEvaluateService;
     @Autowired
     private GoodsRepository goodsRepository;
+    @Autowired
+    private GoodsFreightMapper goodsFreightMapper;
 
     @Override
     public List<GoodsGridDTO> findByPromote(int promoteId) {
@@ -130,9 +136,21 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public float getFreight(int goodsId, String cityCode) {
-        Float freight = goodsMapper.getFreight(goodsId, cityCode);
-        return freight == null ? 0 : freight;
+    public Map<Integer, BigDecimal> getFreight(Set<Integer> goodsIds, String cityCode) {
+        if (CollectionUtils.isEmpty(goodsIds) || StringUtils.isBlank(cityCode)) {
+            return null;
+        }
+        Example example = new Example(GoodsFreightPO.class);
+        example.and().andEqualTo("targetCityCode", cityCode)
+                .andIn("goodsId", goodsIds).andCondition("is_delete=", TmallConstant.NO);
+        Map<Integer, BigDecimal> freightMap = goodsFreightMapper.selectByExample(example).stream().collect(Collectors.toMap(GoodsFreightPO::getGoodsId, GoodsFreightPO::getCost));
+        BigDecimal zero = new BigDecimal(0);
+        for (Integer goodsId : goodsIds) {
+            if (!freightMap.containsKey(goodsId)) {
+                freightMap.put(goodsId, zero);
+            }
+        }
+        return freightMap;
     }
 
     @Override

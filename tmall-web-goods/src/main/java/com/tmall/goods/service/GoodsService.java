@@ -1,5 +1,6 @@
 package com.tmall.goods.service;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,7 @@ public interface GoodsService {
 
     List<GoodsSkuDTO> findSku(int goodsId);
 
-    float getFreight(int goodsId, String cityCode);
+    Map<Integer, BigDecimal> getFreight(Set<Integer> goodsIds, String cityCode);
 
     PageResult<EsGoodsDTO> indexGoods(QueryGoodsDTO queryParam);
 

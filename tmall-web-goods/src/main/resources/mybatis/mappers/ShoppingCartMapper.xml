@@ -58,8 +58,8 @@
                 t.attrs_json,
                 t.amount,
                 t1.quantity,
-                t1.is_delete
-                OR 0 > t1.quantity state
+                !t1.is_delete
+                and t1.quantity > 0 state
             FROM
                 t_shopping_cart t
                 INNER JOIN t_goods_sku t1 ON t1.id = t.sku_id
