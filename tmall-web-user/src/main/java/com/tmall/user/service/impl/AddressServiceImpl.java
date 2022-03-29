@@ -73,7 +73,7 @@ public class AddressServiceImpl implements AddressService {
         if (addressMapper.setDefault(id, accountId) > 0) {
             return PublicResult.success();
         }
-        return PublicResult.error(CommonErrResult.OPERATE_FAIL);
+        return PublicResult.error();
     }
 
     private void validAddress(AddressDTO address) {

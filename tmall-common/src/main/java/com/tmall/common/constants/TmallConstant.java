@@ -26,4 +26,34 @@ public final class TmallConstant {
     public static final short YES = 1;
     public static final short NO = 0;
 
+    public static final String TOKEN = "token";
+
+    public enum OrderStateEnum {
+        DONE((short) 0), NO_PAY((short) 1), NO_DISPATCH((short) 2), DISPATCH((short) 3), NO_COMMENT((short) 4);
+
+        private short state;
+
+        OrderStateEnum(short state) {
+            this.state = state;
+        }
+
+        public short getState() {
+            return state;
+        }
+    }
+
+    public enum LogisticsStateEnum {
+        NO_DISPATCH((short) 0), DISPATCH((short) 1), DONE((short) 2);
+
+        private short state;
+
+        LogisticsStateEnum(short state) {
+            this.state = state;
+        }
+
+        public short getState() {
+            return state;
+        }
+    }
+
 }

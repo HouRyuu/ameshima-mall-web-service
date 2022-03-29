@@ -1,18 +1,31 @@
 package com.tmall.goods.service.impl;
 
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
-
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.*;
 import com.tmall.common.constants.CommonErrResult;
+import com.tmall.common.constants.GlobalConfig;
+import com.tmall.common.constants.TmallConstant;
 import com.tmall.common.dto.LoginInfo;
+import com.tmall.common.dto.PageResult;
 import com.tmall.common.dto.PublicResult;
+import com.tmall.common.redis.RedisClient;
 import com.tmall.common.utils.CheckUtil;
 import com.tmall.goods.constants.GoodsErrResultEnum;
+import com.tmall.goods.entity.dto.*;
 import com.tmall.goods.entity.po.GoodsFreightPO;
-import com.tmall.goods.entity.vo.ShopCartVO;
+import com.tmall.goods.entity.po.GoodsSkuPO;
+import com.tmall.goods.es.repository.GoodsRepository;
+import com.tmall.goods.keys.GoodsKey;
 import com.tmall.goods.mapper.GoodsFreightMapper;
+import com.tmall.goods.mapper.GoodsMapper;
+import com.tmall.goods.mapper.GoodsSkuMapper;
+import com.tmall.goods.service.GoodsService;
+import com.tmall.goods.service.ShoppingCartService;
+import com.tmall.remote.goods.dto.OrderAddressDTO;
+import com.tmall.remote.goods.dto.CartGoodsDTO;
+import com.tmall.remote.goods.dto.GoodsDTO;
+import com.tmall.remote.goods.vo.ShopCartVO;
+import com.tmall.remote.order.api.IOrderEvaluateService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -25,29 +38,19 @@ import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import com.tmall.common.constants.GlobalConfig;
-import com.tmall.common.constants.TmallConstant;
-import com.tmall.common.dto.PageResult;
-import com.tmall.common.redis.RedisClient;
-import com.tmall.goods.entity.dto.*;
-import com.tmall.goods.es.repository.GoodsRepository;
-import com.tmall.goods.keys.GoodsKey;
-import com.tmall.goods.mapper.GoodsMapper;
-import com.tmall.goods.service.GoodsService;
-import com.tmall.remote.goods.dto.GoodsDTO;
-import com.tmall.remote.order.api.IOrderEvaluateService;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
+
+import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -62,18 +65,23 @@ public class GoodsServiceImpl implements GoodsService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GoodsServiceImpl.class);
 
-    @Autowired
+    @Resource
     private GoodsMapper goodsMapper;
-    @Autowired
+    @Resource
     private GlobalConfig globalConfig;
-    @Autowired
+    @Resource
     private RedisClient redisClient;
-    @Autowired
+    @Resource
     private IOrderEvaluateService orderEvaluateService;
-    @Autowired
+    @Resource
     private GoodsRepository goodsRepository;
-    @Autowired
+    @Resource
     private GoodsFreightMapper goodsFreightMapper;
+    @Resource
+    private GoodsSkuMapper goodsSkuMapper;
+    @Resource
+    private ShoppingCartService shoppingCartService;
+
 
     @Override
     public List<GoodsGridDTO> findByPromote(int promoteId) {
@@ -143,8 +151,23 @@ public class GoodsServiceImpl implements GoodsService {
         Example example = new Example(GoodsFreightPO.class);
         example.and().andEqualTo("targetCityCode", cityCode)
                 .andIn("goodsId", goodsIds).andCondition("is_delete=", TmallConstant.NO);
-        Map<Integer, BigDecimal> freightMap = goodsFreightMapper.selectByExample(example).stream().collect(Collectors.toMap(GoodsFreightPO::getGoodsId, GoodsFreightPO::getCost));
+        example.setOrderByClause("store_id, dispatch_city_code, cost DESC");
+        List<GoodsFreightPO> freightList = goodsFreightMapper.selectByExample(example);
+        Table<Integer, String, Map<Integer, BigDecimal>> storeCityFreightMap = HashBasedTable.create();
         BigDecimal zero = new BigDecimal(0);
+        // 按每个店铺每个城市收取一次最贵的运费，该店铺该城市下其他商品不收运费
+        for (GoodsFreightPO goodsFreight : freightList) {
+            Map<Integer, BigDecimal> costMap = storeCityFreightMap.get(goodsFreight.getStoreId(), goodsFreight.getDispatchCityCode());
+            if (costMap == null) {
+                costMap = new HashMap<>();
+            } else {
+                goodsFreight.setCost(zero);
+            }
+            costMap.put(goodsFreight.getGoodsId(), goodsFreight.getCost());
+            storeCityFreightMap.put(goodsFreight.getStoreId(), goodsFreight.getDispatchCityCode(), costMap);
+        }
+        Map<Integer, BigDecimal> freightMap = new HashMap<>();
+        storeCityFreightMap.values().forEach(freightMap::putAll);
         for (Integer goodsId : goodsIds) {
             if (!freightMap.containsKey(goodsId)) {
                 freightMap.put(goodsId, zero);
@@ -191,13 +214,56 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public PublicResult<?> cacheBuySkus(List<ShoppingCartDTO> skuList) {
-        Assert.notEmpty(skuList, TmallConstant.PARAM_ERR_MSG);
-        PublicResult<?> result = CheckUtil.isTrue(!CollectionUtils.isEmpty(skuList)
-                && redisClient.set(GoodsKey.USER_BUY_SKUS, LoginInfo.get().getAccountId(), skuList));
-        if (result == null) {
+        PublicResult<?> result = CheckUtil.isTrue(!CollectionUtils.isEmpty(skuList));
+        if (result != null) {
+            return result;
+        }
+        Map<Integer, ShoppingCartDTO> skuMap = skuList.stream().collect(Collectors.toMap(ShoppingCartDTO::getSkuId, shoppingCartDTO -> shoppingCartDTO));
+        List<CartGoodsDTO> goodsList = goodsMapper.goodsBySkus(skuMap.keySet());
+        result = CheckUtil.isTrue(!CollectionUtils.isEmpty(goodsList));
+        if (result != null) {
+            return result;
+        }
+        for (CartGoodsDTO goods : goodsList) {
+            ShoppingCartDTO cartTemp = skuMap.get(goods.getSkuId());
+            if (cartTemp.getAmount() > goods.getQuantity()) {
+                return PublicResult.error(GoodsErrResultEnum.AMOUNT_OVER);
+            }
+            goods.setId(cartTemp.getCartId());
+            goods.setAttrsJson(cartTemp.getAttrsJson());
+            goods.setAmount(cartTemp.getAmount());
+        }
+        if (redisClient.set(GoodsKey.USER_BUY_SKUS, LoginInfo.get().getAccountId(), goodsList)) {
             return PublicResult.success();
         }
-        return result;
+        return PublicResult.error();
+    }
+
+    @Override
+    @Transactional
+    public PublicResult<?> skuOrdered(int accountId) {
+        Assert.isTrue(accountId > 0, CommonErrResult.ERR＿REQUEST.errMsg());
+        List<CartGoodsDTO> skuList = redisClient.get(GoodsKey.USER_BUY_SKUS, accountId);
+        // 在庫を減らす
+        for (CartGoodsDTO sku : skuList) {
+            if (goodsSkuMapper.quantityDown(sku) == 0) {
+                throw new IllegalArgumentException(PublicResult.error(GoodsErrResultEnum.AMOUNT_OVER).toString());
+            }
+        }
+        LOGGER.info("accountId->{}は注文して在庫を減らした。注文内容->{}", accountId, JSON.toJSON(skuList));
+        // ショップカートを削除
+        Set<Integer> cartIds = skuList.stream().map(CartGoodsDTO::getId).filter(Objects::nonNull).collect(Collectors.toSet());
+        if (!CollectionUtils.isEmpty(cartIds)) {
+            PublicResult<?> removeCartRes = shoppingCartService.remove(cartIds, accountId);
+            if (removeCartRes.getErrCode() != TmallConstant.NO) {
+                throw new IllegalArgumentException(removeCartRes.toString());
+            }
+        }
+        // 買った商品のキャッシュを削除
+        if (!redisClient.removeKey(GoodsKey.USER_BUY_SKUS, accountId)) {
+            throw new IllegalArgumentException(PublicResult.error(CommonErrResult.OPERATE_FAIL).toString());
+        }
+        return PublicResult.success();
     }
 
     @Override
@@ -206,22 +272,24 @@ public class GoodsServiceImpl implements GoodsService {
         if (result != null) {
             return result;
         }
-        GoodsSkuDTO param = new GoodsSkuDTO();
-        param.setId(skuId);
-        List<GoodsSkuDTO> skuList = goodsMapper.findSku(param);
-        Assert.notEmpty(skuList, TmallConstant.PARAM_ERR_MSG);
-        if (amount > skuList.get(0).getQuantity()) {
-            return PublicResult.error(GoodsErrResultEnum.ADD_CART_FAIL);
-        }
-        List<ShoppingCartDTO> skus = redisClient.get(GoodsKey.USER_BUY_SKUS, LoginInfo.get().getAccountId());
-        result = CheckUtil.notEmpty(skus, GoodsErrResultEnum.ADD_CART_FAIL);
+        List<CartGoodsDTO> skus = redisClient.get(GoodsKey.USER_BUY_SKUS, LoginInfo.get().getAccountId());
+        result = CheckUtil.notEmpty(skus, GoodsErrResultEnum.BUY_CACHE_NOT_EXISTS);
         if (result != null) {
             return result;
         }
+        GoodsSkuPO goodsSku = goodsSkuMapper.selectByPrimaryKey(skuId);
+        result = CheckUtil.notNull(goodsSku);
+        if (result != null) {
+            return result;
+        }
+        if (goodsSku.getIsDelete() == TmallConstant.NO || amount > goodsSku.getQuantity()) {
+            return PublicResult.error(GoodsErrResultEnum.AMOUNT_OVER);
+        }
         boolean isChange = false;
-        for (ShoppingCartDTO shoppingCartDTO : skus) {
-            if (skuId == shoppingCartDTO.getSkuId()) {
-                shoppingCartDTO.setAmount(amount);
+        for (CartGoodsDTO goods : skus) {
+            if (skuId == goods.getSkuId()) {
+                goods.setAmount(amount);
+                goods.setQuantity(goodsSku.getQuantity());
                 isChange = true;
                 break;
             }
@@ -229,24 +297,26 @@ public class GoodsServiceImpl implements GoodsService {
         if (!isChange) {
             return PublicResult.error(CommonErrResult.ERR＿REQUEST);
         }
-        return cacheBuySkus(skus);
+        if (redisClient.set(GoodsKey.USER_BUY_SKUS, LoginInfo.get().getAccountId(), skus)) {
+            return PublicResult.success();
+        }
+        return PublicResult.error();
     }
 
     @Override
-    public Collection<ShopCartVO> goodsBySkus() {
-        List<ShoppingCartDTO> skus = redisClient.get(GoodsKey.USER_BUY_SKUS, LoginInfo.get().getAccountId());
-        if (CollectionUtils.isEmpty(skus)) {
+    public List<ShopCartVO> goodsBySkus(OrderAddressDTO addressDTO) {
+        List<CartGoodsDTO> goodsList = redisClient.get(GoodsKey.USER_BUY_SKUS, addressDTO.getAccountId());
+        if (CollectionUtils.isEmpty(goodsList)) {
             return Collections.emptyList();
         }
-        Map<Integer, ShoppingCartDTO> skuMap = skus.stream().collect(Collectors.toMap(ShoppingCartDTO::getSkuId, shoppingCartDTO -> shoppingCartDTO));
-        List<CartGoodsDTO> goodsList = goodsMapper.goodsBySkus(skuMap.keySet());
+        Map<Integer, BigDecimal> freightMap = new HashMap<>();
+        if (StringUtils.isNotBlank(addressDTO.getCityCode())) {
+            freightMap = getFreight(goodsList.stream().map(CartGoodsDTO::getGoodsId).collect(Collectors.toSet()), addressDTO.getCityCode());
+        }
         Map<ShopCartVO, ShopCartVO> cartMap = Maps.newLinkedHashMap();
         ShopCartVO shopCart, temp;
-        ShoppingCartDTO cartTemp;
         for (CartGoodsDTO goods : goodsList) {
-            cartTemp = skuMap.get(goods.getSkuId());
-            goods.setAttrsJson(cartTemp.getAttrsJson());
-            goods.setAmount(cartTemp.getAmount());
+            goods.setFreight(freightMap.get(goods.getGoodsId()));
             temp = new ShopCartVO(goods.getStoreId(), goods.getStoreName(), goods.getState());
             shopCart = cartMap.get(temp);
             if (shopCart == null) {
@@ -256,7 +326,7 @@ public class GoodsServiceImpl implements GoodsService {
             }
             shopCart.getGoodsList().add(goods);
         }
-        return cartMap.values();
+        return new ArrayList<>(cartMap.values());
     }
 
     /**

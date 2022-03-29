@@ -12,7 +12,8 @@ import com.tmall.common.constants.IErrResult;
  */
 public enum GoodsErrResultEnum implements IErrResult {
     ADD_CART_FAIL(300, "在庫を超えましたよ"),
-    BUY_CACHE_NOT_EXISTS(301, "長い間操作していないので、改めて購入してください");
+    BUY_CACHE_NOT_EXISTS(301, "長い間操作していないので、改めて購入してください"),
+    AMOUNT_OVER(302, "商品が大人気なので在庫は足りなくなってしまいました😹");
 
     private int errCode;
     private String errMsg;

@@ -19,7 +19,9 @@ public class GoodsFreightPO extends BasePO {
 
     @Id
     private Integer id;
+    private Integer storeId;
     private Integer goodsId;
+    private String dispatchCityCode;
     private String targetCityCode;
     private BigDecimal cost;
 
@@ -31,12 +33,28 @@ public class GoodsFreightPO extends BasePO {
         this.id = id;
     }
 
+    public Integer getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Integer storeId) {
+        this.storeId = storeId;
+    }
+
     public Integer getGoodsId() {
         return goodsId;
     }
 
     public void setGoodsId(Integer goodsId) {
         this.goodsId = goodsId;
+    }
+
+    public String getDispatchCityCode() {
+        return dispatchCityCode;
+    }
+
+    public void setDispatchCityCode(String dispatchCityCode) {
+        this.dispatchCityCode = dispatchCityCode;
     }
 
     public String getTargetCityCode() {

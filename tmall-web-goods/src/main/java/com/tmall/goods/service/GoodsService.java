@@ -9,7 +9,8 @@ import java.util.Set;
 import com.tmall.common.dto.PageResult;
 import com.tmall.common.dto.PublicResult;
 import com.tmall.goods.entity.dto.*;
-import com.tmall.goods.entity.vo.ShopCartVO;
+import com.tmall.remote.goods.dto.OrderAddressDTO;
+import com.tmall.remote.goods.vo.ShopCartVO;
 import com.tmall.remote.goods.dto.GoodsDTO;
 
 /**
@@ -44,7 +45,9 @@ public interface GoodsService {
 
     PublicResult<?>  cacheBuySkus(List<ShoppingCartDTO> skuList);
 
+    PublicResult<?> skuOrdered(int accountId);
+
     PublicResult<?>  updateCacheBuySkusAmount(int skuId, int amount);
 
-    Collection<ShopCartVO> goodsBySkus();
+    List<ShopCartVO> goodsBySkus(OrderAddressDTO addressDTO);
 }

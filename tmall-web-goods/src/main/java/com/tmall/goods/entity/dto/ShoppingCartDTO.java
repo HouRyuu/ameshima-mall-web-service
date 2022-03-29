@@ -10,10 +10,19 @@ package com.tmall.goods.entity.dto;
  */
 public class ShoppingCartDTO {
 
+    private Integer cartId;
     private int accountId;
     private int skuId;
     private String attrsJson;
     private int amount;
+
+    public Integer getCartId() {
+        return cartId;
+    }
+
+    public void setCartId(Integer cartId) {
+        this.cartId = cartId;
+    }
 
     public int getAccountId() {
         return accountId;

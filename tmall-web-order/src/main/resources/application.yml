@@ -16,6 +16,21 @@ spring:
     host: 127.0.0.1
     port: 6379
     password: ;463*
+  rabbitmq:
+    username: guest
+    password: guest
+    virtual-host: /
+    listener:
+      simple:
+        concurrency: 10
+        max-concurrency: 10
+        prefetch: 1
+        default-requeue-rejected: true
+    template:
+      retry:
+        enabled: true
+
+
 jackson:
     default-property-inclusion: non_null
 

@@ -1,5 +1,7 @@
 package com.tmall.common.dto;
 
+import com.alibaba.fastjson.JSONObject;
+import com.tmall.common.constants.CommonErrResult;
 import com.tmall.common.constants.IErrResult;
 
 /**
@@ -10,7 +12,6 @@ import com.tmall.common.constants.IErrResult;
  * @see [相关类/方法]（可选）
  * @since [产品/模块版本] （可选）
  */
-@SuppressWarnings("unchecked")
 public class PublicResult<T> {
 
     private int errCode;
@@ -30,19 +31,23 @@ public class PublicResult<T> {
     }
 
     public static <T> PublicResult<T> error(int errCode, String errMsg) {
-        return new PublicResult(errCode, errMsg);
+        return new PublicResult<>(errCode, errMsg);
     }
 
     public static <T> PublicResult<T> error(IErrResult errResult) {
         return new PublicResult<>(errResult.errCode(), errResult.errMsg());
     }
 
-    public static PublicResult<?>  success() {
-        return new PublicResult();
+    public static <T> PublicResult<T> error() {
+        return error(CommonErrResult.OPERATE_FAIL);
+    }
+
+    public static PublicResult<?> success() {
+        return new PublicResult<>();
     }
 
     public static <T> PublicResult<T> success(T data) {
-        return new PublicResult(data);
+        return new PublicResult<>(data);
     }
 
     public int getErrCode() {
@@ -61,11 +66,17 @@ public class PublicResult<T> {
         this.errMsg = errMsg;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
     public void setData(T data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return JSONObject.toJSONString(this);
+    }
+
 }

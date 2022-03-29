@@ -171,6 +171,7 @@
         t1.goods_id,
         t2.img_url,
         t2.`name`,
+        t2.location,
         t1.price,
         t1.market_price,
         t1.id skuId,

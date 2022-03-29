@@ -6,7 +6,7 @@ import java.util.Set;
 import org.apache.ibatis.annotations.Param;
 
 import com.tmall.common.BaseMapper;
-import com.tmall.goods.entity.dto.CartGoodsDTO;
+import com.tmall.remote.goods.dto.CartGoodsDTO;
 import com.tmall.goods.entity.dto.ShoppingCartDTO;
 import com.tmall.goods.entity.po.ShoppingCartPO;
 

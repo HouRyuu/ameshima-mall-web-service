@@ -1,17 +1,19 @@
 package com.tmall.goods.web;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import com.tmall.common.annotation.LoginRequire;
 import com.tmall.common.constants.CommonErrResult;
-import com.tmall.common.utils.CheckUtil;
+import com.tmall.common.constants.UserErrResultEnum;
+import com.tmall.common.dto.LoginInfo;
 import com.tmall.goods.constants.GoodsErrResultEnum;
 import com.tmall.goods.entity.dto.ShoppingCartDTO;
-import com.tmall.goods.entity.vo.ShopCartVO;
+import com.tmall.remote.goods.api.IGoodsService;
+import com.tmall.remote.goods.dto.OrderAddressDTO;
+import com.tmall.remote.goods.vo.ShopCartVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import com.google.common.collect.Lists;
@@ -36,7 +38,7 @@ import com.tmall.remote.goods.dto.GoodsDTO;
  * @since [产品/模块版本] （可选）
  */
 @RestController
-public class GoodsResource {
+public class GoodsResource implements IGoodsService {
 
     @Autowired
     private GoodsCategoryService goodsCategoryService;
@@ -132,14 +134,35 @@ public class GoodsResource {
     }
 
     @LoginRequire
-    @GetMapping("/goodsBySkus")
-    public PublicResult<Collection<ShopCartVO>> goodsBySkus() {
-        Collection<ShopCartVO> shopCarts = goodsService.goodsBySkus();
-        PublicResult<Collection<ShopCartVO>> result = CheckUtil.notEmpty(shopCarts, GoodsErrResultEnum.BUY_CACHE_NOT_EXISTS);
-        if (result != null) {
-            return result;
+    @RequestMapping("/goodsBySkus")
+    public PublicResult<List<ShopCartVO>> goodsBySkus(@RequestBody OrderAddressDTO address) {
+        if (address.getAccountId() == 0 && LoginInfo.get() == null) {
+            return PublicResult.error(UserErrResultEnum.NOT_LOGIN);
         }
-        return PublicResult.success(goodsService.goodsBySkus());
+        if (address.getAccountId() > 0 && StringUtils.isBlank(address.getCityCode())) {
+            return PublicResult.error(CommonErrResult.ERR＿REQUEST);
+        }
+        if (address.getAccountId() == 0) {
+            address.setAccountId(LoginInfo.get().getAccountId());
+        }
+        List<ShopCartVO> shopCarts = goodsService.goodsBySkus(address);
+        if (CollectionUtils.isEmpty(shopCarts)) {
+            return PublicResult.error(GoodsErrResultEnum.BUY_CACHE_NOT_EXISTS);
+        }
+        return PublicResult.success(shopCarts);
+    }
+
+    @PostMapping("/orderGoods")
+    public List<ShopCartVO> orderGoods(@RequestBody OrderAddressDTO address){
+        if (address.getAccountId() == 0 || StringUtils.isBlank(address.getCityCode())) {
+            return null;
+        }
+        return goodsService.goodsBySkus(address);
+    }
+
+    @PostMapping("/skuOrdered/{accountId}")
+    public PublicResult<?> skuOrdered(@PathVariable int accountId) {
+        return goodsService.skuOrdered(accountId);
     }
 
     @LoginRequire

@@ -5,7 +5,7 @@ import java.util.Set;
 
 import com.tmall.common.dto.PublicResult;
 import com.tmall.goods.entity.dto.ShoppingCartDTO;
-import com.tmall.goods.entity.vo.ShopCartVO;
+import com.tmall.remote.goods.vo.ShopCartVO;
 
 /**
  * 〈一句话功能简述〉<br>

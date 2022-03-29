@@ -3,6 +3,7 @@ package com.tmall.goods.mapper;
 import com.tmall.common.BaseMapper;
 import com.tmall.goods.entity.dto.*;
 import com.tmall.goods.entity.po.GoodsPO;
+import com.tmall.remote.goods.dto.CartGoodsDTO;
 import com.tmall.remote.goods.dto.GoodsDTO;
 import org.apache.ibatis.annotations.Param;
 

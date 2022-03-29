@@ -19,9 +19,9 @@ import com.google.common.collect.Maps;
 import com.tmall.common.constants.TmallConstant;
 import com.tmall.common.dto.PublicResult;
 import com.tmall.goods.constants.GoodsErrResultEnum;
-import com.tmall.goods.entity.dto.CartGoodsDTO;
+import com.tmall.remote.goods.dto.CartGoodsDTO;
 import com.tmall.goods.entity.dto.ShoppingCartDTO;
-import com.tmall.goods.entity.vo.ShopCartVO;
+import com.tmall.remote.goods.vo.ShopCartVO;
 import com.tmall.goods.mapper.ShoppingCartMapper;
 import com.tmall.goods.service.ShoppingCartService;
 
@@ -79,11 +79,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Assert.isTrue(!CollectionUtils.isEmpty(ids), TmallConstant.PARAM_ERR_MSG);
         try {
             shoppingCartMapper.remove(ids, accountId);
+            LOGGER.info("ショッピングセットを削除した。accountId->{} cartIds->{}", accountId, ids);
             return PublicResult.success();
         } catch (Exception e) {
             LOGGER.error("Remove shopping-cart Fail. Param => {ids:{}, accountId:{}}", StringUtils.join(ids), accountId,
                     e);
-            return PublicResult.error(CommonErrResult.OPERATE_FAIL);
+            return PublicResult.error();
         }
     }
 
@@ -96,7 +97,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         } catch (Exception e) {
             LOGGER.error("Update shopping-cart's amount Fail. Param => {cartId:{}, amount:{}, accountId:{}}", cartId,
                     amount, accountId, e);
-            return PublicResult.error(CommonErrResult.OPERATE_FAIL);
+            return PublicResult.error();
         }
     }
 
@@ -107,7 +108,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             return PublicResult.success();
         } catch (Exception e) {
             LOGGER.error("Remove fail cart's goods was Fail. Param => {accountId:{}}", accountId, e);
-            return PublicResult.error(CommonErrResult.OPERATE_FAIL);
+            return PublicResult.error();
         }
     }
 }
