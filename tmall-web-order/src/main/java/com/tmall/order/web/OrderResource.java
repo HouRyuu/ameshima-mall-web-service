@@ -2,10 +2,12 @@ package com.tmall.order.web;
 
 import com.tmall.common.annotation.LoginRequire;
 import com.tmall.common.dto.PublicResult;
+import com.tmall.order.entity.vo.OrderDetailVO;
 import com.tmall.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -24,6 +26,12 @@ public class OrderResource {
     @GetMapping("/created/{parentOrderNo}")
     public PublicResult<Integer> orderQueueState(@PathVariable String parentOrderNo) {
         return orderService.getOrderQueueState(parentOrderNo);
+    }
+
+    @LoginRequire
+    @GetMapping("/{parentOrderNo}/goods")
+    public PublicResult<List<OrderDetailVO>> findOrderGoodsList(@PathVariable String parentOrderNo) {
+        return orderService.findOrderGoodsList(parentOrderNo);
     }
 
 }

@@ -14,12 +14,14 @@ import com.tmall.order.entity.dto.OrderMQDTO;
 import com.tmall.order.entity.po.OrderGoodsPO;
 import com.tmall.order.entity.po.OrderLogisticsPO;
 import com.tmall.order.entity.po.OrderPayPO;
+import com.tmall.order.entity.vo.OrderDetailVO;
 import com.tmall.order.keys.OrderKey;
 import com.tmall.order.mapper.OrderGoodsMapper;
 import com.tmall.order.mapper.OrderLogisticsMapper;
 import com.tmall.order.mapper.OrderPayMapper;
 import com.tmall.order.rabbitmq.MQSender;
 import com.tmall.order.service.OrderService;
+import com.tmall.order.utils.ConvertToVO;
 import com.tmall.remote.goods.api.IGoodsService;
 import com.tmall.remote.goods.dto.CartGoodsDTO;
 import com.tmall.remote.goods.dto.OrderAddressDTO;
@@ -31,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -59,7 +62,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public PublicResult<?> orderTuQueue(String cityCode, String address) {
         if (StringUtils.isBlank(cityCode) || StringUtils.isBlank(address)) {
-            return PublicResult.error(CommonErrResult.ERR＿REQUEST);
+            return PublicResult.error(CommonErrResult.ERR_REQUEST);
         }
         OrderAddressDTO addressDTO = new OrderAddressDTO();
         addressDTO.setAccountId(LoginInfo.get().getAccountId());
@@ -70,7 +73,7 @@ public class OrderServiceImpl implements OrderService {
         }
         List<ShopCartVO> storeList = storeListRes.getData();
         if (CollectionUtils.isEmpty(storeList)) {
-            return PublicResult.error(CommonErrResult.ERR＿REQUEST);
+            return PublicResult.error(CommonErrResult.ERR_REQUEST);
         }
         OrderMQDTO order = new OrderMQDTO();
         order.setAccountId(LoginInfo.get().getAccountId());
@@ -82,13 +85,33 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public PublicResult<Integer> getOrderQueueState(String parentOrderNo) {
-        Integer orderQueueState = redisClient.get(OrderKey.ORDER_MQ, parentOrderNo + LoginInfo.get().getAccountId());
+        Integer orderQueueState = redisClient.get(OrderKey.ORDER_MQ, parentOrderNo + TmallConstant.UNDERLINE + LoginInfo.get().getAccountId());
         if (orderQueueState == null) {
-            return PublicResult.error(CommonErrResult.ERR＿REQUEST);
+            return PublicResult.error(CommonErrResult.ERR_REQUEST);
         } else if (orderQueueState == OrderConstants.OrderMqState.ERROR.getState()) {
             return PublicResult.error(CommonErrResult.OPERATE_FAIL);
         }
         return PublicResult.success(orderQueueState);
+    }
+
+    @Override
+    public PublicResult<List<OrderDetailVO>> findOrderGoodsList(String parentOrderNo) {
+        Example example = new Example(OrderGoodsPO.class);
+        example.and().andEqualTo("accountId", LoginInfo.get().getAccountId())
+                .andEqualTo("parentOrderNo", parentOrderNo)
+                .andCondition("is_delete=", TmallConstant.NO);
+        List<OrderGoodsPO> goodsList = orderGoodsMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(goodsList)) {
+            return PublicResult.error(CommonErrResult.ERR_REQUEST);
+        }
+        List<String> orderNoList = goodsList.stream().map(OrderGoodsPO::getOrderNo).collect(Collectors.toList());
+        example = new Example(OrderPayPO.class);
+        example.and().andIn("orderNo", orderNoList).andCondition("is_delete=", TmallConstant.NO);
+        List<OrderPayPO> payList = orderPayMapper.selectByExample(example);
+        example = new Example(OrderLogisticsPO.class);
+        example.and().andIn("orderNo", orderNoList).andCondition("is_delete=", TmallConstant.NO);
+        List<OrderLogisticsPO> logisticsList = orderLogisticsMapper.selectByExample(example);
+        return PublicResult.success(ConvertToVO.fromPO(goodsList, payList, logisticsList));
     }
 
     @Override
@@ -99,7 +122,7 @@ public class OrderServiceImpl implements OrderService {
             JSONObject jsonObject = JSON.parseObject(orderStr);
             OrderMQDTO orderMQ = jsonObject.toJavaObject(OrderMQDTO.class);
             orderMQ.setStoreGoodsList(JsonUtils.parse(jsonObject.getJSONArray("storeGoodsList")));
-            mqStateKey = orderMQ.getParentOrderNo() + orderMQ.getAccountId();
+            mqStateKey = orderMQ.getParentOrderNo() + TmallConstant.UNDERLINE + orderMQ.getAccountId();
             Integer mqStatus = redisClient.get(OrderKey.ORDER_MQ, mqStateKey);
             if (mqStatus == null || mqStatus.shortValue() != TmallConstant.NO) {
                 LOGGER.error("注文のメッセージキューの状態は違う => {}", orderStr);
@@ -144,11 +167,13 @@ public class OrderServiceImpl implements OrderService {
                 orderGoods.setStoreId(storeGoods.getStoreId());
                 orderGoods.setStoreName(storeGoods.getStoreName());
                 orderGoods.setGoodsId(goods.getGoodsId());
+                orderGoods.setImgUrl(orderGoods.getImgUrl());
                 orderGoods.setGoodsName(goods.getName());
                 orderGoods.setSkuId(goods.getSkuId());
                 orderGoods.setAttrsJson(goods.getAttrsJson());
                 orderGoods.setPrice(goods.getPrice());
                 orderGoods.setMarketPrice(goods.getMarketPrice());
+                orderGoods.setGoodsLocation(goods.getLocation());
                 orderGoods.setOrderNum(goods.getAmount());
                 orderGoods.setFreight(goods.getFreight());
                 orderGoods.setOrderState(TmallConstant.OrderStateEnum.NO_PAY.getState());
@@ -184,10 +209,12 @@ public class OrderServiceImpl implements OrderService {
             pay.setAccountId(orderMQ.getAccountId());
             pay.setOrderNo(store.getOrderNo());
             BigDecimal dealPrice = new BigDecimal(0);
+            // 合計＝単価＊数量＋送料
             for (CartGoodsDTO goods : store.getGoodsList()) {
                 dealPrice = dealPrice.add(goods.getPrice().multiply(new BigDecimal(goods.getAmount()).add(goods.getFreight())));
             }
             pay.setDealPrice(dealPrice);
+            pay.setPayState(TmallConstant.PayStateEnum.DEFAULT.getState());
             pay.setCreateTime(now);
             return pay;
         }).collect(Collectors.toList());

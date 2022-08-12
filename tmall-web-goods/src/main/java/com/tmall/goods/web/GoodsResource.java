@@ -92,7 +92,7 @@ public class GoodsResource implements IGoodsService {
         Map<String, Object> result = Maps.newHashMap();
         GoodsDTO goods = goodsService.getGoods(goodsId);
         if (goods == null) {
-            return PublicResult.error(CommonErrResult.ERR＿REQUEST);
+            return PublicResult.error(CommonErrResult.ERR_REQUEST);
         }
         result.put("goods", goods);
         result.put("attrs", goodsAttrService.findGoodsAttrList(goodsId));
@@ -140,7 +140,7 @@ public class GoodsResource implements IGoodsService {
             return PublicResult.error(UserErrResultEnum.NOT_LOGIN);
         }
         if (address.getAccountId() > 0 && StringUtils.isBlank(address.getCityCode())) {
-            return PublicResult.error(CommonErrResult.ERR＿REQUEST);
+            return PublicResult.error(CommonErrResult.ERR_REQUEST);
         }
         if (address.getAccountId() == 0) {
             address.setAccountId(LoginInfo.get().getAccountId());

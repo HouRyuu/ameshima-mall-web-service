@@ -37,7 +37,7 @@ public class MQSender {
             String msgStr = JSONObject.toJSONString(order);
             LOGGER.info("注文のメッセージを送り始める => {}", msgStr);
             amqpTemplate.convertAndSend(MQConfig.ORDER_QUEUE, msgStr);
-            if (redisClient.set(OrderKey.ORDER_MQ, parentNo + order.getAccountId(), OrderConstants.OrderMqState.DEFAULT.getState())) {
+            if (redisClient.set(OrderKey.ORDER_MQ, parentNo + TmallConstant.UNDERLINE + order.getAccountId(), OrderConstants.OrderMqState.DEFAULT.getState())) {
                 return parentNo;
             }
         } catch (Exception e) {

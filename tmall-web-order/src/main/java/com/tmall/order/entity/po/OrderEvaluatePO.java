@@ -15,7 +15,7 @@ import com.tmall.common.po.BasePO;
  * @see [相关类/方法]（可选）
  * @since [产品/模块版本] （可选）
  */
-@Table(name = "t_oreder_evaluate")
+@Table(name = "t_order_evaluate")
 public class OrderEvaluatePO extends BasePO {
 
     @Id

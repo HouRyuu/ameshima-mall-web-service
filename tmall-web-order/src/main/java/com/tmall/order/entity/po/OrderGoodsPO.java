@@ -20,11 +20,13 @@ public class OrderGoodsPO extends BasePO {
     private Integer storeId;
     private String storeName;
     private Integer goodsId;
+    private String imgUrl;
     private String goodsName;
     private Integer skuId;
     private String attrsJson;
     private BigDecimal price;
     private BigDecimal marketPrice;
+    private String goodsLocation;
     private Integer orderNum;
     private BigDecimal freight;
     private Short orderState;
@@ -85,6 +87,14 @@ public class OrderGoodsPO extends BasePO {
         this.goodsId = goodsId;
     }
 
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
     public String getGoodsName() {
         return goodsName;
     }
@@ -123,6 +133,14 @@ public class OrderGoodsPO extends BasePO {
 
     public void setMarketPrice(BigDecimal marketPrice) {
         this.marketPrice = marketPrice;
+    }
+
+    public String getGoodsLocation() {
+        return goodsLocation;
+    }
+
+    public void setGoodsLocation(String goodsLocation) {
+        this.goodsLocation = goodsLocation;
     }
 
     public Integer getOrderNum() {

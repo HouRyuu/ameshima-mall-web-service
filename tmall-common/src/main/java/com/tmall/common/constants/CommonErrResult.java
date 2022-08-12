@@ -11,10 +11,10 @@ package com.tmall.common.constants;
 public enum CommonErrResult implements IErrResult {
 
     OPERATE_FAIL(500, "エラーが発生してしまいました。しばらく待ってからしてみてください^_^"),
-    ERR＿REQUEST(250, "異常なリクエスト");
+    ERR_REQUEST(250, "異常なリクエスト");
 
-    private int errCode;
-    private String errMsg;
+    private final int errCode;
+    private final String errMsg;
 
     CommonErrResult(int errCode, String errMsg) {
         this.errCode = errCode;
@@ -23,11 +23,11 @@ public enum CommonErrResult implements IErrResult {
 
     @Override
     public int errCode() {
-        return 0;
+        return this.errCode;
     }
 
     @Override
     public String errMsg() {
-        return null;
+        return this.errMsg;
     }
 }

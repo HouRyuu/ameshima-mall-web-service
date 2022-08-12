@@ -48,7 +48,7 @@ public class GlobalConfig {
     @Autowired
     private GlobalConfigMapper globalConfigMapper;
 
-    private Cache<String, String> CONFIG_CACHE = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.HOURS).build();
+    private final Cache<String, String> CONFIG_CACHE = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.HOURS).build();
 
     @PostConstruct
     public void init() {

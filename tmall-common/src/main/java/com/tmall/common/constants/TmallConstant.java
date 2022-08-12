@@ -28,10 +28,12 @@ public final class TmallConstant {
 
     public static final String TOKEN = "token";
 
+    public static final String UNDERLINE = "_";
+
     public enum OrderStateEnum {
         DONE((short) 0), NO_PAY((short) 1), NO_DISPATCH((short) 2), DISPATCH((short) 3), NO_COMMENT((short) 4);
 
-        private short state;
+        private final short state;
 
         OrderStateEnum(short state) {
             this.state = state;
@@ -45,9 +47,23 @@ public final class TmallConstant {
     public enum LogisticsStateEnum {
         NO_DISPATCH((short) 0), DISPATCH((short) 1), DONE((short) 2);
 
-        private short state;
+        private final short state;
 
         LogisticsStateEnum(short state) {
+            this.state = state;
+        }
+
+        public short getState() {
+            return state;
+        }
+    }
+
+    public enum PayStateEnum {
+        FAIL((short) -1), DEFAULT((short) 0), DONE((short) 1);
+
+        private final short state;
+
+        PayStateEnum(short state) {
             this.state = state;
         }
 

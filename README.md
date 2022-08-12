@@ -1,4 +1,20 @@
 # tmall-web-service
+1. 启动mysql
+
+select @@GLOBAL.sql_mode;
+关闭only_full_group_by
+SET @@GLOBAL.sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+2. 启动rabbitmq
+
+rabbitmq-server
+
+3. 启动redis
+src/redis-server redis.conf
+
+4. 启动elasticsearch
+./bin/elasticsearch
+
 
 #### 介绍
 {**以下是码云平台说明，您可以替换此简介**

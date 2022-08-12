@@ -44,7 +44,7 @@ public class CheckUtil<T> {
     }
 
     public static <T> PublicResult<T> isTrue(boolean expression) {
-        return isTrue(expression, CommonErrResult.ERR＿REQUEST);
+        return isTrue(expression, CommonErrResult.ERR_REQUEST);
     }
 
     public static <T> PublicResult<T> notNull(Object obj) {

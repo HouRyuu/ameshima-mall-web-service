@@ -49,9 +49,9 @@ public class BaseKeyPrefix implements KeyPrefix {
     @Override
     public String prefix() {
         if (StringUtils.isNotBlank(this.prefix)) {
-            return TmallConstant.PROJECT_NAME + "_" + this.getClass().getSimpleName() + ":" + this.prefix;
+            return TmallConstant.PROJECT_NAME + TmallConstant.UNDERLINE + this.getClass().getSimpleName() + ":" + this.prefix;
         }
-        return TmallConstant.PROJECT_NAME + "_" + this.getClass().getSimpleName();
+        return TmallConstant.PROJECT_NAME + TmallConstant.UNDERLINE + this.getClass().getSimpleName();
     }
 
     @Override

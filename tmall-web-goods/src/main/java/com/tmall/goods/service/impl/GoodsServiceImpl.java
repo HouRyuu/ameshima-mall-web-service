@@ -242,7 +242,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     @Transactional
     public PublicResult<?> skuOrdered(int accountId) {
-        Assert.isTrue(accountId > 0, CommonErrResult.ERR＿REQUEST.errMsg());
+        Assert.isTrue(accountId > 0, CommonErrResult.ERR_REQUEST.errMsg());
         List<CartGoodsDTO> skuList = redisClient.get(GoodsKey.USER_BUY_SKUS, accountId);
         // 在庫を減らす
         for (CartGoodsDTO sku : skuList) {
@@ -295,7 +295,7 @@ public class GoodsServiceImpl implements GoodsService {
             }
         }
         if (!isChange) {
-            return PublicResult.error(CommonErrResult.ERR＿REQUEST);
+            return PublicResult.error(CommonErrResult.ERR_REQUEST);
         }
         if (redisClient.set(GoodsKey.USER_BUY_SKUS, LoginInfo.get().getAccountId(), skus)) {
             return PublicResult.success();
