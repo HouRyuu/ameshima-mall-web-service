@@ -1,22 +1,19 @@
 package com.tmall.user.service.impl;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import com.tmall.common.constants.CommonErrResult;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
-
+import com.tmall.common.constants.GlobalConfig;
 import com.tmall.common.constants.TmallConstant;
 import com.tmall.common.dto.PublicResult;
 import com.tmall.user.entity.dto.AddressDTO;
 import com.tmall.user.entity.po.AddressPO;
 import com.tmall.user.mapper.AddressMapper;
 import com.tmall.user.service.AddressService;
-
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import tk.mybatis.mapper.entity.Example;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -31,23 +28,27 @@ public class AddressServiceImpl implements AddressService {
 
     @Resource
     private AddressMapper addressMapper;
+    @Resource
+    private GlobalConfig globalConfig;
 
     @Override
     public PublicResult<Integer> save(AddressDTO address, int accountId) {
         this.validAddress(address);
+        if (address.getId() == null) {
+            if (addressMapper.createAddr(address) > 0) {
+                return PublicResult.success(address.getId());
+            } else {
+                return PublicResult.error();
+            }
+//            addressPO.setIsDefault(addressMapper.selectCountByExample(example) == 0 ? TmallConstant.YES : TmallConstant.NO);
+//            addressPO.setAccountId(accountId);
+//            addressMapper.insertSelective(addressPO);
+        }
         AddressPO addressPO = convertDtoToPo(address);
         Example example = new Example(AddressPO.class);
-        example.and().andEqualTo("accountId", accountId)
+        example.and().andEqualTo("id", address.getId())
+                .andEqualTo("accountId", accountId)
                 .andCondition("is_delete=", TmallConstant.NO);
-        if (address.getId() == null) {
-            if (addressMapper.selectCountByExample(example) == 0) {
-                addressPO.setIsDefault(TmallConstant.YES);
-            }
-            addressPO.setAccountId(accountId);
-            addressMapper.insertSelective(addressPO);
-            return PublicResult.success(addressPO.getId());
-        }
-        example.and().andEqualTo("id", address.getId());
         addressMapper.updateByExampleSelective(addressPO, example);
         return PublicResult.success(address.getId());
     }
@@ -55,8 +56,10 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public PublicResult<?> remove(int id, int accountId) {
         Example example = new Example(AddressPO.class);
-        example.createCriteria().andEqualTo("id", id).andEqualTo("accountId", accountId).andCondition("is_delete=",
-                TmallConstant.YES).andEqualTo("isDefault", TmallConstant.NO);
+        example.createCriteria().andEqualTo("id", id)
+                .andEqualTo("accountId", accountId)
+                .andEqualTo("isDefault", TmallConstant.NO)
+                .andCondition("is_delete=", TmallConstant.YES);
         AddressPO addressPO = new AddressPO();
         addressPO.setIsDelete(TmallConstant.YES);
         addressMapper.updateByExampleSelective(addressPO, example);

@@ -5,7 +5,7 @@ public class OrderConstants {
     public enum OrderMqState {
         ERROR(-1), DEFAULT(0), OK(1);
 
-        private int state;
+        private final int state;
 
         OrderMqState(int state) {
             this.state = state;
@@ -15,6 +15,5 @@ public class OrderConstants {
             return state;
         }
     }
-
 
 }

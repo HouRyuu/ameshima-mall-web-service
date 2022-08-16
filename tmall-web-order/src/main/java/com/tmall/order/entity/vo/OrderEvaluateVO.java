@@ -1,11 +1,6 @@
-package com.tmall.order.entity.po;
+package com.tmall.order.entity.vo;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import com.tmall.common.po.BasePO;
+import java.util.Date;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -15,36 +10,19 @@ import com.tmall.common.po.BasePO;
  * @see [相关类/方法]（可选）
  * @since [产品/模块版本] （可选）
  */
-@Table(name = "t_order_evaluate")
-public class OrderEvaluatePO extends BasePO {
+public class OrderEvaluateVO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private Integer accountId;
     private String avatar;
     private String nickName;
     private String orderNo;
     private Integer goodsId;
     private Integer skuId;
+    private String attrsJson;
     private Float descScore;
     private String evaluateText;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Integer accountId) {
-        this.accountId = accountId;
-    }
+    private Date createTime;
+    private Integer pageIndex;
+    private Integer pageSize;
 
     public String getAvatar() {
         return avatar;
@@ -86,6 +64,14 @@ public class OrderEvaluatePO extends BasePO {
         this.skuId = skuId;
     }
 
+    public String getAttrsJson() {
+        return attrsJson;
+    }
+
+    public void setAttrsJson(String attrsJson) {
+        this.attrsJson = attrsJson;
+    }
+
     public Float getDescScore() {
         return descScore;
     }
@@ -100,5 +86,29 @@ public class OrderEvaluatePO extends BasePO {
 
     public void setEvaluateText(String evaluateText) {
         this.evaluateText = evaluateText;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Integer getPageIndex() {
+        return pageIndex;
+    }
+
+    public void setPageIndex(Integer pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 }

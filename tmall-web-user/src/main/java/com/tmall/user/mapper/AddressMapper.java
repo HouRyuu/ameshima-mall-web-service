@@ -20,5 +20,7 @@ public interface AddressMapper extends BaseMapper<AddressPO> {
 
     List<AddressDTO> findAll(@Param("accountId") int accountId);
 
+    int createAddr(AddressDTO address);
+
     int setDefault(@Param("id") int id, @Param("accountId") int accountId);
 }

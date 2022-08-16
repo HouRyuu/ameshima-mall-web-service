@@ -9,7 +9,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -125,31 +124,31 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public PublicResult<?>  sendRegisterCaptcha(String account) {
+    public PublicResult<?> sendRegisterCaptcha(String account) {
         Assert.hasText(account, TmallConstant.PARAM_ERR_MSG);
-        AccountPO accountPO = new AccountPO();
-        accountPO.setAccount(account);
-        if (accountMapper.selectCount(accountPO) > 0) {
-            LOGGER.warn("手机号已被注册=>{}", account);
+        Example example = new Example(AccountPO.class);
+        example.and().andEqualTo("account", account).andCondition("is_delete", TmallConstant.NO);
+        if (accountMapper.selectCountByExample(example) > 0) {
+            LOGGER.warn("携帯番号もう登録された=>{}", account);
             return PublicResult.error(UserErrResultEnum.REG_ACCOUNT_EXISTS);
         }
         String captcha = CommonUtil.createCaptcha();
-        LOGGER.info("向{}发送注册验证码=>{}", account, captcha);
+        LOGGER.info("{}にキャプチャ=>{}を送る", account, captcha);
         redisClient.set(UserKey.CAPTCHA_REGISTER, account, captcha);
         return PublicResult.success(globalConfig.get(GlobalConfig.KEY_LIMIT_CAPTCHA));
     }
 
     @Override
-    public PublicResult<?>  sendForgetCaptcha(String account) {
+    public PublicResult<?> sendForgetCaptcha(String account) {
         Assert.hasText(account, TmallConstant.PARAM_ERR_MSG);
-        AccountPO accountPO = new AccountPO();
-        accountPO.setAccount(account);
-        if (accountMapper.selectCount(accountPO) == 0) {
-            LOGGER.warn("手机号不存=>{}", account);
+        Example example = new Example(AccountPO.class);
+        example.and().andEqualTo("account", account).andCondition("is_delete", TmallConstant.NO);
+        if (accountMapper.selectCountByExample(example) > 0) {
+            LOGGER.warn("携帯番号は登録されていない=>{}", account);
             return PublicResult.error(UserErrResultEnum.ACCOUNT_NOT_EXISTS);
         }
         String captcha = CommonUtil.createCaptcha();
-        LOGGER.info("向{}发送忘记密码验证码=>{}", account, captcha);
+        LOGGER.info("{}にキャプチャ=>{}を送る", account, captcha);
         redisClient.set(UserKey.CAPTCHA_FORGET, account, captcha);
         return PublicResult.success(globalConfig.get(GlobalConfig.KEY_LIMIT_CAPTCHA));
     }
@@ -184,7 +183,7 @@ public class AccountServiceImpl implements AccountService {
 
     private void checkRegisterInfo(RegisterDTO registerInfo) {
         Assert.isTrue(registerInfo != null && !StringUtils.isAnyBlank(registerInfo.getAccount(),
-                registerInfo.getPassword(), registerInfo.getNickName(), registerInfo.getCaptcha()),
+                        registerInfo.getPassword(), registerInfo.getNickName(), registerInfo.getCaptcha()),
                 TmallConstant.PARAM_ERR_MSG);
         CheckUtil.checkMobile(registerInfo.getAccount());
         CheckUtil.checkStrLength(registerInfo.getPassword(), 6, 32);

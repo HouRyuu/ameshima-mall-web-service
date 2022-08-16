@@ -11,7 +11,9 @@ public interface OrderService {
 
     PublicResult<Integer> getOrderQueueState(String parentOrderNo);
 
-    PublicResult<List<OrderDetailVO>> findOrderGoodsList(String parentOrderNo);
+    PublicResult<List<OrderDetailVO>> findOrderGoodsList(String parentOrderNo, short orderState);
+
+    PublicResult<?> receiveConfirm(String orderNo);
 
     void generateOrder(String orderStr);
 }

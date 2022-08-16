@@ -4,18 +4,35 @@
 <mapper namespace="com.tmall.user.mapper.AddressMapper">
 
     <select id="findAll" parameterType="int" resultType="AddressDTO">
-        SELECT
-            *
-        FROM
-            t_address
-        WHERE
-            account_id = #{accountId}
-            AND is_delete =0
+        SELECT *
+        FROM t_address
+        WHERE account_id = #{accountId}
+          AND is_delete = 0
         order by is_default desc
     </select>
 
+    <insert id="createAddr" useGeneratedKeys="true" keyProperty="id" parameterType="AddressDTO">
+        INSERT INTO t_address (account_id, name, phone, province_code, province, city_code, city, district_code,
+                               district,
+                               detailed_address, is_default)
+        SELECT #{accountId},
+               #{name},
+               #{phone},
+               #{provinceCode},
+               #{province},
+               #{cityCode},
+               #{city},
+               #{districtCode},
+               #{district},
+               #{detailedAddress},
+               IF(ta.addCount > 0, 0, 1)
+        from (select COUNT(id) addCount from t_address where account_id = #{accountId} and is_delete = 0) ta
+        WHERE (select value from t_global_config where category = "address" AND name = "maxCount") > ta.addCount
+    </insert>
+
     <update id="setDefault">
-        update t_address t left join t_address t1 on t.account_id = t1.account_id
+        update t_address t left join t_address t1 ON t.account_id = #{accountId}
+        on t.account_id = t1.account_id
             set t.is_default=1,
                 t1.is_default=0
         where t.account_id = #{accountId}

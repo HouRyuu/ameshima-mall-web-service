@@ -31,7 +31,7 @@ public final class TmallConstant {
     public static final String UNDERLINE = "_";
 
     public enum OrderStateEnum {
-        DONE((short) 0), NO_PAY((short) 1), NO_DISPATCH((short) 2), DISPATCH((short) 3), NO_COMMENT((short) 4);
+        DONE((short) 0), NO_PAY((short) 1), NO_DISPATCH((short) 2), DISPATCH((short) 3), NO_COMMENT((short) 4), CANCEL((short) 5);
 
         private final short state;
 

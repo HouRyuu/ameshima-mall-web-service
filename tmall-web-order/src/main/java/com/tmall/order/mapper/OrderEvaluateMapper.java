@@ -2,6 +2,9 @@ package com.tmall.order.mapper;
 
 import com.tmall.common.BaseMapper;
 import com.tmall.order.entity.po.OrderEvaluatePO;
+import com.tmall.order.entity.vo.OrderEvaluateVO;
+
+import java.util.List;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -12,5 +15,7 @@ import com.tmall.order.entity.po.OrderEvaluatePO;
  * @since [产品/模块版本] （可选）
  */
 public interface OrderEvaluateMapper extends BaseMapper<OrderEvaluatePO> {
+
+    List<OrderEvaluateVO> evaluateList(OrderEvaluateVO condition);
 
 }

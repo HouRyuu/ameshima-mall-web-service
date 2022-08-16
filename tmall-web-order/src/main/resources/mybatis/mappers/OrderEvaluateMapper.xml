@@ -3,31 +3,16 @@
 <!--suppress ALL -->
 <mapper namespace="com.tmall.order.mapper.OrderEvaluateMapper">
 
-    <select id="getBannerCount" resultType="int">
-        SELECT
-        COUNT(1)
-        FROM
-        `t_store_banner`
-        WHERE
-        is_delete = 0
-        <if test="isIndexShow != null">
-            AND is_index_show = #{isIndexShow}
-        </if>
+
+    <select id="evaluateList" parameterType="OrderEvaluateVO" resultType="OrderEvaluateVO">
+        SELECT avatar, nick_name, desc_score, evaluate_text, oe.create_time, og.attrs_json
+        FROM t_order_evaluate AS oe
+                 INNER JOIN t_order_goods og
+                            ON oe.sku_id = og.sku_id AND oe.order_no = og.order_no AND og.is_delete = 0
+        WHERE oe.goods_id = #{goodsId}
+          AND oe.is_delete = 0
+        order by oe.create_time DESC
     </select>
 
-    <select id="findBanners" parameterType="StoreBannerDTO" resultType="StoreBannerDTO">
-        SELECT
-        store_id,
-        banner_img,
-        banner_color
-        FROM
-        `t_store_banner`
-        WHERE
-        is_delete = 0
-        <if test="isIndexShow != null">
-            AND is_index_show = #{isIndexShow}
-        </if>
-        LIMIT #{firstIndex}, #{showCount}
-    </select>
 
 </mapper>

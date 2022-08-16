@@ -17,6 +17,16 @@ public class PageResult<E> {
     private long total;
     private List<E> content;
 
+    public PageResult() {
+    }
+
+    public PageResult(int pageSize, int pageIndex, long total, List<E> content) {
+        this.pageSize = pageSize;
+        this.pageIndex = pageIndex;
+        this.total = total;
+        this.content = content;
+    }
+
     public int getPageSize() {
         return pageSize;
     }

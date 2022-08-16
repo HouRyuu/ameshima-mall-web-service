@@ -261,7 +261,7 @@ public class GoodsServiceImpl implements GoodsService {
         }
         // 買った商品のキャッシュを削除
         if (!redisClient.removeKey(GoodsKey.USER_BUY_SKUS, accountId)) {
-            throw new IllegalArgumentException(PublicResult.error(CommonErrResult.OPERATE_FAIL).toString());
+            throw new IllegalArgumentException(PublicResult.error().toString());
         }
         return PublicResult.success();
     }

@@ -1,5 +1,10 @@
 package com.tmall.order.service;
 
+import com.github.pagehelper.PageInfo;
+import com.tmall.common.dto.PageResult;
+import com.tmall.common.dto.PublicResult;
+import com.tmall.order.entity.vo.OrderEvaluateVO;
+
 /**
  * 〈一句话功能简述〉<br>
  * 〈功能详细描述〉
@@ -11,5 +16,9 @@ package com.tmall.order.service;
 public interface OrderEvaluateService {
 
     int goodsEvaluateCount(int goodsId);
+
+    PublicResult<?> create(OrderEvaluateVO evaluate);
+
+    PublicResult<PageResult<OrderEvaluateVO>> evaluatePage(OrderEvaluateVO condition);
 
 }

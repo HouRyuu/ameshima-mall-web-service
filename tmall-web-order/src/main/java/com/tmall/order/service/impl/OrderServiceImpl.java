@@ -38,6 +38,7 @@ import tk.mybatis.mapper.entity.Example;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -85,24 +86,31 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public PublicResult<Integer> getOrderQueueState(String parentOrderNo) {
+        if (StringUtils.isBlank(parentOrderNo)) {
+            return PublicResult.error();
+        }
         Integer orderQueueState = redisClient.get(OrderKey.ORDER_MQ, parentOrderNo + TmallConstant.UNDERLINE + LoginInfo.get().getAccountId());
         if (orderQueueState == null) {
             return PublicResult.error(CommonErrResult.ERR_REQUEST);
         } else if (orderQueueState == OrderConstants.OrderMqState.ERROR.getState()) {
-            return PublicResult.error(CommonErrResult.OPERATE_FAIL);
+            return PublicResult.error();
         }
         return PublicResult.success(orderQueueState);
     }
 
     @Override
-    public PublicResult<List<OrderDetailVO>> findOrderGoodsList(String parentOrderNo) {
+    public PublicResult<List<OrderDetailVO>> findOrderGoodsList(String parentOrderNo, short orderState) {
+        if (StringUtils.isBlank(parentOrderNo) || orderState < 0 || orderState > 5) {
+            return PublicResult.error();
+        }
         Example example = new Example(OrderGoodsPO.class);
         example.and().andEqualTo("accountId", LoginInfo.get().getAccountId())
                 .andEqualTo("parentOrderNo", parentOrderNo)
+                .andEqualTo("orderState", orderState)
                 .andCondition("is_delete=", TmallConstant.NO);
         List<OrderGoodsPO> goodsList = orderGoodsMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(goodsList)) {
-            return PublicResult.error(CommonErrResult.ERR_REQUEST);
+            return PublicResult.success(Collections.emptyList());
         }
         List<String> orderNoList = goodsList.stream().map(OrderGoodsPO::getOrderNo).collect(Collectors.toList());
         example = new Example(OrderPayPO.class);
@@ -112,6 +120,32 @@ public class OrderServiceImpl implements OrderService {
         example.and().andIn("orderNo", orderNoList).andCondition("is_delete=", TmallConstant.NO);
         List<OrderLogisticsPO> logisticsList = orderLogisticsMapper.selectByExample(example);
         return PublicResult.success(ConvertToVO.fromPO(goodsList, payList, logisticsList));
+    }
+
+    @Override
+    public PublicResult<?> receiveConfirm(String orderNo) {
+        if (StringUtils.isBlank(orderNo)) {
+            return PublicResult.error();
+        }
+        int accountId = LoginInfo.get().getAccountId();
+        try {
+            Example example = new Example(OrderGoodsPO.class);
+            example.and().andEqualTo("accountId", accountId)
+                    .andEqualTo("orderNo", orderNo)
+                    .andEqualTo("orderState", TmallConstant.OrderStateEnum.DISPATCH.getState())
+                    .andCondition("is_delete=", TmallConstant.NO);
+            OrderGoodsPO orderGoodsPO = new OrderGoodsPO();
+            orderGoodsPO.setOrderState(TmallConstant.OrderStateEnum.NO_COMMENT.getState());
+            if (orderGoodsMapper.updateByExampleSelective(orderGoodsPO, example) > 0) {
+                LOGGER.info("accountId=>{}はorderNo=>{}の商品は届いたので、注文状態を次に変える", accountId, orderNo);
+                return PublicResult.success();
+            } else {
+                return PublicResult.error(CommonErrResult.ERR_REQUEST);
+            }
+        } catch (Exception e) {
+            LOGGER.error(String.format("accountId=>％1$dはorderNo=>%2$s届いた確認が失敗", accountId, orderNo), e);
+        }
+        return PublicResult.error();
     }
 
     @Override
@@ -167,7 +201,7 @@ public class OrderServiceImpl implements OrderService {
                 orderGoods.setStoreId(storeGoods.getStoreId());
                 orderGoods.setStoreName(storeGoods.getStoreName());
                 orderGoods.setGoodsId(goods.getGoodsId());
-                orderGoods.setImgUrl(orderGoods.getImgUrl());
+                orderGoods.setImgUrl(goods.getImgUrl());
                 orderGoods.setGoodsName(goods.getName());
                 orderGoods.setSkuId(goods.getSkuId());
                 orderGoods.setAttrsJson(goods.getAttrsJson());

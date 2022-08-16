@@ -29,9 +29,15 @@ public class OrderResource {
     }
 
     @LoginRequire
-    @GetMapping("/{parentOrderNo}/goods")
-    public PublicResult<List<OrderDetailVO>> findOrderGoodsList(@PathVariable String parentOrderNo) {
-        return orderService.findOrderGoodsList(parentOrderNo);
+    @GetMapping("/{parentOrderNo}/goods/{orderState}")
+    public PublicResult<List<OrderDetailVO>> findOrderGoodsList(@PathVariable String parentOrderNo, @PathVariable short orderState) {
+        return orderService.findOrderGoodsList(parentOrderNo, orderState);
+    }
+
+    @LoginRequire
+    @PutMapping("/{orderNo}/receive/confirm")
+    public PublicResult<?> receiveConfirm(@PathVariable String orderNo) {
+        return orderService.receiveConfirm(orderNo);
     }
 
 }
