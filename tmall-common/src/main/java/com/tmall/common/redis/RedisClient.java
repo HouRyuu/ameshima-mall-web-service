@@ -54,6 +54,21 @@ public class RedisClient {
         }
     }
 
+    public <T> boolean setNoLog(KeyPrefix prefix, Object key, T value) {
+        String realKey = realKey(prefix, key);
+        try {
+            if (prefix.timeout() <= 0) {
+                redisTemplate.opsForValue().set(realKey, value);
+                return true;
+            }
+            redisTemplate.opsForValue().set(realKey, value, prefix.timeout(), prefix.timeunit());
+            return true;
+        } catch (Exception e) {
+            LOGGER.error(String.format("Redis set error. Key->{%s}", realKey), e);
+            return false;
+        }
+    }
+
     public <T> boolean setIfAbsent(KeyPrefix prefix, Object key, T value) {
         String realKey = realKey(prefix, key);
         try {

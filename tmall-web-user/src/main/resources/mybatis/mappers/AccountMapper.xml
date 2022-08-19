@@ -4,19 +4,18 @@
 <mapper namespace="com.tmall.user.mapper.AccountMapper">
 
     <select id="login" parameterType="AccountPO" resultType="LoginUser">
-        SELECT
-        t.id account_id,
-        t.first_user_type account_type,
-        t1.avatar,
-        t1.nick_name,
-        t1.gender
-        FROM
-        t_account t
-        LEFT JOIN t_user t1 ON t.id = t1.account_id
-        WHERE
-        t.is_delete = 0
-        AND t.account = #{account}
-        AND t.`password` = #{password}
+        SELECT t.id                                                  account_id,
+               t.account,
+               t.first_user_type                                     account_type,
+               IF(t.first_user_type = 1, t2.avatar, t1.avatar)       avatar,
+               IF(t.first_user_type = 1, t2.nick_name, t1.nick_name) nick_name,
+               IF(t.first_user_type = 1, t2.gender, t1.gender)       gender
+        FROM t_account t
+                 LEFT JOIN t_user t1 ON t.id = t1.account_id
+                 LEFT JOIN t_user_alipay t2 ON t.id = t2.account_id
+        WHERE t.is_delete = 0
+          AND t.account = #{account}
+          AND t.`password` = #{password}
     </select>
 
 </mapper>

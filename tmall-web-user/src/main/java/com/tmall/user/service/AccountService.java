@@ -17,25 +17,28 @@ public interface AccountService {
 
     int create(LoginUser account);
 
+    int createForDefaultUser(LoginUser account);
+
     PublicResult<String> login(AccountPO account);
 
     PublicResult<String> register(RegisterDTO registerInfo);
 
     /**
-     * 发送注册验证码
-     * 
-     * @param account 账号
-     * @return 发送间隔秒
+     * 登録キャプチャを送信
+     *
+     * @param account 　アカウント
+     * @return 次回送れる時間（秒）
      */
-    PublicResult<?>  sendRegisterCaptcha(String account);
+    PublicResult<?> sendRegisterCaptcha(String account);
 
     /**
-     * 发送忘记密码验证码
+     * パスワードが忘れたキャプチャを送信
      *
-     * @param account 账号
-     * @return 发送间隔秒
+     * @param account アカウント
+     * @return 次回送れる時間（秒）
      */
-    PublicResult<?>  sendForgetCaptcha(String account);
+    PublicResult<?> sendForgetCaptcha(String account);
 
     PublicResult<String> forgetPwd(RegisterDTO account);
+
 }

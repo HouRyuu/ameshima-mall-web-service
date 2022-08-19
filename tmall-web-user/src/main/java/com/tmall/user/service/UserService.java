@@ -1,6 +1,7 @@
 package com.tmall.user.service;
 
 import com.tmall.common.dto.LoginUser;
+import com.tmall.common.dto.PublicResult;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -13,5 +14,7 @@ import com.tmall.common.dto.LoginUser;
 public interface UserService {
 
     int createUser(LoginUser user);
+
+    PublicResult<?> update(LoginUser user);
 
 }

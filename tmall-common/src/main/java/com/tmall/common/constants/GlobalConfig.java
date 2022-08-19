@@ -44,6 +44,8 @@ public class GlobalConfig {
 
     public static final String ADDRESS_MAX_COUNT = "address_maxCount";
 
+    public static final String USER_DEFAULT_AVATAR = "user_defaultAvatar";
+
 
     @Autowired
     private GlobalConfigMapper globalConfigMapper;

@@ -1,13 +1,5 @@
 package com.tmall.user.service.impl;
 
-import javax.annotation.Resource;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.support.TransactionTemplate;
-
 import com.alibaba.fastjson.JSON;
 import com.alipay.api.request.AlipaySystemOauthTokenRequest;
 import com.alipay.api.request.AlipayUserInfoShareRequest;
@@ -20,6 +12,13 @@ import com.tmall.user.entity.po.UserAlipayPO;
 import com.tmall.user.mapper.UserAlipayMapper;
 import com.tmall.user.service.AccountService;
 import com.tmall.user.service.UserAlipayService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionTemplate;
+
+import javax.annotation.Resource;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -86,7 +85,6 @@ public class UserAlipayServiceImpl implements UserAlipayService {
             if (userAlipay.getId() == null) {
                 userAlipay.setAccountId(accountService.create(loginUser));
             }
-            loginUser.setAccountId(userAlipay.getAccountId());
             BeanUtils.copyProperties(userinfoShareResponse, userAlipay);
             userAlipayMapper.saveOrUpdate(userAlipay);
             return loginUser;

@@ -1,20 +1,7 @@
 package com.tmall.user.service.impl;
 
-import java.util.Objects;
-
-import javax.annotation.Resource;
-
-import com.tmall.common.constants.GlobalConfig;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.support.TransactionTemplate;
-import org.springframework.util.Assert;
-
 import com.alibaba.fastjson.JSON;
+import com.tmall.common.constants.GlobalConfig;
 import com.tmall.common.constants.TmallConstant;
 import com.tmall.common.constants.UserErrResultEnum;
 import com.tmall.common.dto.LoginUser;
@@ -29,8 +16,18 @@ import com.tmall.user.keys.UserKey;
 import com.tmall.user.mapper.AccountMapper;
 import com.tmall.user.service.AccountService;
 import com.tmall.user.service.UserService;
-
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import tk.mybatis.mapper.entity.Example;
+
+import javax.annotation.Resource;
+import java.util.Objects;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -52,8 +49,6 @@ public class AccountServiceImpl implements AccountService {
     @Resource
     private UserService userService;
     @Resource
-    private TransactionTemplate transactionTemplate;
-    @Resource
     private GlobalConfig globalConfig;
 
     @Override
@@ -69,12 +64,16 @@ public class AccountServiceImpl implements AccountService {
         accountPO.setAccount(account.getAccount());
         accountPO.setPassword(account.getPassword());
         accountPO.setFirstUserType(account.getAccountType());
-        return transactionTemplate.execute(status -> {
-            accountMapper.insertSelective(accountPO);
-            account.setAccountId(accountPO.getId());
-            userService.createUser(account);
-            return accountPO.getId();
-        });
+        accountMapper.insertSelective(accountPO);
+        return accountPO.getId();
+    }
+
+    @Override
+    @Transactional
+    public int createForDefaultUser(LoginUser account) {
+        account.setAccountId(create(account));
+        userService.createUser(account);
+        return account.getAccountId();
     }
 
     @Override
@@ -106,7 +105,7 @@ public class AccountServiceImpl implements AccountService {
             loginUser.setPassword(registerInfo.getPassword());
             loginUser.setNickName(registerInfo.getNickName());
 
-            loginUser.setAccountId(create(loginUser));
+            loginUser.setAccountId(createForDefaultUser(loginUser));
             loginUser.setPassword(null);
             String token;
             do {
