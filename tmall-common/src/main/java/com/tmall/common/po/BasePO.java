@@ -14,7 +14,7 @@ public class BasePO {
 
     private Date createTime;
     private Date updateTime;
-    private short isDelete;
+    private Short isDelete;
 
     public Date getCreateTime() {
         return createTime;
@@ -32,11 +32,11 @@ public class BasePO {
         this.updateTime = updateTime;
     }
 
-    public short getIsDelete() {
+    public Short getIsDelete() {
         return isDelete;
     }
 
-    public void setIsDelete(short isDelete) {
+    public void setIsDelete(Short isDelete) {
         this.isDelete = isDelete;
     }
 }

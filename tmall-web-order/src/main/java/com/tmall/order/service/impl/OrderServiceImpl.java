@@ -2,14 +2,18 @@ package com.tmall.order.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.tmall.common.constants.CommonErrResult;
 import com.tmall.common.constants.TmallConstant;
 import com.tmall.common.dto.LoginInfo;
+import com.tmall.common.dto.PageResult;
 import com.tmall.common.dto.PublicResult;
 import com.tmall.common.redis.RedisClient;
 import com.tmall.order.constants.OrderConstants;
+import com.tmall.order.entity.dto.OrderConditionDTO;
 import com.tmall.order.entity.dto.OrderMQDTO;
 import com.tmall.order.entity.po.OrderGoodsPO;
 import com.tmall.order.entity.po.OrderLogisticsPO;
@@ -123,6 +127,28 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public PublicResult<PageResult<OrderDetailVO>> orderPage(OrderConditionDTO condition) {
+        PageHelper.startPage(condition.getPageIndex(), condition.getPageSize());
+        List<String> parentNoList = orderGoodsMapper.parentNoList(condition);
+        PageInfo<String> orderPage = new PageInfo<>(parentNoList);
+        if (CollectionUtils.isEmpty(parentNoList)) {
+            return PublicResult.success(new PageResult<>());
+        }
+        Example example = new Example(OrderGoodsPO.class);
+        example.and().andIn("parentOrderNo", parentNoList)
+                .andCondition("is_delete=", TmallConstant.NO);
+        List<OrderGoodsPO> goodsList = orderGoodsMapper.selectByExample(example);
+        List<String> orderNoList = goodsList.stream().map(OrderGoodsPO::getOrderNo).collect(Collectors.toList());
+        example = new Example(OrderPayPO.class);
+        example.and().andIn("orderNo", orderNoList).andCondition("is_delete=", TmallConstant.NO);
+        List<OrderPayPO> payList = orderPayMapper.selectByExample(example);
+        example = new Example(OrderLogisticsPO.class);
+        example.and().andIn("orderNo", orderNoList).andCondition("is_delete=", TmallConstant.NO);
+        List<OrderLogisticsPO> logisticsList = orderLogisticsMapper.selectByExample(example);
+        return PublicResult.success(new PageResult<>(condition.getPageSize(), condition.getPageIndex(), orderPage.getTotal(), ConvertToVO.fromPO(goodsList, payList, logisticsList)));
+    }
+
+    @Override
     public PublicResult<?> receiveConfirm(String orderNo) {
         if (StringUtils.isBlank(orderNo)) {
             return PublicResult.error();
@@ -212,6 +238,7 @@ public class OrderServiceImpl implements OrderService {
                 orderGoods.setFreight(goods.getFreight());
                 orderGoods.setOrderState(TmallConstant.OrderStateEnum.NO_PAY.getState());
                 orderGoods.setCreateTime(now);
+                orderGoods.setIsDelete(TmallConstant.NO);
                 return orderGoods;
             }).collect(Collectors.toList()));
         }
@@ -230,6 +257,7 @@ public class OrderServiceImpl implements OrderService {
                 orderLogistics.setTargetAddress(orderMQ.getAddress());
                 orderLogistics.setLogisticsState(TmallConstant.LogisticsStateEnum.NO_DISPATCH.getState());
                 orderLogistics.setCreateTime(now);
+                orderLogistics.setIsDelete(TmallConstant.NO);
                 orderLogMap.put(store.getStoreId(), goods.getLocation(), orderLogistics);
             }
         }));
@@ -250,6 +278,7 @@ public class OrderServiceImpl implements OrderService {
             pay.setDealPrice(dealPrice);
             pay.setPayState(TmallConstant.PayStateEnum.DEFAULT.getState());
             pay.setCreateTime(now);
+            pay.setIsDelete(TmallConstant.NO);
             return pay;
         }).collect(Collectors.toList());
         orderPayMapper.insertList(payList);

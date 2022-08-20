@@ -7,4 +7,7 @@
     <typeAliases>
         <package name="com.tmall"/>
     </typeAliases>
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"/>
+    </plugins>
 </configuration>

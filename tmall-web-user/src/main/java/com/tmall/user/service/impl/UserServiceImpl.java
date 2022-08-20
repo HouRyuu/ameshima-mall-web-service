@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
         example.and().andEqualTo("accountId", user.getAccountId())
                 .andCondition("is_delete=0");
         try {
-            if (userMapper.updateByExample(userPo, example) == 1 && redisClient.setNoLog(CommonKey.TOKEN, LoginInfo.getToken(), user)) {
+            if (userMapper.updateByExampleSelective(userPo, example) == 1 && redisClient.setNoLog(CommonKey.TOKEN, LoginInfo.getToken(), user)) {
                 return PublicResult.success();
             }
         } catch (Exception e) {

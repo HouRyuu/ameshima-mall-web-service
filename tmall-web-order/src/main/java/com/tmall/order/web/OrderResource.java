@@ -1,7 +1,10 @@
 package com.tmall.order.web;
 
 import com.tmall.common.annotation.LoginRequire;
+import com.tmall.common.dto.LoginInfo;
+import com.tmall.common.dto.PageResult;
 import com.tmall.common.dto.PublicResult;
+import com.tmall.order.entity.dto.OrderConditionDTO;
 import com.tmall.order.entity.vo.OrderDetailVO;
 import com.tmall.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,13 @@ public class OrderResource {
     @GetMapping("/{parentOrderNo}/goods/{orderState}")
     public PublicResult<List<OrderDetailVO>> findOrderGoodsList(@PathVariable String parentOrderNo, @PathVariable short orderState) {
         return orderService.findOrderGoodsList(parentOrderNo, orderState);
+    }
+
+    @LoginRequire
+    @PostMapping("/page")
+    public PublicResult<PageResult<OrderDetailVO>> findOrderGoodsList(@RequestBody OrderConditionDTO condition) {
+        condition.setAccountId(LoginInfo.get().getAccountId());
+        return orderService.orderPage(condition);
     }
 
     @LoginRequire

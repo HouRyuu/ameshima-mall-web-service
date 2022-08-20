@@ -36,8 +36,9 @@ public final class ConvertToVO {
             logisticsVO.setLogisticsState(logisticsPO.getLogisticsState());
             return logisticsVO;
         }));
-        return new ArrayList<>(goodsList.stream().collect(Collectors.toMap(OrderGoodsPO::getOrderNo, goodsPO -> {
+        List<OrderDetailVO> orderList = new ArrayList<>(goodsList.stream().collect(Collectors.toMap(OrderGoodsPO::getOrderNo, goodsPO -> {
             OrderDetailVO detail = new OrderDetailVO();
+            detail.setParentOrderNo(goodsPO.getParentOrderNo());
             detail.setOrderNo(goodsPO.getOrderNo());
             detail.setStoreId(goodsPO.getStoreId());
             detail.setStoreName(goodsPO.getStoreName());
@@ -68,6 +69,10 @@ public final class ConvertToVO {
             }
             return oldGoods;
         }, TreeMap::new)).values());
+        if (orderList.size() > 1) {
+            orderList.sort(Comparator.comparing(OrderDetailVO::getParentOrderNo).reversed().thenComparing(OrderDetailVO::getOrderNo));
+        }
+        return orderList;
     }
 
 

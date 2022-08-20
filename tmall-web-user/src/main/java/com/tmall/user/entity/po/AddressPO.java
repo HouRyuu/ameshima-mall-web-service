@@ -31,7 +31,7 @@ public class AddressPO extends BasePO {
     private String districtCode;
     private String district;
     private String detailedAddress;
-    private short isDefault;
+    private Short isDefault;
 
 
     public Integer getId() {
@@ -122,11 +122,11 @@ public class AddressPO extends BasePO {
         this.detailedAddress = detailedAddress;
     }
 
-    public short getIsDefault() {
+    public Short getIsDefault() {
         return isDefault;
     }
 
-    public void setIsDefault(short isDefault) {
+    public void setIsDefault(Short isDefault) {
         this.isDefault = isDefault;
     }
 

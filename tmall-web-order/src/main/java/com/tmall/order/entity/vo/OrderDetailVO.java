@@ -4,12 +4,21 @@ import java.util.List;
 
 public class OrderDetailVO {
 
+    private String parentOrderNo;
     private String orderNo;
     private Integer storeId;
     private String storeName;
     private Short orderState;
     private List<OrderLogisticsGoodsVO> logisticsGoodsList;
     private OrderPayVO orderPay;
+
+    public String getParentOrderNo() {
+        return parentOrderNo;
+    }
+
+    public void setParentOrderNo(String parentOrderNo) {
+        this.parentOrderNo = parentOrderNo;
+    }
 
     public String getOrderNo() {
         return orderNo;

@@ -45,7 +45,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         String ip = WebUtil.getIpAddress(request);
         StringBuffer url = request.getRequestURL();
         String token = request.getHeader(TmallConstant.TOKEN);
-        LOGGER.info("ip->{}，请求地址：{}->{}，token->{}", ip, request.getMethod(), url, token);
+        LOGGER.info("ip->{}，url：{}->{}，token->{}", ip, request.getMethod(), url, token);
         LoginUser loginUser = null;
         if (StringUtils.isNotBlank(token)) {
             loginUser = redisClient.get(CommonKey.TOKEN, token);
@@ -53,7 +53,7 @@ public class LoginInterceptor implements HandlerInterceptor {
                 // 将登录信息存入本地线程供业务使用并更新cookie及redis过期时间
                 LoginInfo.putToken(token);
                 LoginInfo.put(loginUser);
-                redisClient.set(CommonKey.TOKEN, token, loginUser);
+                redisClient.setNoLog(CommonKey.TOKEN, token, loginUser);
             }
         }
         if (handler instanceof HandlerMethod
@@ -75,13 +75,13 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o,
-            ModelAndView modelAndView) throws Exception {
+                           ModelAndView modelAndView) {
 
     }
 
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
-            Object o, Exception e) throws Exception {
+                                Object o, Exception e) {
         // 响应完成后清理本息线程登录信息释放内存
         if (StringUtils.isNotBlank(LoginInfo.getToken())) {
             LoginInfo.removeToken();

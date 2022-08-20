@@ -29,9 +29,7 @@ spring:
     template:
       retry:
         enabled: true
-
-
-jackson:
+  jackson:
     default-property-inclusion: non_null
 
 eureka:

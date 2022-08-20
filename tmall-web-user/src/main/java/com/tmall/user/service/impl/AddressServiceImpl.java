@@ -1,6 +1,7 @@
 package com.tmall.user.service.impl;
 
-import com.tmall.common.constants.GlobalConfig;
+import com.alibaba.fastjson.JSON;
+import com.tmall.common.constants.CommonErrResult;
 import com.tmall.common.constants.TmallConstant;
 import com.tmall.common.dto.PublicResult;
 import com.tmall.user.entity.dto.AddressDTO;
@@ -8,6 +9,8 @@ import com.tmall.user.entity.po.AddressPO;
 import com.tmall.user.mapper.AddressMapper;
 import com.tmall.user.service.AddressService;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import tk.mybatis.mapper.entity.Example;
@@ -26,31 +29,37 @@ import java.util.List;
 @Service
 public class AddressServiceImpl implements AddressService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AddressServiceImpl.class);
+
     @Resource
     private AddressMapper addressMapper;
-    @Resource
-    private GlobalConfig globalConfig;
 
     @Override
     public PublicResult<Integer> save(AddressDTO address, int accountId) {
         this.validAddress(address);
-        if (address.getId() == null) {
-            if (addressMapper.createAddr(address) > 0) {
-                return PublicResult.success(address.getId());
+        try {
+            if (address.getId() == null) {
+                if (addressMapper.createAddr(address) > 0) {
+                    return PublicResult.success(address.getId());
+                } else {
+                    return PublicResult.error(CommonErrResult.ERR_REQUEST);
+                }
             } else {
-                return PublicResult.error();
+                AddressPO addressPO = convertDtoToPo(address);
+                Example example = new Example(AddressPO.class);
+                example.and().andEqualTo("id", address.getId())
+                        .andEqualTo("accountId", accountId)
+                        .andCondition("is_delete=", TmallConstant.NO);
+                if (addressMapper.updateByExampleSelective(addressPO, example) == 1) {
+                    return PublicResult.success(address.getId());
+                } else {
+                    return PublicResult.error(CommonErrResult.ERR_REQUEST);
+                }
             }
-//            addressPO.setIsDefault(addressMapper.selectCountByExample(example) == 0 ? TmallConstant.YES : TmallConstant.NO);
-//            addressPO.setAccountId(accountId);
-//            addressMapper.insertSelective(addressPO);
+        } catch (Exception e) {
+            LOGGER.error(String.format("AccountId=>%1$dはAddress=>%2$sの保存がエラーになった", accountId, JSON.toJSONString(address)), e);
         }
-        AddressPO addressPO = convertDtoToPo(address);
-        Example example = new Example(AddressPO.class);
-        example.and().andEqualTo("id", address.getId())
-                .andEqualTo("accountId", accountId)
-                .andCondition("is_delete=", TmallConstant.NO);
-        addressMapper.updateByExampleSelective(addressPO, example);
-        return PublicResult.success(address.getId());
+        return PublicResult.error();
     }
 
     @Override
@@ -59,11 +68,20 @@ public class AddressServiceImpl implements AddressService {
         example.createCriteria().andEqualTo("id", id)
                 .andEqualTo("accountId", accountId)
                 .andEqualTo("isDefault", TmallConstant.NO)
-                .andCondition("is_delete=", TmallConstant.YES);
+                .andCondition("is_delete=", TmallConstant.NO);
         AddressPO addressPO = new AddressPO();
         addressPO.setIsDelete(TmallConstant.YES);
-        addressMapper.updateByExampleSelective(addressPO, example);
-        return PublicResult.success();
+        try {
+            if (addressMapper.updateByExampleSelective(addressPO, example) == 1) {
+                return PublicResult.success();
+            } else {
+                return PublicResult.error(CommonErrResult.ERR_REQUEST);
+            }
+        } catch (
+                Exception e) {
+            LOGGER.error(String.format("AccountId=>%1$dはAddressId=>%2$dの削除がエラーになった", accountId, id), e);
+        }
+        return PublicResult.error();
     }
 
     @Override
@@ -73,8 +91,14 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public PublicResult<?> setDefault(int id, int accountId) {
-        if (addressMapper.setDefault(id, accountId) > 0) {
-            return PublicResult.success();
+        try {
+            if (addressMapper.setDefault(id, accountId) > 0) {
+                return PublicResult.success();
+            }
+            return PublicResult.error(CommonErrResult.ERR_REQUEST);
+        } catch (
+                Exception e) {
+            LOGGER.error(String.format("AccountId=>%1$dはAddressId=>%2$dをデフォルトにするのがエラーになった", accountId, id), e);
         }
         return PublicResult.error();
     }

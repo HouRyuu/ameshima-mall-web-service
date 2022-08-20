@@ -62,6 +62,7 @@ public class RedisClient {
                 return true;
             }
             redisTemplate.opsForValue().set(realKey, value, prefix.timeout(), prefix.timeunit());
+            LOGGER.info("Redis set success. Key->{}", realKey);
             return true;
         } catch (Exception e) {
             LOGGER.error(String.format("Redis set error. Key->{%s}", realKey), e);

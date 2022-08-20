@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--suppress ALL -->
+<mapper namespace="com.tmall.order.mapper.OrderGoodsMapper">
+
+    <select id="parentNoList" parameterType="OrderConditionDTO" resultType="String">
+        SELECT parent_order_no
+        FROM t_order_goods
+        WHERE account_id = #{accountId}
+        <if test="goodsName!=null">
+            and goods_name LIKE contact('%',#{goodsName},'%')
+        </if>
+        <if test="orderState!=null">
+            and order_state=#{orderState}
+        </if>
+        <if test="startDate!=null">
+            and create_time>=#{startDate}
+        </if>
+        <if test="endDate!=null">
+            and #{endDate}>=create_time
+        </if>
+        AND is_delete = 0
+        GROUP BY parent_order_no
+        ORDER BY parent_order_no DESC
+    </select>
+
+
+</mapper>
