@@ -273,7 +273,7 @@ public class OrderServiceImpl implements OrderService {
             BigDecimal dealPrice = new BigDecimal(0);
             // 合計＝単価＊数量＋送料
             for (CartGoodsDTO goods : store.getGoodsList()) {
-                dealPrice = dealPrice.add(goods.getPrice().multiply(new BigDecimal(goods.getAmount()).add(goods.getFreight())));
+                dealPrice = dealPrice.add(goods.getPrice().multiply(new BigDecimal(goods.getAmount()))).add(goods.getFreight());
             }
             pay.setDealPrice(dealPrice);
             pay.setPayState(TmallConstant.PayStateEnum.DEFAULT.getState());
@@ -283,4 +283,5 @@ public class OrderServiceImpl implements OrderService {
         }).collect(Collectors.toList());
         orderPayMapper.insertList(payList);
     }
+
 }

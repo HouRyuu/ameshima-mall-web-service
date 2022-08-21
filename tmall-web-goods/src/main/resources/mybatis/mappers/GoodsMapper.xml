@@ -23,6 +23,7 @@
             AND t4.is_delete = 0
         WHERE t.is_delete = 0
           AND t.id = #{goodsId}
+        GROUP BY t2.pid
     </select>
 
     <select id="findPromote" resultType="GoodsGridDTO">

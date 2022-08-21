@@ -37,7 +37,6 @@ public class OrderEvaluateResource implements IOrderEvaluateService {
         return orderEvaluateService.create(evaluate);
     }
 
-    @LoginRequire
     @PostMapping("/page")
     public PublicResult<PageResult<OrderEvaluateVO>> evaluatePage(@RequestBody OrderEvaluateVO evaluate) {
         return orderEvaluateService.evaluatePage(evaluate);

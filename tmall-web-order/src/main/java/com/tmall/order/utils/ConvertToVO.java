@@ -49,12 +49,16 @@ public final class ConvertToVO {
             goods.setName(goodsPO.getGoodsName());
             goods.setAmount(goodsPO.getOrderNum());
             goods.setLocation(goodsPO.getGoodsLocation());
+            goods.setState(goodsPO.getOrderState().intValue());
             OrderLogisticsGoodsVO logisticsGoods = new OrderLogisticsGoodsVO();
             logisticsGoods.setOrderLogistics(logisticsMap.get(goodsPO.getOrderNo() + TmallConstant.UNDERLINE + goodsPO.getGoodsLocation()));
             logisticsGoods.setGoodsList(Lists.newArrayList(goods));
             detail.setLogisticsGoodsList(Lists.newArrayList(logisticsGoods));
             return detail;
         }, (oldGoods, newGoods) -> {
+            if (newGoods.getOrderState().equals(TmallConstant.OrderStateEnum.NO_COMMENT.getState())) {
+                oldGoods.setOrderState(newGoods.getOrderState());
+            }
             List<OrderLogisticsGoodsVO> oldLogisticsGoodsList = oldGoods.getLogisticsGoodsList();
             List<OrderLogisticsGoodsVO> newLogisticsGoodsList = newGoods.getLogisticsGoodsList();
             boolean logisticsFlag = false;

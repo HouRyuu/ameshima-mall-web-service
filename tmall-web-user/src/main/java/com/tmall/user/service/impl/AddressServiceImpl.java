@@ -37,6 +37,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public PublicResult<Integer> save(AddressDTO address, int accountId) {
         this.validAddress(address);
+        address.setAccountId(accountId);
         try {
             if (address.getId() == null) {
                 if (addressMapper.createAddr(address) > 0) {

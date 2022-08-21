@@ -95,9 +95,9 @@ public class OrderEvaluateServiceImpl implements OrderEvaluateService {
         Example example = new Example(OrderGoodsPO.class);
         example.and().andEqualTo("orderNo", evaluatePO.getOrderNo())
                 .andEqualTo("accountId", evaluatePO.getAccountId())
-                .andEqualTo("goodsId", evaluatePO.getGoodsId())
+                .andEqualTo("skuId", evaluatePO.getSkuId())
                 .andEqualTo("orderState", TmallConstant.OrderStateEnum.NO_COMMENT.getState())
                 .andCondition("is_delete=", TmallConstant.NO);
-        return orderEvaluateMapper.insertSelective(evaluatePO) > 0 && orderMapper.updateByExampleSelective(order, example) > 0;
+        return orderMapper.updateByExampleSelective(order, example) > 0 && orderEvaluateMapper.insertSelective(evaluatePO) > 0;
     }
 }
