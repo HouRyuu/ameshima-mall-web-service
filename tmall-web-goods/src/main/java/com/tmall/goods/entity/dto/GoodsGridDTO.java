@@ -13,10 +13,26 @@ import java.math.BigDecimal;
 public class GoodsGridDTO {
 
     private int id;
+    private int storeId;
     private String name;
+    private String simpleDesc;
     private BigDecimal price;
     private String imgUrl;
     private int categoryId;
+    private Short status;
+
+    public GoodsGridDTO() {
+    }
+
+    public GoodsGridDTO(int id, int storeId, String name, String simpleDesc, BigDecimal price, String imgUrl, Short status) {
+        this.id = id;
+        this.storeId = storeId;
+        this.name = name;
+        this.simpleDesc = simpleDesc;
+        this.price = price;
+        this.imgUrl = imgUrl;
+        this.status = status;
+    }
 
     public int getId() {
         return id;
@@ -26,12 +42,28 @@ public class GoodsGridDTO {
         this.id = id;
     }
 
+    public int getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(int storeId) {
+        this.storeId = storeId;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSimpleDesc() {
+        return simpleDesc;
+    }
+
+    public void setSimpleDesc(String simpleDesc) {
+        this.simpleDesc = simpleDesc;
     }
 
     public BigDecimal getPrice() {
@@ -56,5 +88,13 @@ public class GoodsGridDTO {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public Short getStatus() {
+        return status;
+    }
+
+    public void setStatus(Short status) {
+        this.status = status;
     }
 }

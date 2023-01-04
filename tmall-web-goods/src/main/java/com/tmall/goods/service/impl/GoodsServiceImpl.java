@@ -1,29 +1,37 @@
 package com.tmall.goods.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.*;
 import com.tmall.common.constants.CommonErrResult;
 import com.tmall.common.constants.GlobalConfig;
 import com.tmall.common.constants.TmallConstant;
 import com.tmall.common.dto.LoginInfo;
+import com.tmall.common.dto.LoginUser;
 import com.tmall.common.dto.PageResult;
 import com.tmall.common.dto.PublicResult;
 import com.tmall.common.redis.RedisClient;
 import com.tmall.common.utils.CheckUtil;
+import com.tmall.common.utils.FileUtil;
 import com.tmall.goods.constants.GoodsErrResultEnum;
 import com.tmall.goods.entity.dto.*;
 import com.tmall.goods.entity.po.GoodsFreightPO;
+import com.tmall.goods.entity.po.GoodsImgPO;
+import com.tmall.goods.entity.po.GoodsPO;
 import com.tmall.goods.entity.po.GoodsSkuPO;
 import com.tmall.goods.es.repository.GoodsRepository;
 import com.tmall.goods.keys.GoodsKey;
 import com.tmall.goods.mapper.GoodsFreightMapper;
+import com.tmall.goods.mapper.GoodsImgMapper;
 import com.tmall.goods.mapper.GoodsMapper;
 import com.tmall.goods.mapper.GoodsSkuMapper;
 import com.tmall.goods.service.GoodsService;
 import com.tmall.goods.service.ShoppingCartService;
-import com.tmall.remote.goods.dto.OrderAddressDTO;
+import com.tmall.goods.utils.ConvertUtil;
 import com.tmall.remote.goods.dto.CartGoodsDTO;
 import com.tmall.remote.goods.dto.GoodsDTO;
+import com.tmall.remote.goods.dto.OrderAddressDTO;
 import com.tmall.remote.goods.vo.ShopCartVO;
 import com.tmall.remote.order.api.IOrderEvaluateService;
 import org.apache.commons.lang3.ArrayUtils;
@@ -48,6 +56,7 @@ import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -81,6 +90,8 @@ public class GoodsServiceImpl implements GoodsService {
     private GoodsSkuMapper goodsSkuMapper;
     @Resource
     private ShoppingCartService shoppingCartService;
+    @Resource
+    private GoodsImgMapper goodsImgMapper;
 
 
     @Override
@@ -107,7 +118,27 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public List<StoreGoodsDTO> storeGoods(int storeId) {
-        return redisClient.get(GoodsKey.STORE_INDEX_GOODS, storeId, () -> goodsMapper.storeGoods(storeId));
+        GoodsQueryDTO query = new GoodsQueryDTO();
+        query.setStoreId(storeId);
+        query.setIsStoreIndex(TmallConstant.YES);
+        return redisClient.get(GoodsKey.STORE_INDEX_GOODS, storeId, () -> goodsMapper.storeGoods(query));
+    }
+
+    @Override
+    public PageResult<GoodsGridDTO> storeGoodsPage(GoodsQueryDTO query) {
+        Example example = new Example(GoodsPO.class);
+        Example.Criteria criteria = example.createCriteria().andEqualTo("storeId",
+                query.getStoreId()).andEqualTo("isDelete", TmallConstant.NO);
+        if (StringUtils.isNotBlank(query.getGoodsName())) {
+            criteria.andLike("name", "%" + query.getGoodsName() + "%");
+        }
+        example.and(criteria);
+        example.orderBy("createTime").desc();
+        PageHelper.startPage(query.getPageIndex(), query.getPageSize());
+        List<GoodsPO> goodsList = goodsMapper.selectByExample(example);
+        PageInfo<GoodsPO> goodsPage = new PageInfo<>(goodsList);
+        return new PageResult<>(goodsPage.getPageSize(), goodsPage.getPageNum(), goodsPage.getTotal(),
+                ConvertUtil.convertToGrid(goodsList));
     }
 
     @Override
@@ -327,6 +358,69 @@ public class GoodsServiceImpl implements GoodsService {
             shopCart.getGoodsList().add(goods);
         }
         return new ArrayList<>(cartMap.values());
+    }
+
+    @Override
+    public StoreGoodsDTO goodsDetail(int goodsId) {
+        StoreGoodsDTO storeGoods = goodsMapper.goodsDetail(goodsId, LoginInfo.get().getStoreId());
+        storeGoods.setImgList(goodsImgMapper.goodsImgList(goodsId));
+        return storeGoods;
+    }
+
+    @Override
+    public PublicResult<?> saveStoreGoods(StoreGoodsDTO storeGoods) {
+        try {
+            if (saveStoreGoodsWithTransactional(storeGoods) == 1) return PublicResult.success();
+        } catch (IOException e) {
+            LOGGER.error(String.format("商品情報の保存がエラー=>%s", JSON.toJSONString(storeGoods)), e);
+        }
+        return PublicResult.error();
+    }
+
+    @Transactional
+    int saveStoreGoodsWithTransactional(StoreGoodsDTO storeGoods) throws IOException {
+        GoodsImgPO goodsImgPO = new GoodsImgPO();
+        goodsImgPO.setIsDelete(TmallConstant.YES);
+        Example example = new Example(GoodsImgPO.class);
+        example.and().andEqualTo("goodsId", storeGoods.getId())
+                .andEqualTo("isDelete", TmallConstant.NO);
+        goodsImgMapper.updateByExampleSelective(goodsImgPO, example);
+        List<GoodsImgPO> imgList = storeGoods.getImgList().stream().map(goodsImgDTO -> {
+            GoodsImgPO imgPO = new GoodsImgPO();
+            imgPO.setGoodsId(storeGoods.getId());
+            imgPO.setImgType(goodsImgDTO.getImgType());
+            try {
+                imgPO.setImgUrl(FileUtil.compressImgToBase64(goodsImgDTO.getImgUrl()));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            return imgPO;
+        }).collect(Collectors.toList());
+        goodsImgMapper.insertList(imgList);
+
+        GoodsPO goodsPO = new GoodsPO();
+        LoginUser loginUser = LoginInfo.get();
+        goodsPO.setStoreId(loginUser.getStoreId());
+        goodsPO.setStoreName(loginUser.getStoreName());
+        // goodsPO.setBrandId();
+        goodsPO.setName(storeGoods.getName());
+        goodsPO.setSimpleDesc(storeGoods.getSimpleDesc());
+        goodsPO.setPrice(storeGoods.getPrice());
+        goodsPO.setPromoPrice(storeGoods.getPromoPrice());
+        goodsPO.setImgUrl(FileUtil.compressImgToBase64(storeGoods.getImgList().get(0).getImgUrl()));
+        // goodsPO.setLocation(storeGoods.getLocation());
+        goodsPO.setIsShowBanner(storeGoods.getIsShowBanner());
+        goodsPO.setIsPromote(storeGoods.getIsPromote());
+        if (storeGoods.getId() == 0) {
+            return goodsMapper.insertSelective(goodsPO);
+        } else {
+            example = new Example(GoodsPO.class);
+            example.and().andEqualTo("id", storeGoods.getId())
+                    .andEqualTo("storeId", storeGoods.getStoreId())
+                    .andEqualTo("status", TmallConstant.NO)
+                    .andEqualTo("isDelete", TmallConstant.NO);
+            return goodsMapper.updateByExampleSelective(goodsPO, example);
+        }
     }
 
     /**

@@ -16,5 +16,7 @@ public interface GoodsCategoryService {
 
     List<GoodsCategoryDTO> findSecondCategories();
 
+    List<GoodsCategoryDTO> findChildrenCategories(int pid);
+
     List<GoodsCategoryDTO> findCategoriesByPid(int pid);
 }

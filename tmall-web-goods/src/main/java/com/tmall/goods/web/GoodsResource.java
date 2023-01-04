@@ -7,7 +7,7 @@ import com.tmall.common.constants.CommonErrResult;
 import com.tmall.common.constants.UserErrResultEnum;
 import com.tmall.common.dto.LoginInfo;
 import com.tmall.goods.constants.GoodsErrResultEnum;
-import com.tmall.goods.entity.dto.ShoppingCartDTO;
+import com.tmall.goods.entity.dto.*;
 import com.tmall.remote.goods.api.IGoodsService;
 import com.tmall.remote.goods.dto.OrderAddressDTO;
 import com.tmall.remote.goods.vo.ShopCartVO;
@@ -20,9 +20,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.tmall.common.constants.GlobalConfig;
 import com.tmall.common.dto.PublicResult;
-import com.tmall.goods.entity.dto.GoodsImgDTO;
-import com.tmall.goods.entity.dto.GuessLikeQueryDTO;
-import com.tmall.goods.entity.dto.QueryGoodsDTO;
 import com.tmall.goods.service.GoodsAttrService;
 import com.tmall.goods.service.GoodsCategoryService;
 import com.tmall.goods.service.GoodsPromoteService;
@@ -62,6 +59,11 @@ public class GoodsResource implements IGoodsService {
         return PublicResult.success(goodsCategoryService.findSecondCategories());
     }
 
+    @GetMapping("/{pid}/findChildrenCategories")
+    public PublicResult<?> findChildrenCategories(@PathVariable int pid) {
+        return PublicResult.success(goodsCategoryService.findChildrenCategories(pid));
+    }
+
     @GetMapping("/{pid}/findCategories")
     public PublicResult<?> findCategoriesByPid(@PathVariable int pid) {
         return PublicResult.success(goodsCategoryService.findCategoriesByPid(pid));
@@ -85,6 +87,14 @@ public class GoodsResource implements IGoodsService {
     @GetMapping("/{storeId}/storeGoods")
     public PublicResult<?> storeGoods(@PathVariable int storeId) {
         return PublicResult.success(goodsService.storeGoods(storeId));
+    }
+
+    @PostMapping("/store/page")
+    public PublicResult<?> storeGoodsPage(@RequestBody GoodsQueryDTO query) {
+        if (LoginInfo.get() != null && LoginInfo.get().getStoreId() != null) {
+            query.setStoreId(LoginInfo.get().getStoreId());
+        }
+        return PublicResult.success(goodsService.storeGoodsPage(query));
     }
 
     @GetMapping("/{goodsId}/detail")
@@ -153,7 +163,7 @@ public class GoodsResource implements IGoodsService {
     }
 
     @PostMapping("/orderGoods")
-    public List<ShopCartVO> orderGoods(@RequestBody OrderAddressDTO address){
+    public List<ShopCartVO> orderGoods(@RequestBody OrderAddressDTO address) {
         if (address.getAccountId() == 0 || StringUtils.isBlank(address.getCityCode())) {
             return null;
         }
@@ -171,4 +181,15 @@ public class GoodsResource implements IGoodsService {
         return goodsService.updateCacheBuySkusAmount(skuId, amount);
     }
 
+    @LoginRequire
+    @GetMapping("/store/{goodsId}/detail")
+    public PublicResult<?> goodsDetail(@PathVariable int goodsId) {
+        return PublicResult.success(goodsService.goodsDetail(goodsId));
+    }
+
+    @LoginRequire
+    @PutMapping("/store/save")
+    public PublicResult<?> goodsDetail(@RequestBody StoreGoodsDTO storeGoods) {
+        return goodsService.saveStoreGoods(storeGoods);
+    }
 }

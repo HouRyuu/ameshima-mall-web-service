@@ -16,7 +16,7 @@
         <if test="level > 0">
             AND `level` = #{level}
         </if>
-        <if test="pid > 0">
+        <if test="pid != null">
             AND pid = #{pid}
         </if>
     </select>

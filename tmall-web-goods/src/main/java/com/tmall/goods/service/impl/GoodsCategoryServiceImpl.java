@@ -34,6 +34,13 @@ public class GoodsCategoryServiceImpl implements GoodsCategoryService {
     }
 
     @Override
+    public List<GoodsCategoryDTO> findChildrenCategories(int pid) {
+        GoodsCategoryDTO category = new GoodsCategoryDTO();
+        category.setPid(pid);
+        return goodsCategoryMapper.findCategories(category);
+    }
+
+    @Override
     public List<GoodsCategoryDTO> findCategoriesByPid(int pid) {
         GoodsCategoryDTO query = new GoodsCategoryDTO();
         query.setPid(pid);

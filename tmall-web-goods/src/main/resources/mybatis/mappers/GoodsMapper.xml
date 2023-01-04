@@ -75,30 +75,41 @@
         LIMIT #{count}
     </select>
 
-    <select id="storeGoods" resultType="StoreGoodsDTO">
+    <select id="storeGoods" parameterType="GoodsQueryDTO" resultType="StoreGoodsDTO">
         SELECT t.id,
-               t.is_show_banner,
-               t.is_promote,
-               t.`name`,
-               t.img_url,
-               t1.img_url banner_url,
-               t3.price,
-               t4.pid     category_id
+        t.store_id,
+        t.store_name,
+        t.brand_id,
+        t.status,
+        t.is_show_banner,
+        t.is_promote,
+        t.`name`,
+        t.img_url,
+        t.simple_desc,
+        t1.img_url banner_url,
+        t3.price,
+        t4.pid category_id
         FROM `t_goods` t
-                 LEFT JOIN t_goods_img t1 ON t.id = t1.goods_id
-            AND t.is_show_banner = 1
-            AND t1.img_type = 16
-            AND t1.is_delete = 0
-                 INNER JOIN t_goods_category_relation t2 ON t2.goods_id = t.id
-                 INNER JOIN t_goods_sku t3 ON t.sku_id = t3.id
-                 INNER JOIN t_goods_category t4 ON t2.category_id = t4.id
-            AND t3.is_delete = 0
+        LEFT JOIN t_goods_img t1 ON t.id = t1.goods_id
+        AND t.is_show_banner = 1
+        AND t1.img_type = 16
+        AND t1.is_delete = 0
+        INNER JOIN t_goods_category_relation t2 ON t2.goods_id = t.id
+        INNER JOIN t_goods_sku t3 ON t.sku_id = t3.id
+        INNER JOIN t_goods_category t4 ON t2.category_id = t4.id
+        AND t3.is_delete = 0
         WHERE t.is_delete = 0
-          AND t.store_id = #{storeId}
-          AND (
-                    t.is_show_banner = 1
-                OR t.is_promote = 1
+        AND t.store_id = #{storeId}
+        <if test="isShowBanner == 1">
+            AND (
+            t.is_show_banner = 1
+            OR t.is_promote = 1
             )
+        </if>
+        <if test="goodsName != null">
+            AND t.`name` LIKE CONCAT('%', #{goodsName}, '%')
+        </if>
+        ORDER BY t.create_time DESC
     </select>
 
     <select id="findImgs" resultType="GoodsImgDTO">
@@ -121,10 +132,10 @@
 
     <select id="findSku" resultType="GoodsSkuDTO">
         SELECT t.id,
-               t.attrs,
-               t.price,
-               t.market_price,
-               t.quantity
+        t.attrs,
+        t.price,
+        t.market_price,
+        t.quantity
         FROM t_goods_sku t
         WHERE t.is_delete = 0
         <if test="goodsId>0">AND t.goods_id = #{goodsId}</if>
@@ -186,5 +197,27 @@
                  open="AND t1.id in (" separator="," close=")">
             #{item}
         </foreach>
+    </select>
+
+    <select id="goodsDetail" resultType="StoreGoodsDTO">
+        SELECT t1.id            categoryId,
+               t2.id            categoryId2,
+               t3.id            categoryId3,
+               tgcr.category_id categoryId4,
+               t.name,
+               t.simple_desc,
+               t.price,
+               t.promo_price,
+               t.is_show_banner,
+               t.is_promote
+        FROM t_goods t
+                 INNER JOIN t_goods_category_relation tgcr ON t.id = tgcr.goods_id
+                 INNER JOIN t_goods_category t4 ON tgcr.category_id = t4.id AND t4.is_delete = 0
+                 INNER JOIN t_goods_category t3 ON t4.pid = t3.id AND t3.is_delete = 0
+                 INNER JOIN t_goods_category t2 ON t3.pid = t2.id AND t2.is_delete = 0
+                 INNER JOIN t_goods_category t1 ON t2.pid = t1.id AND t1.is_delete = 0
+        WHERE t.id = #{goodsId}
+          AND t.store_id = #{storeId}
+          AND t.is_delete = 0;
     </select>
 </mapper>

@@ -16,7 +16,7 @@ public class GoodsCategoryDTO {
     private int level;
     private int secondLevel;
     private String name;
-    private int pid;
+    private Integer pid;
     private List<GoodsCategoryDTO> categoryList;
 
     public int getId() {
@@ -51,11 +51,11 @@ public class GoodsCategoryDTO {
         this.name = name;
     }
 
-    public int getPid() {
+    public Integer getPid() {
         return pid;
     }
 
-    public void setPid(int pid) {
+    public void setPid(Integer pid) {
         this.pid = pid;
     }
 

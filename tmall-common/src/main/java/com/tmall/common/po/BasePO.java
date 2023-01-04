@@ -12,9 +12,9 @@ import java.util.Date;
  */
 public class BasePO {
 
-    private Date createTime;
-    private Date updateTime;
-    private Short isDelete;
+    Date createTime;
+    Date updateTime;
+    Short isDelete;
 
     public Date getCreateTime() {
         return createTime;

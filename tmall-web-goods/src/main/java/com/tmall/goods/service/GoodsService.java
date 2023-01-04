@@ -29,6 +29,8 @@ public interface GoodsService {
 
     List<StoreGoodsDTO> storeGoods(int storeId);
 
+    PageResult<GoodsGridDTO> storeGoodsPage(GoodsQueryDTO query);
+
     GoodsDTO getGoods(int goodsId);
 
     List<GoodsImgDTO> findImgs(int goodsId);
@@ -50,4 +52,8 @@ public interface GoodsService {
     PublicResult<?>  updateCacheBuySkusAmount(int skuId, int amount);
 
     List<ShopCartVO> goodsBySkus(OrderAddressDTO addressDTO);
+
+    StoreGoodsDTO goodsDetail(int goodsId);
+
+    PublicResult<?> saveStoreGoods(StoreGoodsDTO storeGoods);
 }

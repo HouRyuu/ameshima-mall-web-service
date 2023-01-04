@@ -17,6 +17,8 @@ public class LoginUser {
     private String nickName;
     private String gender;
     private short accountType;
+    private Integer storeId;
+    private String storeName;
 
     public int getAccountId() {
         return accountId;
@@ -72,5 +74,21 @@ public class LoginUser {
 
     public void setAccountType(short accountType) {
         this.accountType = accountType;
+    }
+
+    public Integer getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Integer storeId) {
+        this.storeId = storeId;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
     }
 }

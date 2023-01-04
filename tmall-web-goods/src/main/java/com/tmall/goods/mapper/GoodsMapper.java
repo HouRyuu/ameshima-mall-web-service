@@ -26,7 +26,7 @@ public interface GoodsMapper extends BaseMapper<GoodsPO> {
 
     List<GoodsGridDTO> findByCategories(GuessLikeQueryDTO queryParam);
 
-    List<StoreGoodsDTO> storeGoods(@Param("storeId") int storeId);
+    List<StoreGoodsDTO> storeGoods(GoodsQueryDTO query);
 
     List<GoodsImgDTO> findImgs(@Param("goodsId") int goodsId);
 
@@ -37,5 +37,7 @@ public interface GoodsMapper extends BaseMapper<GoodsPO> {
     List<EsGoodsDTO> findEsGoods();
 
     List<CartGoodsDTO> goodsBySkus(@Param("skuIds") Set<Integer> skuIds);
+
+    StoreGoodsDTO goodsDetail(@Param("goodsId") int goodsId, @Param("storeId") int storeId);
 
 }

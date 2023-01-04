@@ -4,6 +4,8 @@ import com.tmall.common.po.BasePO;
 
 import java.math.BigDecimal;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -19,12 +21,21 @@ import javax.persistence.Table;
 public class GoodsPO extends BasePO {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private Integer storeId;
+    private String storeName;
+    private Integer brandId;
+    private Integer skuId;
     private String name;
     private String simpleDesc;
     private BigDecimal price;
     private BigDecimal promoPrice;
+    private String imgUrl;
     private String location;
+    private Short isShowBanner;
+    private Short isPromote;
+    private Short status;
 
     public GoodsPO() {
     }
@@ -39,6 +50,38 @@ public class GoodsPO extends BasePO {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Integer storeId) {
+        this.storeId = storeId;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
+    public Integer getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(Integer brandId) {
+        this.brandId = brandId;
+    }
+
+    public Integer getSkuId() {
+        return skuId;
+    }
+
+    public void setSkuId(Integer skuId) {
+        this.skuId = skuId;
     }
 
     public String getName() {
@@ -73,11 +116,43 @@ public class GoodsPO extends BasePO {
         this.promoPrice = promoPrice;
     }
 
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
     public String getLocation() {
         return location;
     }
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public Short getIsShowBanner() {
+        return isShowBanner;
+    }
+
+    public void setIsShowBanner(Short isShowBanner) {
+        this.isShowBanner = isShowBanner;
+    }
+
+    public Short getIsPromote() {
+        return isPromote;
+    }
+
+    public void setIsPromote(Short isPromote) {
+        this.isPromote = isPromote;
+    }
+
+    public Short getStatus() {
+        return status;
+    }
+
+    public void setStatus(Short status) {
+        this.status = status;
     }
 }
