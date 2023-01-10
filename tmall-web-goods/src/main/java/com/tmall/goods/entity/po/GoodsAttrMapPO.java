@@ -1,5 +1,6 @@
 package com.tmall.goods.entity.po;
 
+
 import com.tmall.common.po.BasePO;
 import tk.mybatis.mapper.annotation.KeySql;
 
@@ -8,15 +9,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Table(name = "t_goods_img")
-public class GoodsImgPO extends BasePO {
+@Table(name = "t_goods_attr_map")
+public class GoodsAttrMapPO extends BasePO {
 
     @Id
     @KeySql(useGeneratedKeys = true)
     private Integer id;
     private Integer goodsId;
-    private String imgUrl;
-    private Integer imgType;
+    private Integer attrId;
+    private String txtValue;
+    private String imgValue;
 
     public Integer getId() {
         return id;
@@ -34,19 +36,27 @@ public class GoodsImgPO extends BasePO {
         this.goodsId = goodsId;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public Integer getAttrId() {
+        return attrId;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setAttrId(Integer attrId) {
+        this.attrId = attrId;
     }
 
-    public Integer getImgType() {
-        return imgType;
+    public String getTxtValue() {
+        return txtValue;
     }
 
-    public void setImgType(Integer imgType) {
-        this.imgType = imgType;
+    public void setTxtValue(String txtValue) {
+        this.txtValue = txtValue;
+    }
+
+    public String getImgValue() {
+        return imgValue;
+    }
+
+    public void setImgValue(String imgValue) {
+        this.imgValue = imgValue;
     }
 }

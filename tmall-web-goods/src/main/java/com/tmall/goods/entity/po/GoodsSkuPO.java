@@ -25,6 +25,18 @@ public class GoodsSkuPO extends BasePO {
     private BigDecimal marketPrice;
     private Integer quantity;
 
+    public GoodsSkuPO() {
+    }
+
+    public GoodsSkuPO(Integer id, Integer goodsId, String attrs, BigDecimal price, BigDecimal marketPrice, Integer quantity) {
+        this.id = id;
+        this.goodsId = goodsId;
+        this.attrs = attrs;
+        this.price = price;
+        this.marketPrice = marketPrice;
+        this.quantity = quantity;
+    }
+
     public Integer getId() {
         return id;
     }

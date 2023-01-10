@@ -34,7 +34,7 @@ public interface GoodsMapper extends BaseMapper<GoodsPO> {
 
     List<GoodsSkuDTO> findSku(GoodsSkuDTO param);
 
-    List<EsGoodsDTO> findEsGoods();
+    List<EsGoodsDTO> findEsGoods(@Param("goodsId") int goodsId);
 
     List<CartGoodsDTO> goodsBySkus(@Param("skuIds") Set<Integer> skuIds);
 

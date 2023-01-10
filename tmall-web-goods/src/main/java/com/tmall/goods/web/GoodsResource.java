@@ -122,6 +122,42 @@ public class GoodsResource implements IGoodsService {
         return PublicResult.success(result);
     }
 
+    @LoginRequire
+    @GetMapping("/{goodsId}/param/list")
+    public PublicResult<?> paramList(@PathVariable int goodsId) {
+        return PublicResult.success(goodsService.findParams(goodsId));
+    }
+
+    @LoginRequire
+    @PutMapping("/param/save")
+    public PublicResult<?> saveParam(@RequestBody GoodsParamDTO goodsParam) {
+        return goodsService.saveParam(goodsParam);
+    }
+
+    @LoginRequire
+    @DeleteMapping("/{goodsId}/param/{id}/delete")
+    public PublicResult<?> deleteParam(@PathVariable int goodsId, @PathVariable int id) {
+        return goodsService.deleteGoodsParam(id, goodsId);
+    }
+
+    @LoginRequire
+    @GetMapping("/{goodsId}/sku/list")
+    public PublicResult<?> skuList(@PathVariable int goodsId) {
+        return PublicResult.success(goodsService.findSku(goodsId));
+    }
+
+    @LoginRequire
+    @PutMapping("/sku/save")
+    public PublicResult<?> saveSKU(@RequestBody GoodsSkuDTO goodsSKU) {
+        return goodsService.saveSKU(goodsSKU);
+    }
+
+    @LoginRequire
+    @DeleteMapping("/{goodsId}/sku/{id}/delete")
+    public PublicResult<?> deleteSKU(@PathVariable int goodsId, @PathVariable int id) {
+        return goodsService.deleteSKU(id, goodsId);
+    }
+
     @PostMapping("/{cityCode}/freight")
     public PublicResult<?> freight(@RequestBody Set<Integer> goodsIds, @PathVariable String cityCode) {
         return PublicResult.success(goodsService.getFreight(goodsIds, cityCode));
@@ -185,6 +221,18 @@ public class GoodsResource implements IGoodsService {
     @GetMapping("/store/{goodsId}/detail")
     public PublicResult<?> goodsDetail(@PathVariable int goodsId) {
         return PublicResult.success(goodsService.goodsDetail(goodsId));
+    }
+
+    @LoginRequire
+    @PutMapping("/store/{goodsId}/withdraw")
+    public PublicResult<?> withdrawGoods(@PathVariable int goodsId) {
+        return PublicResult.success(goodsService.withdrawGoods(goodsId));
+    }
+
+    @LoginRequire
+    @PutMapping("/store/{goodsId}/stack")
+    public PublicResult<?> stackGoods(@PathVariable int goodsId) {
+        return PublicResult.success(goodsService.stackGoods(goodsId));
     }
 
     @LoginRequire

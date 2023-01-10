@@ -1,19 +1,33 @@
-package com.tmall.goods.entity.dto;
+package com.tmall.goods.entity.po;
 
-/**
- * 〈一句话功能简述〉<br>
- * 〈功能详细描述〉
- *
- * @author liupeng
- * @see [相关类/方法]（可选）
- * @since [产品/模块版本] （可选）
- */
-public class GoodsParamDTO {
+import com.tmall.common.po.BasePO;
+import tk.mybatis.mapper.annotation.KeySql;
 
+import javax.annotation.Generated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Table(name = "t_goods_param")
+public class GoodsParamPO extends BasePO {
+
+    @Id
+    @KeySql(useGeneratedKeys = true)
     private Integer id;
     private Integer goodsId;
     private String paramName;
     private String paramValue;
+
+    public GoodsParamPO() {
+    }
+
+    public GoodsParamPO(Integer id, Integer goodsId, String paramName, String paramValue) {
+        this.id = id;
+        this.goodsId = goodsId;
+        this.paramName = paramName;
+        this.paramValue = paramValue;
+    }
 
     public Integer getId() {
         return id;

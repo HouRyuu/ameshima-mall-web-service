@@ -37,7 +37,15 @@ public interface GoodsService {
 
     List<GoodsParamDTO> findParams(int goodsId);
 
+    PublicResult<?> saveParam(GoodsParamDTO goodsParam);
+
+    PublicResult<?> deleteGoodsParam(int id, int goodsId);
+
     List<GoodsSkuDTO> findSku(int goodsId);
+
+    PublicResult<?> saveSKU(GoodsSkuDTO goodsSku);
+
+    PublicResult<?> deleteSKU(int id, int goodsId);
 
     Map<Integer, BigDecimal> getFreight(Set<Integer> goodsIds, String cityCode);
 
@@ -54,6 +62,10 @@ public interface GoodsService {
     List<ShopCartVO> goodsBySkus(OrderAddressDTO addressDTO);
 
     StoreGoodsDTO goodsDetail(int goodsId);
+
+    PublicResult<?> withdrawGoods(int goodsId);
+
+    PublicResult<?> stackGoods(int goodsId);
 
     PublicResult<?> saveStoreGoods(StoreGoodsDTO storeGoods);
 }

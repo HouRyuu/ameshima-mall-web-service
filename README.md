@@ -15,6 +15,8 @@ src/redis-server redis.conf
 4. 启动elasticsearch
 ./bin/elasticsearch
 
+5. rabbitmq-server
+
 
 #### 介绍
 {**以下是码云平台说明，您可以替换此简介**

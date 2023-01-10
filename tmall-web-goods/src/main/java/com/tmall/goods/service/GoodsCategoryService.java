@@ -2,6 +2,7 @@ package com.tmall.goods.service;
 
 import java.util.List;
 
+import com.tmall.common.dto.PublicResult;
 import com.tmall.goods.entity.dto.GoodsCategoryDTO;
 
 /**
@@ -19,4 +20,6 @@ public interface GoodsCategoryService {
     List<GoodsCategoryDTO> findChildrenCategories(int pid);
 
     List<GoodsCategoryDTO> findCategoriesByPid(int pid);
+
+    PublicResult<?> saveGoodsCategoryRelation(int goodsId, int categoryId);
 }

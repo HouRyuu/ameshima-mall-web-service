@@ -1,6 +1,7 @@
 package com.tmall.user.entity.po;
 
 import com.tmall.common.po.BasePO;
+import tk.mybatis.mapper.annotation.KeySql;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,7 +20,7 @@ import javax.persistence.Table;
 public class AccountPO extends BasePO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @KeySql(useGeneratedKeys = true)
     private Integer id;
     private String account;
     private String password;

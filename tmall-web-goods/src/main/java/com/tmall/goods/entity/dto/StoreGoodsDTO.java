@@ -20,8 +20,9 @@ public class StoreGoodsDTO extends GoodsGridDTO {
     private Integer categoryId3;
     private Integer categoryId4;
     private BigDecimal promoPrice;
+    private String location;
     private List<GoodsImgDTO> imgList;
-
+    private List<GoodsSkuDTO> skuList;
 
     public short getIsShowBanner() {
         return isShowBanner;
@@ -79,11 +80,27 @@ public class StoreGoodsDTO extends GoodsGridDTO {
         this.promoPrice = promoPrice;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public List<GoodsImgDTO> getImgList() {
         return imgList;
     }
 
     public void setImgList(List<GoodsImgDTO> imgList) {
         this.imgList = imgList;
+    }
+
+    public List<GoodsSkuDTO> getSkuList() {
+        return skuList;
+    }
+
+    public void setSkuList(List<GoodsSkuDTO> skuList) {
+        this.skuList = skuList;
     }
 }

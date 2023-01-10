@@ -1,6 +1,7 @@
 package com.tmall.goods.entity.po;
 
 import com.tmall.common.po.BasePO;
+import tk.mybatis.mapper.annotation.KeySql;
 
 import java.math.BigDecimal;
 
@@ -21,7 +22,7 @@ import javax.persistence.Table;
 public class GoodsPO extends BasePO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @KeySql(useGeneratedKeys = true)
     private Integer id;
     private Integer storeId;
     private String storeName;

@@ -1,5 +1,8 @@
 package com.tmall.goods.service;
 
+import com.tmall.common.dto.PublicResult;
+import com.tmall.goods.entity.dto.GoodsAttrMapDTO;
+
 import java.util.List;
 import java.util.Map;
 
@@ -14,4 +17,12 @@ import java.util.Map;
 public interface GoodsAttrService {
 
     List<Map<String, Object>> findGoodsAttrList(int goodsId);
+
+    List<GoodsAttrMapDTO> findAttrList();
+
+    List<GoodsAttrMapDTO> findAttrMapList(int goodsId);
+
+    PublicResult<Integer> saveAttrMap(GoodsAttrMapDTO attrMap);
+
+    PublicResult<?> deleteAttrMap(int id, int goodsId);
 }

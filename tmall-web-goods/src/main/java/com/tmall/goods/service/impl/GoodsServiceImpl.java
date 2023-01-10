@@ -16,16 +16,12 @@ import com.tmall.common.utils.CheckUtil;
 import com.tmall.common.utils.FileUtil;
 import com.tmall.goods.constants.GoodsErrResultEnum;
 import com.tmall.goods.entity.dto.*;
-import com.tmall.goods.entity.po.GoodsFreightPO;
-import com.tmall.goods.entity.po.GoodsImgPO;
-import com.tmall.goods.entity.po.GoodsPO;
-import com.tmall.goods.entity.po.GoodsSkuPO;
+import com.tmall.goods.entity.po.*;
 import com.tmall.goods.es.repository.GoodsRepository;
 import com.tmall.goods.keys.GoodsKey;
-import com.tmall.goods.mapper.GoodsFreightMapper;
-import com.tmall.goods.mapper.GoodsImgMapper;
-import com.tmall.goods.mapper.GoodsMapper;
-import com.tmall.goods.mapper.GoodsSkuMapper;
+import com.tmall.goods.mapper.*;
+import com.tmall.goods.service.GoodsAttrService;
+import com.tmall.goods.service.GoodsCategoryService;
 import com.tmall.goods.service.GoodsService;
 import com.tmall.goods.service.ShoppingCartService;
 import com.tmall.goods.utils.ConvertUtil;
@@ -87,12 +83,17 @@ public class GoodsServiceImpl implements GoodsService {
     @Resource
     private GoodsFreightMapper goodsFreightMapper;
     @Resource
+    private GoodsImgMapper goodsImgMapper;
+    @Resource
+    private GoodsParamMapper goodsParamMapper;
+    @Resource
     private GoodsSkuMapper goodsSkuMapper;
     @Resource
     private ShoppingCartService shoppingCartService;
     @Resource
-    private GoodsImgMapper goodsImgMapper;
-
+    private GoodsAttrService goodsAttrService;
+    @Resource
+    private GoodsCategoryService goodsCategoryService;
 
     @Override
     public List<GoodsGridDTO> findByPromote(int promoteId) {
@@ -168,10 +169,90 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
+    public PublicResult<?> saveParam(GoodsParamDTO goodsParam) {
+        GoodsParamPO paramPO = new GoodsParamPO(goodsParam.getId(), goodsParam.getGoodsId(),
+                goodsParam.getParamName(), goodsParam.getParamValue());
+        redisClient.removeKey(GoodsKey.GOODS_PARAMS, goodsParam.getGoodsId());
+        if (paramPO.getId() == null && goodsParamMapper.insertSelective(paramPO) == 1) {
+            return PublicResult.success(paramPO.getId());
+        }
+        Example example = new Example(GoodsParamPO.class);
+        example.and().andEqualTo("id", paramPO.getId())
+                .andEqualTo("goodsId", paramPO.getGoodsId())
+                .andEqualTo("isDelete", TmallConstant.NO);
+        if (goodsParamMapper.updateByExampleSelective(paramPO, example) > 0) {
+            return PublicResult.success(paramPO.getId());
+        }
+        return PublicResult.error();
+    }
+
+    @Override
+    public PublicResult<?> deleteGoodsParam(int id, int goodsId) {
+        if (id < 1 && goodsId < 1) {
+            return PublicResult.error(CommonErrResult.ERR_REQUEST);
+        }
+        GoodsParamPO paramPO = new GoodsParamPO();
+        paramPO.setIsDelete(TmallConstant.YES);
+        redisClient.removeKey(GoodsKey.GOODS_PARAMS, goodsId);
+        Example example = new Example(GoodsParamPO.class);
+        example.and().andEqualTo("id", id)
+                .andEqualTo("goodsId", goodsId)
+                .andEqualTo("isDelete", TmallConstant.NO);
+        if (goodsParamMapper.updateByExampleSelective(paramPO, example) == 1) {
+            return PublicResult.success();
+        }
+        return PublicResult.error();
+    }
+
+    @Override
     public List<GoodsSkuDTO> findSku(int goodsId) {
         GoodsSkuDTO param = new GoodsSkuDTO();
         param.setGoodsId(goodsId);
         return goodsMapper.findSku(param);
+    }
+
+    @Override
+    public PublicResult<?> saveSKU(GoodsSkuDTO goodsSku) {
+        GoodsSkuPO skuPO = new GoodsSkuPO(goodsSku.getId(), goodsSku.getGoodsId(), goodsSku.getAttrs(),
+                goodsSku.getPrice(), goodsSku.getMarketPrice(), goodsSku.getQuantity());
+        Example example = new Example(GoodsSkuPO.class);
+        example.and().andEqualTo("goodsId", skuPO.getGoodsId())
+                .andEqualTo("attrs", goodsSku.getAttrs())
+                .andEqualTo("isDelete", TmallConstant.NO);
+        if (goodsSku.getId() != null) {
+            example.and().andNotEqualTo("id", skuPO.getId());
+        }
+        if (goodsSkuMapper.selectCountByExample(example) > 0) {
+            return PublicResult.error(GoodsErrResultEnum.SKU_REPEAT);
+        }
+        if (skuPO.getId() == null && goodsSkuMapper.insertSelective(skuPO) == 1) {
+            return PublicResult.success(skuPO.getId());
+        }
+        example.clear();
+        example.and().andEqualTo("id", skuPO.getId())
+                .andEqualTo("goodsId", skuPO.getGoodsId())
+                .andEqualTo("isDelete", TmallConstant.NO);
+        if (goodsSkuMapper.updateByExampleSelective(skuPO, example) > 0) {
+            return PublicResult.success(skuPO.getId());
+        }
+        return PublicResult.error();
+    }
+
+    @Override
+    public PublicResult<?> deleteSKU(int id, int goodsId) {
+        if (id < 1 && goodsId < 1) {
+            return PublicResult.error(CommonErrResult.ERR_REQUEST);
+        }
+        GoodsSkuPO skuPO = new GoodsSkuPO();
+        skuPO.setIsDelete(TmallConstant.YES);
+        Example example = new Example(GoodsSkuPO.class);
+        example.and().andEqualTo("id", id)
+                .andEqualTo("goodsId", goodsId)
+                .andEqualTo("isDelete", TmallConstant.NO);
+        if (goodsSkuMapper.updateByExampleSelective(skuPO, example) == 1) {
+            return PublicResult.success();
+        }
+        return PublicResult.error();
     }
 
     @Override
@@ -364,14 +445,92 @@ public class GoodsServiceImpl implements GoodsService {
     public StoreGoodsDTO goodsDetail(int goodsId) {
         StoreGoodsDTO storeGoods = goodsMapper.goodsDetail(goodsId, LoginInfo.get().getStoreId());
         storeGoods.setImgList(goodsImgMapper.goodsImgList(goodsId));
+        List<GoodsAttrMapDTO> attrMapList = goodsAttrService.findAttrMapList(goodsId);
+        Map<Integer, String> attrMap = Maps.newHashMap();
+        for (GoodsAttrMapDTO attrMapDTO : attrMapList) {
+            attrMap.put(attrMapDTO.getId(), attrMapDTO.getTxtValue());
+        }
+        List<GoodsSkuDTO> skuList = findSku(goodsId);
+        String[] attrAry;
+        StringJoiner joiner;
+        for (GoodsSkuDTO sku : skuList) {
+            attrAry = sku.getAttrs().split(",");
+            joiner = new StringJoiner(" ");
+            for (String attrId : attrAry) {
+                joiner.add(attrMap.get(Integer.parseInt(attrId)));
+            }
+            sku.setAttrs(joiner.toString());
+        }
+        storeGoods.setSkuList(skuList);
         return storeGoods;
     }
 
     @Override
+    public PublicResult<?> withdrawGoods(int goodsId) {
+        Integer storeId = LoginInfo.get().getStoreId();
+        if (storeId == null) {
+            return PublicResult.error(CommonErrResult.ERR_REQUEST);
+        }
+        // TODO:注文チェック
+        // カートを無効にする
+        // cacheを削除
+        redisClient.removeKey(GoodsKey.INDEX_PROMOTE_PLATE, null);
+        redisClient.removeKey(GoodsKey.STORE_INDEX_GOODS, storeId);
+        redisClient.removeKey(GoodsKey.GOODS_ATTRS, goodsId);
+        redisClient.removeKey(GoodsKey.GOODS_PARAMS, goodsId);
+        redisClient.removeKey(GoodsKey.GOODS_IMGS, goodsId);
+        GoodsPO goodsPO = new GoodsPO();
+        goodsPO.setStatus(TmallConstant.NO);
+        Example example = new Example(GoodsPO.class);
+        example.and().andEqualTo("id", goodsId)
+                .andEqualTo("storeId", storeId)
+                .andEqualTo("status", TmallConstant.YES)
+                .andEqualTo("isDelete", TmallConstant.NO);
+        if (goodsMapper.updateByExampleSelective(goodsPO, example) > 0) {
+            goodsRepository.delete(goodsId);
+        }
+        return PublicResult.success();
+    }
+
+    @Override
+    public PublicResult<?> stackGoods(int goodsId) {
+        Integer storeId = LoginInfo.get().getStoreId();
+        if (storeId == null) {
+            return PublicResult.error(CommonErrResult.ERR_REQUEST);
+        }
+        // TODO:情報チェック
+        Example example = new Example(GoodsPO.class);
+        example.and().andEqualTo("id", goodsId)
+                .andIsNotNull("skuId");
+        if (goodsMapper.selectCountByExample(example) == 0) {
+            return PublicResult.error(GoodsErrResultEnum.NO_SKU);
+        }
+        // cacheを削除
+        redisClient.removeKey(GoodsKey.INDEX_PROMOTE_PLATE, null);
+        redisClient.removeKey(GoodsKey.STORE_INDEX_GOODS, LoginInfo.get().getStoreId());
+        redisClient.removeKey(GoodsKey.GOODS_ATTRS, goodsId);
+        redisClient.removeKey(GoodsKey.GOODS_PARAMS, goodsId);
+        redisClient.removeKey(GoodsKey.GOODS_IMGS, goodsId);
+        GoodsPO goodsPO = new GoodsPO();
+        goodsPO.setStatus(TmallConstant.YES);
+        example.and().andEqualTo("storeId", storeId)
+                .andEqualTo("status", TmallConstant.NO)
+                .andEqualTo("isDelete", TmallConstant.NO);
+        if (goodsMapper.updateByExampleSelective(goodsPO, example) > 0) {
+            List<EsGoodsDTO> esGoodsList = goodsMapper.findEsGoods(goodsId);
+            goodsRepository.save(esGoodsList);
+        }
+        return PublicResult.success();
+    }
+
+    @Override
     public PublicResult<?> saveStoreGoods(StoreGoodsDTO storeGoods) {
+        if (LoginInfo.get().getStoreId() == null) {
+            return PublicResult.error(CommonErrResult.ERR_REQUEST);
+        }
         try {
             if (saveStoreGoodsWithTransactional(storeGoods) == 1) return PublicResult.success();
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOGGER.error(String.format("商品情報の保存がエラー=>%s", JSON.toJSONString(storeGoods)), e);
         }
         return PublicResult.error();
@@ -379,48 +538,63 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Transactional
     int saveStoreGoodsWithTransactional(StoreGoodsDTO storeGoods) throws IOException {
+        int result;
+        GoodsPO goodsPO = new GoodsPO();
+        LoginUser loginUser = LoginInfo.get();
+        goodsPO.setId(storeGoods.getId());
+        goodsPO.setStoreId(loginUser.getStoreId());
+        goodsPO.setStoreName(loginUser.getStoreName());
+        // goodsPO.setBrandId();
+        goodsPO.setSkuId(storeGoods.getSkuId());
+        goodsPO.setName(storeGoods.getName());
+        goodsPO.setSimpleDesc(storeGoods.getSimpleDesc());
+        goodsPO.setPrice(storeGoods.getPrice());
+        goodsPO.setPromoPrice(storeGoods.getPromoPrice());
+        goodsPO.setImgUrl(FileUtil.compressImgToBase64(storeGoods.getImgList().get(0).getImgUrl()));
+        goodsPO.setLocation(storeGoods.getLocation());
+        goodsPO.setIsShowBanner(storeGoods.getIsShowBanner());
+        goodsPO.setIsPromote(storeGoods.getIsPromote());
+        Example example;
+        if (storeGoods.getId() == 0) {
+            // 商品を作る
+            result = goodsMapper.insertSelective(goodsPO);
+        } else {
+            // 商品を変える
+            example = new Example(GoodsPO.class);
+            example.and().andEqualTo("id", goodsPO.getId())
+                    .andEqualTo("storeId", loginUser.getStoreId())
+                    .andEqualTo("status", TmallConstant.NO)
+                    .andEqualTo("isDelete", TmallConstant.NO);
+            result = goodsMapper.updateByExampleSelective(goodsPO, example);
+        }
+        if (result != 1) {
+            return result;
+        }
+        // カテゴリー関連を変える
+        goodsCategoryService.saveGoodsCategoryRelation(goodsPO.getId(), storeGoods.getCategoryId4());
+        //写真を変える
         GoodsImgPO goodsImgPO = new GoodsImgPO();
         goodsImgPO.setIsDelete(TmallConstant.YES);
-        Example example = new Example(GoodsImgPO.class);
-        example.and().andEqualTo("goodsId", storeGoods.getId())
+        example = new Example(GoodsImgPO.class);
+        example.and().andEqualTo("goodsId", goodsPO.getId())
                 .andEqualTo("isDelete", TmallConstant.NO);
         goodsImgMapper.updateByExampleSelective(goodsImgPO, example);
+        Date now = new Date();
         List<GoodsImgPO> imgList = storeGoods.getImgList().stream().map(goodsImgDTO -> {
             GoodsImgPO imgPO = new GoodsImgPO();
-            imgPO.setGoodsId(storeGoods.getId());
+            imgPO.setGoodsId(goodsPO.getId());
             imgPO.setImgType(goodsImgDTO.getImgType());
             try {
                 imgPO.setImgUrl(FileUtil.compressImgToBase64(goodsImgDTO.getImgUrl()));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            imgPO.setCreateTime(now);
+            imgPO.setIsDelete(TmallConstant.NO);
             return imgPO;
         }).collect(Collectors.toList());
         goodsImgMapper.insertList(imgList);
-
-        GoodsPO goodsPO = new GoodsPO();
-        LoginUser loginUser = LoginInfo.get();
-        goodsPO.setStoreId(loginUser.getStoreId());
-        goodsPO.setStoreName(loginUser.getStoreName());
-        // goodsPO.setBrandId();
-        goodsPO.setName(storeGoods.getName());
-        goodsPO.setSimpleDesc(storeGoods.getSimpleDesc());
-        goodsPO.setPrice(storeGoods.getPrice());
-        goodsPO.setPromoPrice(storeGoods.getPromoPrice());
-        goodsPO.setImgUrl(FileUtil.compressImgToBase64(storeGoods.getImgList().get(0).getImgUrl()));
-        // goodsPO.setLocation(storeGoods.getLocation());
-        goodsPO.setIsShowBanner(storeGoods.getIsShowBanner());
-        goodsPO.setIsPromote(storeGoods.getIsPromote());
-        if (storeGoods.getId() == 0) {
-            return goodsMapper.insertSelective(goodsPO);
-        } else {
-            example = new Example(GoodsPO.class);
-            example.and().andEqualTo("id", storeGoods.getId())
-                    .andEqualTo("storeId", storeGoods.getStoreId())
-                    .andEqualTo("status", TmallConstant.NO)
-                    .andEqualTo("isDelete", TmallConstant.NO);
-            return goodsMapper.updateByExampleSelective(goodsPO, example);
-        }
+        return result;
     }
 
     /**

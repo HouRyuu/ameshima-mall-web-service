@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 public class GoodsGridDTO {
 
     private int id;
+    private Integer skuId;
     private int storeId;
     private String name;
     private String simpleDesc;
@@ -40,6 +41,14 @@ public class GoodsGridDTO {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Integer getSkuId() {
+        return skuId;
+    }
+
+    public void setSkuId(Integer skuId) {
+        this.skuId = skuId;
     }
 
     public int getStoreId() {

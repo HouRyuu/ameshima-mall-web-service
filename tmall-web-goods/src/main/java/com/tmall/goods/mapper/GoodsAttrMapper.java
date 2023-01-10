@@ -1,9 +1,7 @@
 package com.tmall.goods.mapper;
 
-import com.tmall.goods.entity.dto.GoodsAttrDTO;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
+import com.tmall.common.BaseMapper;
+import com.tmall.goods.entity.po.GoodsAttrPO;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -13,8 +11,6 @@ import java.util.List;
  * @see [相关类/方法]（可选）
  * @since [产品/模块版本] （可选）
  */
-public interface GoodsAttrMapper {
-
-    List<GoodsAttrDTO> findGoodsAttrList(@Param("goodsId") int goodsId);
+public interface GoodsAttrMapper extends BaseMapper<GoodsAttrPO> {
 
 }

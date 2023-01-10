@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.tmall.common.po.BasePO;
+import tk.mybatis.mapper.annotation.KeySql;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -19,7 +20,7 @@ import com.tmall.common.po.BasePO;
 public class UserPO extends BasePO {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @KeySql(useGeneratedKeys = true)
     private Integer id;
     private Integer accountId;
     private String avatar;

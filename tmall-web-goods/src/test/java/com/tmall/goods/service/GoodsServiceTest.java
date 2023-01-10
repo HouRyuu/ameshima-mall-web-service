@@ -7,7 +7,6 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -18,21 +17,23 @@ import com.tmall.goods.entity.dto.QueryGoodsDTO;
 import com.tmall.goods.es.repository.GoodsRepository;
 import com.tmall.goods.mapper.GoodsMapper;
 
+import javax.annotation.Resource;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class GoodsServiceTest {
 
-    @Autowired
+    @Resource
     private GoodsService goodsService;
-    @Autowired
+    @Resource
     private GoodsRepository goodsRepository;
-    @Autowired
+    @Resource
     private GoodsMapper goodsMapper;
 
     @Before
     public void initGoods() {
         goodsRepository.deleteAll();
-        List<EsGoodsDTO> esGoodsList = goodsMapper.findEsGoods();
+        List<EsGoodsDTO> esGoodsList = goodsMapper.findEsGoods(0);
         goodsRepository.save(esGoodsList);
     }
 

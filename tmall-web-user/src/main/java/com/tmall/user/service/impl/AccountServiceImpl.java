@@ -128,7 +128,7 @@ public class AccountServiceImpl implements AccountService {
         Example example = new Example(AccountPO.class);
         example.and().andEqualTo("account", account).andCondition("is_delete", TmallConstant.NO);
         if (accountMapper.selectCountByExample(example) > 0) {
-            LOGGER.warn("携帯番号もう登録された=>{}", account);
+            LOGGER.warn("メールアドレスもう登録された=>{}", account);
             return PublicResult.error(UserErrResultEnum.REG_ACCOUNT_EXISTS);
         }
         String captcha = CommonUtil.createCaptcha();
@@ -143,7 +143,7 @@ public class AccountServiceImpl implements AccountService {
         Example example = new Example(AccountPO.class);
         example.and().andEqualTo("account", account).andCondition("is_delete", TmallConstant.NO);
         if (accountMapper.selectCountByExample(example) > 0) {
-            LOGGER.warn("携帯番号は登録されていない=>{}", account);
+            LOGGER.warn("メールアドレスは登録されていない=>{}", account);
             return PublicResult.error(UserErrResultEnum.ACCOUNT_NOT_EXISTS);
         }
         String captcha = CommonUtil.createCaptcha();
