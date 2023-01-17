@@ -17,7 +17,11 @@ public interface OrderService {
 
     PublicResult<PageResult<OrderDetailVO>> orderPage(OrderConditionDTO condition);
 
+    PublicResult<?> payOrder(String orderNo);
+
     PublicResult<?> receiveConfirm(String orderNo);
 
     void generateOrder(String orderStr);
+
+    boolean orderGoodsExists(int goodsId, short status);
 }

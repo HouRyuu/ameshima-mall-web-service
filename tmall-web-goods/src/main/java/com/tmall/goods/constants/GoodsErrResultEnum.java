@@ -15,7 +15,8 @@ public enum GoodsErrResultEnum implements IErrResult {
     BUY_CACHE_NOT_EXISTS(301, "長い間操作していないので、改めて購入してください"),
     AMOUNT_OVER(302, "商品が大人気なので在庫は足りなくなってしまいました😹"),
     SKU_REPEAT(303, "同じSKUが存在しているので、改めてご設定ください"),
-    NO_SKU(304, "デフォルトSKUが設定されてないです");
+    NO_SKU(304, "デフォルトSKUが設定されてないです"),
+    NO_PAY_ORDER_EXISTS(305, "支払っていない注文があるので、今は棚卸できません");
 
     private int errCode;
     private String errMsg;

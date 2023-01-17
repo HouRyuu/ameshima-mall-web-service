@@ -4,13 +4,14 @@ import java.util.Map;
 import java.util.Set;
 
 import com.tmall.common.dto.LoginInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.tmall.common.annotation.LoginRequire;
 import com.tmall.common.dto.PublicResult;
 import com.tmall.goods.entity.dto.ShoppingCartDTO;
 import com.tmall.goods.service.ShoppingCartService;
+
+import javax.annotation.Resource;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -24,7 +25,7 @@ import com.tmall.goods.service.ShoppingCartService;
 @RequestMapping("/shoppingCart")
 public class ShoppingCartResource {
 
-    @Autowired
+    @Resource
     private ShoppingCartService shoppingCartService;
 
     @LoginRequire

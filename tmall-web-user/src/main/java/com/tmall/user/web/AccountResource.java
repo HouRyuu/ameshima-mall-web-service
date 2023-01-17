@@ -85,7 +85,7 @@ public class AccountResource {
     @LoginRequire
     @PostMapping("/avatar/upload")
     public PublicResult<String> avatarUpload(@RequestParam("avatarFile") MultipartFile avatarFile) throws IOException {
-        String avatar = FileUtil.compressImgToBase64(avatarFile.getInputStream());
+        String avatar = FileUtil.compressImgToBase64(avatarFile.getInputStream(), avatarFile.getContentType());
         LoginUser loginUser = LoginInfo.get();
         loginUser.setAvatar(avatar);
         userService.update(loginUser);

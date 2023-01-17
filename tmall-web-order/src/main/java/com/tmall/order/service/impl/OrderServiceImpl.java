@@ -149,6 +149,25 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public PublicResult<?> payOrder(String parentOrderNo) {
+        if (StringUtils.isBlank(parentOrderNo)) {
+            return PublicResult.error();
+        }
+        int accountId = LoginInfo.get().getAccountId();
+        try {
+            if (payOrder(parentOrderNo, accountId)) {
+                LOGGER.info("accountId=>{}はorderNo=>{}は支払ったので、注文状態を次に変える", accountId, parentOrderNo);
+                return PublicResult.success();
+            } else {
+                return PublicResult.error(CommonErrResult.ERR_REQUEST);
+            }
+        } catch (Exception e) {
+            LOGGER.error(String.format("accountId=>％1$dはorderNo=>%2$s支払いが失敗", accountId, parentOrderNo), e);
+        }
+        return PublicResult.error();
+    }
+
+    @Override
     public PublicResult<?> receiveConfirm(String orderNo) {
         if (StringUtils.isBlank(orderNo)) {
             return PublicResult.error();
@@ -199,6 +218,15 @@ public class OrderServiceImpl implements OrderService {
         if (mqStateKey != null) {
             redisClient.set(OrderKey.ORDER_MQ, mqStateKey, OrderConstants.OrderMqState.ERROR.getState());
         }
+    }
+
+    @Override
+    public boolean orderGoodsExists(int goodsId, short status) {
+        OrderGoodsPO orderGoodsPO = new OrderGoodsPO();
+        orderGoodsPO.setGoodsId(goodsId);
+        orderGoodsPO.setOrderState(status);
+        orderGoodsPO.setIsDelete(TmallConstant.NO);
+        return orderGoodsMapper.selectCount(orderGoodsPO) > 0;
     }
 
     @Transactional
@@ -282,6 +310,25 @@ public class OrderServiceImpl implements OrderService {
             return pay;
         }).collect(Collectors.toList());
         orderPayMapper.insertList(payList);
+    }
+
+    private boolean payOrder(String parentOrderNo, int accountId) {
+        OrderPayPO orderPayPO = new OrderPayPO();
+        orderPayPO.setOrderNo(parentOrderNo);
+        orderPayPO.setPayNo(parentOrderNo);
+        orderPayPO.setPayState(TmallConstant.PayStateEnum.DONE.getState());
+        orderPayPO.setPayWay((short) (Math.random() * 4));
+        if (orderPayMapper.payByParentOrderNo(orderPayPO) < 1) {
+            return false;
+        }
+        Example example = new Example(OrderGoodsPO.class);
+        example.and().andEqualTo("accountId", accountId)
+                .andEqualTo("parentOrderNo", parentOrderNo)
+                .andEqualTo("orderState", TmallConstant.OrderStateEnum.NO_PAY.getState())
+                .andCondition("is_delete=", TmallConstant.NO);
+        OrderGoodsPO orderGoodsPO = new OrderGoodsPO();
+        orderGoodsPO.setOrderState(TmallConstant.OrderStateEnum.NO_DISPATCH.getState());
+        return orderGoodsMapper.updateByExampleSelective(orderGoodsPO, example) > 0;
     }
 
 }

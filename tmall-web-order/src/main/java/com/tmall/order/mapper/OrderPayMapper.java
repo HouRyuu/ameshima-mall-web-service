@@ -13,4 +13,6 @@ import com.tmall.order.entity.po.OrderPayPO;
  */
 public interface OrderPayMapper extends BaseMapper<OrderPayPO> {
 
+    int payByParentOrderNo(OrderPayPO orderPay);
+
 }

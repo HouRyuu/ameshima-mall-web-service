@@ -30,6 +30,7 @@ import com.tmall.remote.goods.dto.GoodsDTO;
 import com.tmall.remote.goods.dto.OrderAddressDTO;
 import com.tmall.remote.goods.vo.ShopCartVO;
 import com.tmall.remote.order.api.IOrderEvaluateService;
+import com.tmall.remote.order.api.IOrderService;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -94,6 +95,8 @@ public class GoodsServiceImpl implements GoodsService {
     private GoodsAttrService goodsAttrService;
     @Resource
     private GoodsCategoryService goodsCategoryService;
+    @Resource
+    private IOrderService orderService;
 
     @Override
     public List<GoodsGridDTO> findByPromote(int promoteId) {
@@ -471,22 +474,12 @@ public class GoodsServiceImpl implements GoodsService {
         if (storeId == null) {
             return PublicResult.error(CommonErrResult.ERR_REQUEST);
         }
-        // TODO:注文チェック
-        // カートを無効にする
-        // cacheを削除
-        redisClient.removeKey(GoodsKey.INDEX_PROMOTE_PLATE, null);
-        redisClient.removeKey(GoodsKey.STORE_INDEX_GOODS, storeId);
-        redisClient.removeKey(GoodsKey.GOODS_ATTRS, goodsId);
-        redisClient.removeKey(GoodsKey.GOODS_PARAMS, goodsId);
-        redisClient.removeKey(GoodsKey.GOODS_IMGS, goodsId);
-        GoodsPO goodsPO = new GoodsPO();
-        goodsPO.setStatus(TmallConstant.NO);
-        Example example = new Example(GoodsPO.class);
-        example.and().andEqualTo("id", goodsId)
-                .andEqualTo("storeId", storeId)
-                .andEqualTo("status", TmallConstant.YES)
-                .andEqualTo("isDelete", TmallConstant.NO);
-        if (goodsMapper.updateByExampleSelective(goodsPO, example) > 0) {
+        // 支払ってない注文チェック
+        if (orderService.orderGoodsExists(goodsId, TmallConstant.OrderStateEnum.NO_PAY.getState())) {
+            return PublicResult.error(GoodsErrResultEnum.NO_PAY_ORDER_EXISTS);
+        }
+        if (stackOrWithdrawGoods(goodsId, storeId, TmallConstant.NO)) {
+            // elasticsearchから商品を削除
             goodsRepository.delete(goodsId);
         }
         return PublicResult.success();
@@ -498,29 +491,36 @@ public class GoodsServiceImpl implements GoodsService {
         if (storeId == null) {
             return PublicResult.error(CommonErrResult.ERR_REQUEST);
         }
-        // TODO:情報チェック
+        // 情報チェック
         Example example = new Example(GoodsPO.class);
         example.and().andEqualTo("id", goodsId)
                 .andIsNotNull("skuId");
         if (goodsMapper.selectCountByExample(example) == 0) {
             return PublicResult.error(GoodsErrResultEnum.NO_SKU);
         }
-        // cacheを削除
+        if (stackOrWithdrawGoods(goodsId, storeId, TmallConstant.YES)) {
+            // elasticsearchに商品を保存
+            List<EsGoodsDTO> esGoodsList = goodsMapper.findEsGoods(goodsId);
+            goodsRepository.save(esGoodsList);
+            return PublicResult.success();
+        }
+        return PublicResult.error(CommonErrResult.OPERATE_FAIL);
+    }
+
+    private boolean stackOrWithdrawGoods(int goodsId, Integer storeId, short status) {
         redisClient.removeKey(GoodsKey.INDEX_PROMOTE_PLATE, null);
-        redisClient.removeKey(GoodsKey.STORE_INDEX_GOODS, LoginInfo.get().getStoreId());
+        redisClient.removeKey(GoodsKey.STORE_INDEX_GOODS, storeId);
         redisClient.removeKey(GoodsKey.GOODS_ATTRS, goodsId);
         redisClient.removeKey(GoodsKey.GOODS_PARAMS, goodsId);
         redisClient.removeKey(GoodsKey.GOODS_IMGS, goodsId);
         GoodsPO goodsPO = new GoodsPO();
-        goodsPO.setStatus(TmallConstant.YES);
-        example.and().andEqualTo("storeId", storeId)
-                .andEqualTo("status", TmallConstant.NO)
+        goodsPO.setStatus(status);
+        Example example = new Example(GoodsPO.class);
+        example.and().andEqualTo("id", goodsId)
+                .andEqualTo("storeId", storeId)
+                .andEqualTo("status", TmallConstant.YES - status)
                 .andEqualTo("isDelete", TmallConstant.NO);
-        if (goodsMapper.updateByExampleSelective(goodsPO, example) > 0) {
-            List<EsGoodsDTO> esGoodsList = goodsMapper.findEsGoods(goodsId);
-            goodsRepository.save(esGoodsList);
-        }
-        return PublicResult.success();
+        return goodsMapper.updateByExampleSelective(goodsPO, example) > 0;
     }
 
     @Override

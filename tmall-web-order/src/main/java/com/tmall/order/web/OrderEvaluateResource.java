@@ -5,10 +5,11 @@ import com.tmall.common.dto.PageResult;
 import com.tmall.common.dto.PublicResult;
 import com.tmall.order.entity.vo.OrderEvaluateVO;
 import com.tmall.order.service.OrderEvaluateService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.tmall.remote.order.api.IOrderEvaluateService;
+
+import javax.annotation.Resource;
 
 /**
  * 〈一句话功能简述〉<br>
@@ -22,7 +23,7 @@ import com.tmall.remote.order.api.IOrderEvaluateService;
 @RequestMapping("/evaluate")
 public class OrderEvaluateResource implements IOrderEvaluateService {
 
-    @Autowired
+    @Resource
     private OrderEvaluateService orderEvaluateService;
 
     @Override

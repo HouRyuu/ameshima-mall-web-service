@@ -7,16 +7,17 @@ import com.tmall.common.dto.PublicResult;
 import com.tmall.order.entity.dto.OrderConditionDTO;
 import com.tmall.order.entity.vo.OrderDetailVO;
 import com.tmall.order.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.tmall.remote.order.api.IOrderService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-public class OrderResource {
+public class OrderResource implements IOrderService {
 
-    @Autowired
+    @Resource
     private OrderService orderService;
 
     @LoginRequire
@@ -45,9 +46,21 @@ public class OrderResource {
     }
 
     @LoginRequire
+    @PutMapping("/{parentOrderNo}/pay")
+    public PublicResult<?> payOrder(@PathVariable String parentOrderNo) {
+        return orderService.payOrder(parentOrderNo);
+    }
+
+    @LoginRequire
     @PutMapping("/{orderNo}/receive/confirm")
     public PublicResult<?> receiveConfirm(@PathVariable String orderNo) {
         return orderService.receiveConfirm(orderNo);
+    }
+
+    @Override
+    @GetMapping("/{goodsId}/{status}/exists")
+    public boolean orderGoodsExists(@PathVariable("goodsId") int goodsId, @PathVariable("status") short status) {
+        return orderService.orderGoodsExists(goodsId, status);
     }
 
 }
