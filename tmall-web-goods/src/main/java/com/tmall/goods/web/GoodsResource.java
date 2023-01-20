@@ -12,7 +12,6 @@ import com.tmall.remote.goods.api.IGoodsService;
 import com.tmall.remote.goods.dto.OrderAddressDTO;
 import com.tmall.remote.goods.vo.ShopCartVO;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,24 +25,26 @@ import com.tmall.goods.service.GoodsPromoteService;
 import com.tmall.goods.service.GoodsService;
 import com.tmall.remote.goods.dto.GoodsDTO;
 
+import javax.annotation.Resource;
+
 /**
- * 〈一句话功能简述〉<br>
- * 〈功能详细描述〉
+ * 〈機能記述〉<br>
+ * 〈詳細な記述〉
  *
  * @author liupeng
- * @see [相关类/方法]（可选）
- * @since [产品/模块版本] （可选）
+ * @see [関するクラス/メソッド]（オプショナル）
+ * @since [プロダクト/モジュールバージョン] （オプショナル）
  */
 @RestController
 public class GoodsResource implements IGoodsService {
 
-    @Autowired
+    @Resource
     private GoodsCategoryService goodsCategoryService;
-    @Autowired
+    @Resource
     private GoodsService goodsService;
-    @Autowired
+    @Resource
     private GoodsPromoteService goodsPromoteService;
-    @Autowired
+    @Resource
     private GoodsAttrService goodsAttrService;
 
     @GetMapping("/getGoods/{id}")

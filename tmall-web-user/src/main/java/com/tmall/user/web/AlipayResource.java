@@ -1,7 +1,6 @@
 package com.tmall.user.web;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,21 +15,23 @@ import com.tmall.common.redis.key.CommonKey;
 import com.tmall.common.utils.CommonUtil;
 import com.tmall.user.service.UserAlipayService;
 
+import javax.annotation.Resource;
+
 /**
- * 〈一句话功能简述〉<br>
- * 〈功能详细描述〉
+ * 〈機能記述〉<br>
+ * 〈詳細な記述〉
  *
  * @author liupeng
- * @see [相关类/方法]（可选）
- * @since [产品/模块版本] （可选）
+ * @see [関するクラス/メソッド]（オプショナル）
+ * @since [プロダクト/モジュールバージョン] （オプショナル）
  */
 @RestController
 @RequestMapping("/alipay")
 public class AlipayResource {
 
-    @Autowired
+    @Resource
     private UserAlipayService userAlipayService;
-    @Autowired
+    @Resource
     private RedisClient redisClient;
 
     @GetMapping("/auth")

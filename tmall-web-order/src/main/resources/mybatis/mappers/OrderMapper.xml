@@ -6,7 +6,13 @@
     <select id="parentNoList" parameterType="OrderConditionDTO" resultType="String">
         SELECT parent_order_no
         FROM t_order_goods
-        WHERE account_id = #{accountId}
+        WHERE is_delete = 0
+        <if test="accountId!=null">
+            AND account_id = #{accountId}
+        </if>
+        <if test="storeId!=null">
+            AND store_id = #{storeId}
+        </if>
         <if test="goodsName!=null">
             and goods_name LIKE contact('%',#{goodsName},'%')
         </if>
@@ -19,7 +25,6 @@
         <if test="endDate!=null">
             and #{endDate}>=create_time
         </if>
-        AND is_delete = 0
         GROUP BY parent_order_no
         ORDER BY parent_order_no DESC
     </select>

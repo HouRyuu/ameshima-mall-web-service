@@ -5,10 +5,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.cache.Cache;
@@ -17,12 +17,12 @@ import com.tmall.common.mapper.GlobalConfigMapper;
 import com.tmall.common.po.GlobalConfigPO;
 
 /**
- * 〈一句话功能简述〉<br>
- * 〈功能详细描述〉
+ * 〈機能記述〉<br>
+ * 〈詳細な記述〉
  *
  * @author liupeng
- * @see [相关类/方法]（可选）
- * @since [产品/模块版本] （可选）
+ * @see [関するクラス/メソッド]（オプショナル）
+ * @since [プロダクト/モジュールバージョン] （オプショナル）
  */
 @Component
 public class GlobalConfig {
@@ -47,7 +47,7 @@ public class GlobalConfig {
     public static final String USER_DEFAULT_AVATAR = "user_defaultAvatar";
 
 
-    @Autowired
+    @Resource
     private GlobalConfigMapper globalConfigMapper;
 
     private final Cache<String, String> CONFIG_CACHE = CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.HOURS).build();

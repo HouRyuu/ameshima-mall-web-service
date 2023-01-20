@@ -3,7 +3,6 @@ package com.tmall.store.service.impl;
 import java.util.List;
 
 import org.apache.commons.lang3.RandomUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tmall.common.constants.GlobalConfig;
@@ -13,22 +12,24 @@ import com.tmall.store.keys.StoreKey;
 import com.tmall.store.mapper.StoreBrandMapper;
 import com.tmall.store.service.StoreBrandService;
 
+import javax.annotation.Resource;
+
 /**
- * 〈一句话功能简述〉<br>
- * 〈功能详细描述〉
+ * 〈機能記述〉<br>
+ * 〈詳細な記述〉
  *
  * @author liupeng
- * @see [相关类/方法]（可选）
- * @since [产品/模块版本] （可选）
+ * @see [関するクラス/メソッド]（オプショナル）
+ * @since [プロダクト/モジュールバージョン] （オプショナル）
  */
 @Service
 public class StoreBrandServiceImpl implements StoreBrandService {
 
-    @Autowired
+    @Resource
     private RedisClient redisClient;
-    @Autowired
+    @Resource
     private StoreBrandMapper storeBrandMapper;
-    @Autowired
+    @Resource
     private GlobalConfig globalConfig;
 
     @Override

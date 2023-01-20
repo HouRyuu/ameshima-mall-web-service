@@ -5,6 +5,7 @@ import java.util.Date;
 public class OrderConditionDTO {
 
     private Integer accountId;
+    private Integer storeId;
     private String parentOrderNo;
     private String goodsName;
     private Short orderState;
@@ -19,6 +20,14 @@ public class OrderConditionDTO {
 
     public void setAccountId(Integer accountId) {
         this.accountId = accountId;
+    }
+
+    public Integer getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Integer storeId) {
+        this.storeId = storeId;
     }
 
     public String getParentOrderNo() {

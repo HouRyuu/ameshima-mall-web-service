@@ -5,11 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.tmall.common.constants.CommonErrResult;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
@@ -25,20 +23,22 @@ import com.tmall.remote.goods.vo.ShopCartVO;
 import com.tmall.goods.mapper.ShoppingCartMapper;
 import com.tmall.goods.service.ShoppingCartService;
 
+import javax.annotation.Resource;
+
 /**
- * 〈一句话功能简述〉<br>
- * 〈功能详细描述〉
+ * 〈機能記述〉<br>
+ * 〈詳細な記述〉
  *
  * @author liupeng
- * @see [相关类/方法]（可选）
- * @since [产品/模块版本] （可选）
+ * @see [関するクラス/メソッド]（オプショナル）
+ * @since [プロダクト/モジュールバージョン] （オプショナル）
  */
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShoppingCartServiceImpl.class);
 
-    @Autowired
+    @Resource
     private ShoppingCartMapper shoppingCartMapper;
 
     @Override

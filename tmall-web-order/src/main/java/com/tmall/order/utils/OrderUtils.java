@@ -5,16 +5,16 @@ import com.tmall.order.keys.OrderKey;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.Calendar;
 
 @Component
 public class OrderUtils {
     private static final long ORDER_NO_START = 100000000000L;
 
-    @Autowired
+    @Resource
     private RedisClient redisClient;
 
     public String generateOrderNo() {

@@ -11,7 +11,7 @@
                             ON oe.sku_id = og.sku_id AND oe.order_no = og.order_no AND og.is_delete = 0
         WHERE oe.goods_id = #{goodsId}
           AND oe.is_delete = 0
-        order by oe.create_time DESC
+        order by oe.id DESC
     </select>
 
 

@@ -46,9 +46,16 @@ public class OrderResource implements IOrderService {
     }
 
     @LoginRequire
-    @PutMapping("/{parentOrderNo}/pay")
-    public PublicResult<?> payOrder(@PathVariable String parentOrderNo) {
-        return orderService.payOrder(parentOrderNo);
+    @PostMapping("/store/page")
+    public PublicResult<PageResult<OrderDetailVO>> storeOrderGoodsList(@RequestBody OrderConditionDTO condition) {
+        condition.setStoreId(LoginInfo.get().getStoreId());
+        return orderService.orderPage(condition);
+    }
+
+    @LoginRequire
+    @PutMapping("/{parentOrderNo}/{orderNo}/pay")
+    public PublicResult<?> payOrder(@PathVariable String parentOrderNo, @PathVariable String orderNo) {
+        return orderService.payOrder(parentOrderNo, orderNo);
     }
 
     @LoginRequire

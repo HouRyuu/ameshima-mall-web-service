@@ -149,20 +149,20 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PublicResult<?> payOrder(String parentOrderNo) {
+    public PublicResult<?> payOrder(String parentOrderNo, String orderNo) {
         if (StringUtils.isBlank(parentOrderNo)) {
             return PublicResult.error();
         }
         int accountId = LoginInfo.get().getAccountId();
         try {
-            if (payOrder(parentOrderNo, accountId)) {
-                LOGGER.info("accountId=>{}はorderNo=>{}は支払ったので、注文状態を次に変える", accountId, parentOrderNo);
+            if (payOrder(parentOrderNo, orderNo, accountId)) {
+                LOGGER.info("accountId=>{}はparentOrderNo=>{},orderNo=>{}は支払ったので、注文状態を次に変える", accountId, parentOrderNo, orderNo);
                 return PublicResult.success();
             } else {
                 return PublicResult.error(CommonErrResult.ERR_REQUEST);
             }
         } catch (Exception e) {
-            LOGGER.error(String.format("accountId=>％1$dはorderNo=>%2$s支払いが失敗", accountId, parentOrderNo), e);
+            LOGGER.error(String.format("accountId=>％1$dはparentOrderNo=>%2$s,orderNo=>%3$s支払いが失敗", accountId, parentOrderNo, orderNo), e);
         }
         return PublicResult.error();
     }
@@ -312,20 +312,37 @@ public class OrderServiceImpl implements OrderService {
         orderPayMapper.insertList(payList);
     }
 
-    private boolean payOrder(String parentOrderNo, int accountId) {
+    private boolean payOrder(String parentOrderNo, String orderNo, int accountId) {
         OrderPayPO orderPayPO = new OrderPayPO();
-        orderPayPO.setOrderNo(parentOrderNo);
-        orderPayPO.setPayNo(parentOrderNo);
         orderPayPO.setPayState(TmallConstant.PayStateEnum.DONE.getState());
         orderPayPO.setPayWay((short) (Math.random() * 4));
-        if (orderPayMapper.payByParentOrderNo(orderPayPO) < 1) {
-            return false;
+        if (!"0".equals(parentOrderNo) && "0".equals(orderNo)) { //一回で全部の注文を支払い
+            orderPayPO.setAccountId(accountId);
+            orderPayPO.setOrderNo(parentOrderNo);
+            if (orderPayMapper.payByParentOrderNo(orderPayPO) < 1) {
+                return false;
+            }
+        } else {
+            orderPayPO.setPayNo(orderNo);
+            Example example = new Example(OrderPayPO.class);
+            example.and().andEqualTo("orderNo", orderNo)
+                    .andEqualTo("accountId", accountId)
+                    .andEqualTo("payState", TmallConstant.PayStateEnum.DEFAULT.getState())
+                    .andEqualTo("isDelete", TmallConstant.NO);
+            if (orderPayMapper.updateByExampleSelective(orderPayPO, example) < 1) {
+                return false;
+            }
         }
         Example example = new Example(OrderGoodsPO.class);
         example.and().andEqualTo("accountId", accountId)
-                .andEqualTo("parentOrderNo", parentOrderNo)
                 .andEqualTo("orderState", TmallConstant.OrderStateEnum.NO_PAY.getState())
                 .andCondition("is_delete=", TmallConstant.NO);
+        if (!"0".equals(parentOrderNo)) {
+            example.and().andEqualTo("parentOrderNo", parentOrderNo);
+        }
+        if (!"0".equals(orderNo)) {
+            example.and().andEqualTo("orderNo", orderNo);
+        }
         OrderGoodsPO orderGoodsPO = new OrderGoodsPO();
         orderGoodsPO.setOrderState(TmallConstant.OrderStateEnum.NO_DISPATCH.getState());
         return orderGoodsMapper.updateByExampleSelective(orderGoodsPO, example) > 0;

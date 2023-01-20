@@ -1,7 +1,5 @@
 package com.tmall.order.entity.po;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -9,12 +7,12 @@ import com.tmall.common.po.BasePO;
 import tk.mybatis.mapper.annotation.KeySql;
 
 /**
- * 〈一句话功能简述〉<br>
- * 〈功能详细描述〉
+ * 〈機能記述〉<br>
+ * 〈詳細な記述〉
  *
  * @author liupeng
- * @see [相关类/方法]（可选）
- * @since [产品/模块版本] （可选）
+ * @see [関するクラス/メソッド]（オプショナル）
+ * @since [プロダクト/モジュールバージョン] （オプショナル）
  */
 @Table(name = "t_order_evaluate")
 public class OrderEvaluatePO extends BasePO {
