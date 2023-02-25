@@ -1,5 +1,5 @@
 # ameshima-mall-web-service
-    是非[ビデオ](https://www.youtube.com/watch?v=Ho-PMXgPNRY)をご覧ください
+是非[ビデオ](https://www.youtube.com/watch?v=Ho-PMXgPNRY)をご覧ください
     プロジェクトはまだ未完成です。
 #### スタート手順
 ##### 1. mysqlをスタート
