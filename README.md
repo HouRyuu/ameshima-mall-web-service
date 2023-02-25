@@ -1,56 +1,28 @@
-# tmall-web-service
-1. 启动mysql
-
-select @@GLOBAL.sql_mode;
-关闭only_full_group_by
-SET @@GLOBAL.sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-
-2. 启动rabbitmq
-
-rabbitmq-server
-
-3. 启动redis
-src/redis-server redis.conf
-
-4. 启动elasticsearch
-./bin/elasticsearch
+# ameshima-mall-web-service
+是非[ビデオ](https://www.youtube.com/watch?v=Ho-PMXgPNRY)をご覧ください
+プロジェクトはまだ未完成です。
+#### スタート手順
+##### 1. mysqlをスタート
+    sudo /usr/local/mysql/support-files/mysql.server start 
+##### 2. rabbitmqをスタート
+    rabbitmq-server
+##### 3. redisをスタート
+    src/redis-server redis.conf
+##### 4. elasticsearch-2.4.6をスタート
+    ./bin/elasticsearch
 
 
 
-#### 介绍
-{**以下是码云平台说明，您可以替换此简介**
-码云是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用码云实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
-
-#### 软件架构
-软件架构说明
-
-
-#### 安装教程
-
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### 使用说明
-
-1. xxxx
-2. xxxx
-3. xxxx
-
-#### 参与贡献
-
-1. Fork 本仓库
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
-
-
-#### 码云特技
-
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+#### 説明
+##### 1．商品一覧
+    HPで色んな商品を閲覧して、好みでおすすめできます。Elasticsearchで気楽に欲しい商品を検索できます。
+##### 2．ユーザ登録
+    普通の登録だけではなくて、更に外部アカウント(Alipay)でも登録可能
+##### 3．ユーザ関連情報登録
+    ユーザ情報、アドレス帳など。
+##### 4．商品登録
+    商品情報、写真、パラメタ、SKU、在庫などを登録し、顧客に閲覧られます。
+##### 5．商品詳細
+    お店に登録された商品情報を詳しく見えます。
+##### 6．注文
+    好きな商品をカートに入れ、または直接に注文できます。
