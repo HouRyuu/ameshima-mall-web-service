@@ -9,10 +9,10 @@ package com.tmall.common.constants;
  * @since [プロダクト/モジュールバージョン] （オプショナル）
  */
 public enum PayErrResultEnum implements IErrResult {
-//    DUPLICATE(600, "短時間内重複に支払わないように、しばらくお待ちになってから、改めてお支払いください"),
 //    NO_PAY(601, "合計０円なので、会計の必要がありません"),
-    EXPIRY(601, "短時間内重複に支払わないように、しばらくお待ちになってから、改めてお支払いください"),
-    DONE(600, "ありがとうございます。会計完了しました。");
+    DONE(600, "ありがとうございます。会計完了しました。"),
+    EXPIRY(601, "支払う期限をすぎましたので、しばらくお待ちになってから、改めてお支払いください"),
+    DUPLICATE(602, "短時間内重複に支払わないように、しばらくお待ちになってから、改めてお支払いください");
 
     private int errCode;
     private String errMsg;

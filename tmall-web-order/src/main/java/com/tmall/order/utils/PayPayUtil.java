@@ -2,6 +2,7 @@ package com.tmall.order.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.tmall.common.constants.CommonErrResult;
+import com.tmall.common.constants.PayErrResultEnum;
 import com.tmall.common.dto.PublicResult;
 import com.tmall.common.redis.RedisClient;
 import com.tmall.order.keys.OrderKey;
@@ -79,6 +80,10 @@ public class PayPayUtil {
     }
 
     public PublicResult<String> createQRCode(OrderInfo orderInfo) {
+        if (StringUtils.isNotBlank(redisClient.get(OrderKey.PAYPAY_CODE_ID, orderInfo.paymentId))) {
+            // 既に生成した
+            return PublicResult.errorWithEnum(PayErrResultEnum.DUPLICATE);
+        }
         QRCode qrCode = new QRCode();
         qrCode.setAmount(new MoneyAmount().amount(orderInfo.amount).currency(MoneyAmount.CurrencyEnum.JPY));
         qrCode.setMerchantPaymentId(orderInfo.paymentId);
@@ -92,38 +97,47 @@ public class PayPayUtil {
             ResultInfo resultInfo = response.getResultInfo();
             LOGGER.info("{}でもらったPayPayのQRCode=>{}", orderInfo, JSON.toJSONString(response));
             if (SUCCESS.equals(resultInfo.getCode())) {
+                // RedisでQRCodeIdを保存し、支払い中を示す。支払完了かQRCodeが削除された時、RedisのQRCodeIdを削除
                 redisClient.set(OrderKey.PAYPAY_CODE_ID, orderInfo.paymentId, response.getData().getCodeId());
                 return PublicResult.success(response.getData().getUrl());
             }
             return PublicResult.error(Integer.parseInt(resultInfo.getCode()), resultInfo.getMessage());
         } catch (ApiException e) {
-            LOGGER.error(String.format("Paypay支払い%1$s=>QRコード生成がエラーになった", orderInfo), e);
-            return PublicResult.error(CommonErrResult.OPERATE_FAIL.errCode(), e.getResponseBody());
+            String responseBody = e.getResponseBody();
+            LOGGER.error(String.format("Paypay支払い%1$s=>QRコード%2$s生成がエラーになった", orderInfo, responseBody), e);
+            if (responseBody.contains("DUPLICATE_DYNAMIC_QR_REQUEST")) {
+                return PublicResult.errorWithEnum(PayErrResultEnum.DUPLICATE);
+            }
+            if (responseBody.contains("PRE_AUTH_CAPTURE_INVALID_EXPIRY_DATE")) {
+                return PublicResult.errorWithEnum(PayErrResultEnum.EXPIRY);
+            }
+            return PublicResult.errorWithEnum(CommonErrResult.OPERATE_FAIL);
         }
     }
 
-    public PublicResult<String> deleteQRCode(String paymentId) {
+    public void deleteQRCode(String paymentId) {
         String codeId = redisClient.get(OrderKey.PAYPAY_CODE_ID, paymentId);
+        LOGGER.warn("paymentId=>{}のQRCodeID=>{}を削除し始める", paymentId, codeId);
         if (StringUtils.isBlank(codeId)) {
-            LOGGER.warn("paymentId=>{}にはQRCodeIDがない", paymentId);
-            return PublicResult.success();
+            LOGGER.warn("paymentId=>{}にはQRCodeIDがないので、削除できない", paymentId);
+            return;
         }
         try {
-            LOGGER.warn("paymentId=>{}のQRCodeID=>{}を削除し始める", paymentId, codeId);
             PaymentApi apiInstance = new PaymentApi(getApiClient());
             NotDataResponse response = apiInstance.deleteQRCode(codeId);
             LOGGER.info("paymentId=>{}のQRCodeID=>{}削除response=>{}", paymentId, codeId, JSON.toJSONString(response));
             if (SUCCESS.equals(response.getResultInfo().getCode())) {
                 redisClient.removeKey(OrderKey.PAYPAY_CODE_ID, paymentId);
-                return PublicResult.success();
             }
         } catch (ApiException e) {
             LOGGER.error(String.format("paymentId=>%1$sのQRCodeID=>%2$s削除がエラーになった", paymentId, codeId), e);
         }
-        return PublicResult.error();
     }
 
     public PublicResult<String> getPayDetail(String merchantPaymentId) {
+        if (StringUtils.isBlank(redisClient.get(OrderKey.PAYPAY_CODE_ID, merchantPaymentId))) {
+            return PublicResult.error();
+        }
         try {
             // Calling the method to get payment details
             PaymentApi apiInstance = new PaymentApi(getApiClient());
@@ -135,6 +149,7 @@ public class PayPayUtil {
                 String status = response.getData().getStatus().getValue();
                 PublicResult<String> result = PublicResult.success(status);
                 if (PaymentState.StatusEnum.COMPLETED.getValue().equals(status)) {
+                    redisClient.removeKey(OrderKey.PAYPAY_CODE_ID, merchantPaymentId);
                     // PublicResult.errMsgでpaypayのPaymentIdを暫く記憶する
                     result.setErrMsg(response.getData().getPaymentId());
                 }
@@ -148,17 +163,17 @@ public class PayPayUtil {
     }
 
     private ApiClient getApiClient() throws ApiException {
-        if (apiClient == null) {
-            synchronized (ApiClient.class) {
-                if (apiClient == null) {
-                    apiClient = new Configuration().getDefaultApiClient();
+//        if (apiClient == null) {
+//            synchronized (ApiClient.class) {
+//                if (apiClient == null) {
+                    ApiClient apiClient = new Configuration().getDefaultApiClient();
                     apiClient.setProductionMode(productionMode);
                     apiClient.setApiKey(apiKey);
                     apiClient.setApiSecretKey(secret);
                     apiClient.setAssumeMerchant(assumeMerchant);
-                }
-            }
-        }
+//                }
+//            }
+//        }
         return apiClient;
     }
 

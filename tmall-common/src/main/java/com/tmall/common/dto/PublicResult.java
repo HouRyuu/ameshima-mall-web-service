@@ -18,6 +18,7 @@ public class PublicResult<T> {
 
     private int errCode;
     private String errMsg;
+    private IErrResult errResult;
     private T data;
 
     private PublicResult() {
@@ -26,6 +27,12 @@ public class PublicResult<T> {
     public PublicResult(int errCode, String errMsg) {
         this.errCode = errCode;
         this.errMsg = errMsg;
+    }
+
+    public PublicResult(IErrResult errResult) {
+        this.errCode = errResult.errCode();
+        this.errMsg = errResult.errMsg();
+        this.errResult = errResult;
     }
 
     public PublicResult(T data) {
@@ -38,6 +45,10 @@ public class PublicResult<T> {
 
     public static <T> PublicResult<T> error(IErrResult errResult) {
         return new PublicResult<>(errResult.errCode(), errResult.errMsg());
+    }
+
+    public static <T> PublicResult<T> errorWithEnum(IErrResult errResult) {
+        return new PublicResult<>(errResult);
     }
 
     public static <T> PublicResult<T> error() {
@@ -66,6 +77,14 @@ public class PublicResult<T> {
 
     public void setErrMsg(String errMsg) {
         this.errMsg = errMsg;
+    }
+
+    public IErrResult getErrResult() {
+        return errResult;
+    }
+
+    public void setErrResult(IErrResult errResult) {
+        this.errResult = errResult;
     }
 
     public T getData() {

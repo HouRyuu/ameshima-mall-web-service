@@ -161,24 +161,25 @@ public class OrderServiceImpl implements OrderService {
             return PublicResult.error(PayErrResultEnum.DONE);
         }
         String paymentId = TmallConstant.ZERO_STR.equals(orderNo) ? parentOrderNo : orderNo;
-        PublicResult<String> result = getPayPayStatus(parentOrderNo, orderNo);
-        if (result.getErrCode() == PublicResult.OK_CODE && StringUtils.isBlank(result.getData())) {
-            return PublicResult.error(PayErrResultEnum.DONE);
-        }
         if (TmallConstant.ZERO_STR.equals(payInfo.getPrice().toString())) {
             // 支払い必要ないので、会計を完成する
             return payOrder(parentOrderNo, orderNo, TmallConstant.PayWayEnum.PAYPAY, paymentId);
         }
-        result = payPayUtil.createQRCode(new PayPayUtil.OrderInfo(paymentId,
+        PublicResult<String> result = payPayUtil.createQRCode(new PayPayUtil.OrderInfo(paymentId,
                 payInfo.getPrice().intValue(), TmallConstant.SITE_NAME + ":" +
                 paymentId + TmallConstant.UNDERLINE + payInfo.getStoreName()));
+        if (result.getErrCode()== PublicResult.OK_CODE) {
+            return result;
+        }
         // 既に二次元コードを生成した
-        if (result.getErrCode() == CommonErrResult.OPERATE_FAIL.errCode()
-                && (result.getErrMsg().contains("DUPLICATE_DYNAMIC_QR_REQUEST")
-                || result.getErrMsg().contains("PRE_AUTH_CAPTURE_INVALID_EXPIRY_DATE"))) {
+        if (result.getErrResult() == PayErrResultEnum.DUPLICATE
+                || result.getErrResult() == PayErrResultEnum.EXPIRY) {
+            PublicResult<String> statusResult = payPayStatus(parentOrderNo, orderNo);
+            if (statusResult.getErrCode() == PublicResult.OK_CODE && StringUtils.isBlank(statusResult.getData())) {
+                return PublicResult.error(PayErrResultEnum.DONE);
+            }
             // 会計まだ完了してなければ、二次元コードを削除して、改めてQRCodeを生成
             payPayUtil.deleteQRCode(paymentId);
-            result = PublicResult.error(PayErrResultEnum.EXPIRY);
         }
         return result;
     }
@@ -195,11 +196,15 @@ public class OrderServiceImpl implements OrderService {
             // 支払い必要ない
             return payOrder(parentOrderNo, orderNo, TmallConstant.PayWayEnum.PAYPAY, paymentId);
         }
+        return payPayStatus(parentOrderNo, orderNo);
+    }
+
+    private PublicResult<String> payPayStatus(String parentOrderNo, String orderNo) {
+        String paymentId = TmallConstant.ZERO_STR.equals(orderNo) ? parentOrderNo : orderNo;
         PublicResult<String> payDetail = payPayUtil.getPayDetail(paymentId);
         if (PaymentState.StatusEnum.COMPLETED.getValue().equals(payDetail.getData())) {
-            redisClient.removeKey(OrderKey.PAYPAY_CODE_ID, paymentId);
-            LOGGER.info("parentOrderNo=>{},orderNo=>{}.PayPayで支払完了！！！", parentOrderNo, orderNo);
             // 支払完了
+            LOGGER.info("parentOrderNo=>{},orderNo=>{}.PayPayで支払完了！！！", parentOrderNo, orderNo);
             return payOrder(parentOrderNo, orderNo, TmallConstant.PayWayEnum.PAYPAY, payDetail.getErrMsg());
         }
         return payDetail;
@@ -373,14 +378,15 @@ public class OrderServiceImpl implements OrderService {
         orderPayPO.setPayState(TmallConstant.PayStateEnum.DONE.getState());
         orderPayPO.setPayWay(payWay.getCode());
         orderPayPO.setPayNo(payNo);
-        if (!"0".equals(parentOrderNo) && "0".equals(orderNo)) { //一回で全部の注文を支払い
+        // 支払う状態変更
+        //　parentOrderNoで全部の注文を支払い
+        if (!TmallConstant.ZERO_STR.equals(parentOrderNo) && TmallConstant.ZERO_STR.equals(orderNo)) {
             orderPayPO.setAccountId(accountId);
             orderPayPO.setOrderNo(parentOrderNo);
             if (orderPayMapper.payByParentOrderNo(orderPayPO) < 1) {
                 return false;
             }
         } else {
-            orderPayPO.setPayNo(orderNo);
             Example example = new Example(OrderPayPO.class);
             example.and().andEqualTo("orderNo", orderNo)
                     .andEqualTo("accountId", accountId)
@@ -390,14 +396,15 @@ public class OrderServiceImpl implements OrderService {
                 return false;
             }
         }
+        // 注文状態変更
         Example example = new Example(OrderGoodsPO.class);
         example.and().andEqualTo("accountId", accountId)
                 .andEqualTo("orderState", TmallConstant.OrderStateEnum.NO_PAY.getState())
                 .andCondition("is_delete=", TmallConstant.NO);
-        if (!"0".equals(parentOrderNo)) {
+        if (!TmallConstant.ZERO_STR.equals(parentOrderNo)) {
             example.and().andEqualTo("parentOrderNo", parentOrderNo);
         }
-        if (!"0".equals(orderNo)) {
+        if (!TmallConstant.ZERO_STR.equals(orderNo)) {
             example.and().andEqualTo("orderNo", orderNo);
         }
         OrderGoodsPO orderGoodsPO = new OrderGoodsPO();
