@@ -7,6 +7,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.tmall.common.constants.CommonErrResult;
+import com.tmall.common.constants.PayErrResultEnum;
 import com.tmall.common.constants.TmallConstant;
 import com.tmall.common.dto.LoginInfo;
 import com.tmall.common.dto.PageResult;
@@ -26,11 +27,13 @@ import com.tmall.order.mapper.OrderPayMapper;
 import com.tmall.order.rabbitmq.MQSender;
 import com.tmall.order.service.OrderService;
 import com.tmall.order.utils.ConvertToVO;
+import com.tmall.order.utils.PayPayUtil;
 import com.tmall.remote.goods.api.IGoodsService;
 import com.tmall.remote.goods.dto.CartGoodsDTO;
 import com.tmall.remote.goods.dto.OrderAddressDTO;
 import com.tmall.remote.goods.utils.JsonUtils;
 import com.tmall.remote.goods.vo.ShopCartVO;
+import jp.ne.paypay.model.PaymentState;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +66,8 @@ public class OrderServiceImpl implements OrderService {
     private OrderLogisticsMapper orderLogisticsMapper;
     @Resource
     private OrderPayMapper orderPayMapper;
+    @Resource
+    private PayPayUtil payPayUtil;
 
     @Override
     public PublicResult<?> orderTuQueue(String cityCode, String address) {
@@ -149,13 +154,64 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PublicResult<?> payOrder(String parentOrderNo, String orderNo) {
+    public PublicResult<String> createPayPayCode(String parentOrderNo, String orderNo) {
+        OrderGoodsPO payInfo = orderGoodsMapper.getPayInfo(TmallConstant.PayStateEnum.DEFAULT.getState(), parentOrderNo, orderNo);
+        if (payInfo == null) {
+            // 支払いすでに完了
+            return PublicResult.error(PayErrResultEnum.DONE);
+        }
+        String paymentId = TmallConstant.ZERO_STR.equals(orderNo) ? parentOrderNo : orderNo;
+        PublicResult<String> result = getPayPayStatus(parentOrderNo, orderNo);
+        if (result.getErrCode() == PublicResult.OK_CODE && StringUtils.isBlank(result.getData())) {
+            return PublicResult.error(PayErrResultEnum.DONE);
+        }
+        if (TmallConstant.ZERO_STR.equals(payInfo.getPrice().toString())) {
+            // 支払い必要ないので、会計を完成する
+            return payOrder(parentOrderNo, orderNo, TmallConstant.PayWayEnum.PAYPAY, paymentId);
+        }
+        result = payPayUtil.createQRCode(new PayPayUtil.OrderInfo(paymentId,
+                payInfo.getPrice().intValue(), TmallConstant.SITE_NAME + ":" +
+                paymentId + TmallConstant.UNDERLINE + payInfo.getStoreName()));
+        // 既に二次元コードを生成した
+        if (result.getErrCode() == CommonErrResult.OPERATE_FAIL.errCode()
+                && (result.getErrMsg().contains("DUPLICATE_DYNAMIC_QR_REQUEST")
+                || result.getErrMsg().contains("PRE_AUTH_CAPTURE_INVALID_EXPIRY_DATE"))) {
+            // 会計まだ完了してなければ、二次元コードを削除して、改めてQRCodeを生成
+            payPayUtil.deleteQRCode(paymentId);
+            result = PublicResult.error(PayErrResultEnum.EXPIRY);
+        }
+        return result;
+    }
+
+    @Override
+    public PublicResult<String> getPayPayStatus(String parentOrderNo, String orderNo) {
+        OrderGoodsPO payInfo = orderGoodsMapper.getPayInfo(TmallConstant.PayStateEnum.DEFAULT.getState(), parentOrderNo, orderNo);
+        if (payInfo == null) {
+            // 支払いすでに完了
+            return PublicResult.error(PayErrResultEnum.DONE);
+        }
+        String paymentId = TmallConstant.ZERO_STR.equals(orderNo) ? parentOrderNo : orderNo;
+        if (TmallConstant.ZERO_STR.equals(payInfo.getPrice().toString())) {
+            // 支払い必要ない
+            return payOrder(parentOrderNo, orderNo, TmallConstant.PayWayEnum.PAYPAY, paymentId);
+        }
+        PublicResult<String> payDetail = payPayUtil.getPayDetail(paymentId);
+        if (PaymentState.StatusEnum.COMPLETED.getValue().equals(payDetail.getData())) {
+            redisClient.removeKey(OrderKey.PAYPAY_CODE_ID, paymentId);
+            LOGGER.info("parentOrderNo=>{},orderNo=>{}.PayPayで支払完了！！！", parentOrderNo, orderNo);
+            // 支払完了
+            return payOrder(parentOrderNo, orderNo, TmallConstant.PayWayEnum.PAYPAY, payDetail.getErrMsg());
+        }
+        return payDetail;
+    }
+
+    private PublicResult<String> payOrder(String parentOrderNo, String orderNo, TmallConstant.PayWayEnum payWayEnum, String payNo) {
         if (StringUtils.isBlank(parentOrderNo)) {
             return PublicResult.error();
         }
         int accountId = LoginInfo.get().getAccountId();
         try {
-            if (payOrder(parentOrderNo, orderNo, accountId)) {
+            if (payOrder(parentOrderNo, orderNo, accountId, payWayEnum, payNo)) {
                 LOGGER.info("accountId=>{}はparentOrderNo=>{},orderNo=>{}は支払ったので、注文状態を次に変える", accountId, parentOrderNo, orderNo);
                 return PublicResult.success();
             } else {
@@ -312,10 +368,11 @@ public class OrderServiceImpl implements OrderService {
         orderPayMapper.insertList(payList);
     }
 
-    private boolean payOrder(String parentOrderNo, String orderNo, int accountId) {
+    private boolean payOrder(String parentOrderNo, String orderNo, int accountId, TmallConstant.PayWayEnum payWay, String payNo) {
         OrderPayPO orderPayPO = new OrderPayPO();
         orderPayPO.setPayState(TmallConstant.PayStateEnum.DONE.getState());
-        orderPayPO.setPayWay((short) (Math.random() * 4));
+        orderPayPO.setPayWay(payWay.getCode());
+        orderPayPO.setPayNo(payNo);
         if (!"0".equals(parentOrderNo) && "0".equals(orderNo)) { //一回で全部の注文を支払い
             orderPayPO.setAccountId(accountId);
             orderPayPO.setOrderNo(parentOrderNo);

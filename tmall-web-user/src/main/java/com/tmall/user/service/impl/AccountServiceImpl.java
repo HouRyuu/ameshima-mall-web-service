@@ -16,6 +16,7 @@ import com.tmall.user.keys.UserKey;
 import com.tmall.user.mapper.AccountMapper;
 import com.tmall.user.service.AccountService;
 import com.tmall.user.service.UserService;
+import com.tmall.user.utils.CaptchaSender;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -50,6 +51,8 @@ public class AccountServiceImpl implements AccountService {
     private UserService userService;
     @Resource
     private GlobalConfig globalConfig;
+    @Resource
+    private CaptchaSender captchaSender;
 
     @Override
     public int create(LoginUser account) {
@@ -131,9 +134,10 @@ public class AccountServiceImpl implements AccountService {
             LOGGER.warn("メールアドレスもう登録された=>{}", account);
             return PublicResult.error(UserErrResultEnum.REG_ACCOUNT_EXISTS);
         }
-        String captcha = CommonUtil.createCaptcha();
+        captchaSender.sendCaptchaMail(account);
+        /*String captcha = CommonUtil.createCaptcha();
         LOGGER.info("{}にキャプチャ=>{}を送る", account, captcha);
-        redisClient.set(UserKey.CAPTCHA_REGISTER, account, captcha);
+        redisClient.set(UserKey.CAPTCHA_REGISTER, account, captcha);*/
         return PublicResult.success(globalConfig.get(GlobalConfig.KEY_LIMIT_CAPTCHA));
     }
 
@@ -141,14 +145,15 @@ public class AccountServiceImpl implements AccountService {
     public PublicResult<?> sendForgetCaptcha(String account) {
         Assert.hasText(account, TmallConstant.PARAM_ERR_MSG);
         Example example = new Example(AccountPO.class);
-        example.and().andEqualTo("account", account).andCondition("is_delete", TmallConstant.NO);
-        if (accountMapper.selectCountByExample(example) > 0) {
+        example.and().andEqualTo("account", account).andEqualTo("isDelete", TmallConstant.NO);
+        if (accountMapper.selectCountByExample(example) == 0) {
             LOGGER.warn("メールアドレスは登録されていない=>{}", account);
             return PublicResult.error(UserErrResultEnum.ACCOUNT_NOT_EXISTS);
         }
-        String captcha = CommonUtil.createCaptcha();
+        captchaSender.sendCaptchaMail(account);
+        /*String captcha = CommonUtil.createCaptcha();
         LOGGER.info("{}にキャプチャ=>{}を送る", account, captcha);
-        redisClient.set(UserKey.CAPTCHA_FORGET, account, captcha);
+        redisClient.set(UserKey.CAPTCHA_FORGET, account, captcha);*/
         return PublicResult.success(globalConfig.get(GlobalConfig.KEY_LIMIT_CAPTCHA));
     }
 

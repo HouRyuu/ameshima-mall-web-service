@@ -1,5 +1,7 @@
 package com.tmall.common.constants;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 /**
  * 〈機能記述〉<br>
  * 〈詳細な記述〉
@@ -9,6 +11,8 @@ package com.tmall.common.constants;
  * @since [プロダクト/モジュールバージョン] （オプショナル）
  */
 public final class TmallConstant {
+
+    public static final String SITE_NAME = "雨島モール";
 
     public static final String JSON_STR = "json";
     public static final String UTF8_STR = "UTF-8";
@@ -25,6 +29,8 @@ public final class TmallConstant {
 
     public static final short YES = 1;
     public static final short NO = 0;
+
+    public static final String ZERO_STR = NumberUtils.INTEGER_ZERO.toString();
 
     public static final String TOKEN = "token";
 
@@ -69,6 +75,23 @@ public final class TmallConstant {
 
         public short getState() {
             return state;
+        }
+    }
+
+    public enum PayWayEnum {
+        LINE_PAY((short) 0),
+        PAYPAY((short) 1),
+        ALIPAY((short) 2),
+        CARD((short) 3);
+
+        private final short code;
+
+        PayWayEnum(short code) {
+            this.code = code;
+        }
+
+        public short getCode() {
+            return code;
         }
     }
 

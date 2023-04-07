@@ -17,6 +17,10 @@ public class OrderKey extends BaseKeyPrefix {
 
     public static final KeyPrefix ORDER_MQ = new OrderKey("order_mq", 1, TimeUnit.DAYS);
     public static final KeyPrefix ORDER_NO = new OrderKey("order_no", 1L, TimeUnit.DAYS);
+    public static final KeyPrefix PAYPAY_CODE_ID = new OrderKey("paypay_code_id");
+    private OrderKey(String prefix) {
+        super(prefix);
+    }
     private OrderKey(String prefix, long timeout, TimeUnit timeUnit) {
         super(prefix, timeout, timeUnit);
     }

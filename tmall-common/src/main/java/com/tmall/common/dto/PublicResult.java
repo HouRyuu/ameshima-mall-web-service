@@ -14,6 +14,8 @@ import com.tmall.common.constants.IErrResult;
  */
 public class PublicResult<T> {
 
+    public static final int OK_CODE = 0;
+
     private int errCode;
     private String errMsg;
     private T data;
@@ -42,7 +44,7 @@ public class PublicResult<T> {
         return error(CommonErrResult.OPERATE_FAIL);
     }
 
-    public static PublicResult<?> success() {
+    public static <T> PublicResult<T> success() {
         return new PublicResult<>();
     }
 

@@ -46,3 +46,11 @@ pagehelper:
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
+
+paypay:
+  apiKey: a_Dt9iunotKP_HU2n
+  secret: CYWIVDpAPD7iVIYYy68sn2EgmVlvsdnkZSDl08d3nXo=
+  assumeMerchant: 630945097324937216
+  storeName: 雨島モール
+  productionMode: false
+  codeType: ORDER_QR

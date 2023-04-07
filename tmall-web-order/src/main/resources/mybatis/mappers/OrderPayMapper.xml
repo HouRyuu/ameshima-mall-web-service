@@ -6,14 +6,11 @@
 
     <update id="payByParentOrderNo" parameterType="OrderPayPO">
         UPDATE t_order_pay t
-            INNER JOIN t_order_goods t1
-        on t.order_no = t1.order_no AND t1.is_delete = 0
-            SET pay_no=t.order_no, pay_state=#{payState}, pay_way=#{payWay}
-        WHERE t1.parent_order_no = #{orderNo}
+            SET pay_no=#{payNo}, pay_state=#{payState}, pay_way=#{payWay}
+        WHERE t.order_no in (select order_no from t_order_goods where parent_order_no = #{orderNo} AND is_delete = 0)
           AND t.account_id = #{accountId}
           AND t.pay_state = 0
           AND t.is_delete = 0
     </update>
-
 
 </mapper>

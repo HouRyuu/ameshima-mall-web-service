@@ -17,7 +17,9 @@ public interface OrderService {
 
     PublicResult<PageResult<OrderDetailVO>> orderPage(OrderConditionDTO condition);
 
-    PublicResult<?> payOrder(String parentOrderNo, String orderNo);
+    PublicResult<String> createPayPayCode(String parentOrderNo, String orderNo);
+
+    PublicResult<?> getPayPayStatus(String parentOrderNo, String orderNo);
 
     PublicResult<?> receiveConfirm(String orderNo);
 

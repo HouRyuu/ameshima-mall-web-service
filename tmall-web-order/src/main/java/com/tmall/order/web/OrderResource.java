@@ -53,10 +53,22 @@ public class OrderResource implements IOrderService {
     }
 
     @LoginRequire
-    @PutMapping("/{parentOrderNo}/{orderNo}/pay")
-    public PublicResult<?> payOrder(@PathVariable String parentOrderNo, @PathVariable String orderNo) {
-        return orderService.payOrder(parentOrderNo, orderNo);
+    @GetMapping("/{parentOrderNo}/{orderNo}/paypay/code")
+    public PublicResult<?> createPayPayCode(@PathVariable String parentOrderNo, @PathVariable String orderNo) {
+        return orderService.createPayPayCode(parentOrderNo, orderNo);
     }
+
+    @LoginRequire
+    @PutMapping("/{parentOrderNo}/{orderNo}/paypay/status")
+    public PublicResult<?> getPayPayStatus(@PathVariable String parentOrderNo, @PathVariable String orderNo) {
+        return orderService.getPayPayStatus(parentOrderNo, orderNo);
+    }
+
+//    @LoginRequire
+//    @PutMapping("/{parentOrderNo}/{orderNo}/pay")
+//    public PublicResult<?> payOrder(@PathVariable String parentOrderNo, @PathVariable String orderNo) {
+//        return orderService.payOrder(parentOrderNo, orderNo);
+//    }
 
     @LoginRequire
     @PutMapping("/{orderNo}/receive/confirm")

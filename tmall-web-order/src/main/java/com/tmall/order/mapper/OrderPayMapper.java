@@ -2,6 +2,9 @@ package com.tmall.order.mapper;
 
 import com.tmall.common.BaseMapper;
 import com.tmall.order.entity.po.OrderPayPO;
+import org.apache.ibatis.annotations.Param;
+
+import java.math.BigDecimal;
 
 /**
  * 〈機能記述〉<br>
