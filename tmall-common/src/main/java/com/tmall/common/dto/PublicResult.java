@@ -84,6 +84,8 @@ public class PublicResult<T> {
     }
 
     public void setErrResult(IErrResult errResult) {
+        this.errCode = errResult.errCode();
+        this.errMsg = errResult.errMsg();
         this.errResult = errResult;
     }
 

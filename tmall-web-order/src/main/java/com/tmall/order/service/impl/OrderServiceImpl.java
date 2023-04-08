@@ -34,6 +34,7 @@ import com.tmall.remote.goods.dto.OrderAddressDTO;
 import com.tmall.remote.goods.utils.JsonUtils;
 import com.tmall.remote.goods.vo.ShopCartVO;
 import jp.ne.paypay.model.PaymentState;
+import jp.ne.paypay.model.QRCodeResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -165,11 +166,10 @@ public class OrderServiceImpl implements OrderService {
             // 支払い必要ないので、会計を完成する
             return payOrder(parentOrderNo, orderNo, TmallConstant.PayWayEnum.PAYPAY, paymentId);
         }
-        PublicResult<String> result = payPayUtil.createQRCode(new PayPayUtil.OrderInfo(paymentId,
-                payInfo.getPrice().intValue(), TmallConstant.SITE_NAME + ":" +
-                paymentId + TmallConstant.UNDERLINE + payInfo.getStoreName()));
-        if (result.getErrCode()== PublicResult.OK_CODE) {
-            return result;
+        PublicResult<QRCodeResponse> result = payPayUtil.createQRCode(new PayPayUtil.OrderInfo(paymentId,
+                payInfo.getPrice().intValue(), TmallConstant.SITE_NAME + ":" + payInfo.getStoreName()));
+        if (result.getErrCode() == PublicResult.OK_CODE) {
+            return PublicResult.success(result.getData().getUrl());
         }
         // 既に二次元コードを生成した
         if (result.getErrResult() == PayErrResultEnum.DUPLICATE
@@ -178,10 +178,10 @@ public class OrderServiceImpl implements OrderService {
             if (statusResult.getErrCode() == PublicResult.OK_CODE && StringUtils.isBlank(statusResult.getData())) {
                 return PublicResult.error(PayErrResultEnum.DONE);
             }
-            // 会計まだ完了してなければ、二次元コードを削除して、改めてQRCodeを生成
+            // 会計まだ完了してなければ、二次元コードを削除して、顧客に改めて支払わせる
             payPayUtil.deleteQRCode(paymentId);
         }
-        return result;
+        return PublicResult.error(result.getErrCode(), result.getErrMsg());
     }
 
     @Override
@@ -191,10 +191,10 @@ public class OrderServiceImpl implements OrderService {
             // 支払いすでに完了
             return PublicResult.error(PayErrResultEnum.DONE);
         }
-        String paymentId = TmallConstant.ZERO_STR.equals(orderNo) ? parentOrderNo : orderNo;
         if (TmallConstant.ZERO_STR.equals(payInfo.getPrice().toString())) {
             // 支払い必要ない
-            return payOrder(parentOrderNo, orderNo, TmallConstant.PayWayEnum.PAYPAY, paymentId);
+            return payOrder(parentOrderNo, orderNo, TmallConstant.PayWayEnum.PAYPAY,
+                    TmallConstant.ZERO_STR.equals(orderNo) ? parentOrderNo : orderNo);
         }
         return payPayStatus(parentOrderNo, orderNo);
     }
@@ -204,8 +204,13 @@ public class OrderServiceImpl implements OrderService {
         PublicResult<String> payDetail = payPayUtil.getPayDetail(paymentId);
         if (PaymentState.StatusEnum.COMPLETED.getValue().equals(payDetail.getData())) {
             // 支払完了
-            LOGGER.info("parentOrderNo=>{},orderNo=>{}.PayPayで支払完了！！！", parentOrderNo, orderNo);
-            return payOrder(parentOrderNo, orderNo, TmallConstant.PayWayEnum.PAYPAY, payDetail.getErrMsg());
+            LOGGER.info("parentOrderNo=>{},orderNo=>{}.PayPayで支払完了.RedisからOrderKey.PAYPAY_CODE[_ID]:{}を削除",
+                    parentOrderNo, orderNo, paymentId);
+            payDetail = payOrder(parentOrderNo, orderNo, TmallConstant.PayWayEnum.PAYPAY, payDetail.getErrMsg());
+            if (payDetail.getErrCode() == PublicResult.OK_CODE) {
+                redisClient.removeKey(OrderKey.PAYPAY_CODE, paymentId);
+                redisClient.removeKey(OrderKey.PAYPAY_CODE_ID, paymentId);
+            }
         }
         return payDetail;
     }
@@ -373,7 +378,8 @@ public class OrderServiceImpl implements OrderService {
         orderPayMapper.insertList(payList);
     }
 
-    private boolean payOrder(String parentOrderNo, String orderNo, int accountId, TmallConstant.PayWayEnum payWay, String payNo) {
+    @Transactional
+    boolean payOrder(String parentOrderNo, String orderNo, int accountId, TmallConstant.PayWayEnum payWay, String payNo) {
         OrderPayPO orderPayPO = new OrderPayPO();
         orderPayPO.setPayState(TmallConstant.PayStateEnum.DONE.getState());
         orderPayPO.setPayWay(payWay.getCode());
