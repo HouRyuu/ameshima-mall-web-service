@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.tmall.common.constants.TmallConstant;
+import com.tmall.common.constants.MallConstant;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +44,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             throws Exception {
         String ip = WebUtil.getIpAddress(request);
         StringBuffer url = request.getRequestURL();
-        String token = request.getHeader(TmallConstant.TOKEN);
+        String token = request.getHeader(MallConstant.TOKEN);
         LOGGER.info("ip->{}，url：{}->{}，token->{}", ip, request.getMethod(), url, token);
         LoginUser loginUser = null;
         if (StringUtils.isNotBlank(token)) {

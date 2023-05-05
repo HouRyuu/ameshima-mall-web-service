@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.tmall.common.constants.CommonErrResult;
-import com.tmall.common.constants.TmallConstant;
+import com.tmall.common.constants.MallConstant;
 import com.tmall.common.dto.LoginInfo;
 import com.tmall.common.dto.LoginUser;
 import com.tmall.common.dto.PageResult;
@@ -46,7 +46,7 @@ public class OrderEvaluateServiceImpl implements OrderEvaluateService {
 
     public int goodsEvaluateCount(int goodsId) {
         Example example = new Example(OrderEvaluatePO.class);
-        example.and().andEqualTo("goodsId", goodsId).andCondition("is_delete=", TmallConstant.NO);
+        example.and().andEqualTo("goodsId", goodsId).andCondition("is_delete=", MallConstant.NO);
         return orderEvaluateMapper.selectCountByExample(example);
     }
 
@@ -91,13 +91,13 @@ public class OrderEvaluateServiceImpl implements OrderEvaluateService {
     @Transactional
     boolean orderComment(OrderEvaluatePO evaluatePO) {
         OrderGoodsPO order = new OrderGoodsPO();
-        order.setOrderState(TmallConstant.OrderStateEnum.DONE.getState());
+        order.setOrderState(MallConstant.OrderStateEnum.DONE.getState());
         Example example = new Example(OrderGoodsPO.class);
         example.and().andEqualTo("orderNo", evaluatePO.getOrderNo())
                 .andEqualTo("accountId", evaluatePO.getAccountId())
                 .andEqualTo("skuId", evaluatePO.getSkuId())
-                .andEqualTo("orderState", TmallConstant.OrderStateEnum.NO_COMMENT.getState())
-                .andCondition("is_delete=", TmallConstant.NO);
+                .andEqualTo("orderState", MallConstant.OrderStateEnum.NO_COMMENT.getState())
+                .andCondition("is_delete=", MallConstant.NO);
         return orderMapper.updateByExampleSelective(order, example) > 0 && orderEvaluateMapper.insertSelective(evaluatePO) > 0;
     }
 }

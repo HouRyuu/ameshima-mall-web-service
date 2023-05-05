@@ -5,7 +5,7 @@
 
     <select id="getCartCount" resultType="int">
         SELECT
-            count(1)
+            COUNT(1)
         FROM
             t_shopping_cart t
         INNER JOIN t_goods_sku t1 ON t1.id = t.sku_id
@@ -15,29 +15,6 @@
             t.is_delete = 0
         AND t.account_id = #{accountId}
     </select>
-
-    <insert id="add">
-        REPLACE INTO t_shopping_cart (
-            id,
-            account_id,
-            sku_id,
-            attrs_json,
-            amount
-        ) SELECT
-            t1.id,
-            #{accountId},
-            #{skuId},
-            #{attrsJson},
-            #{amount} + IFNULL(t1.amount, 0)
-        FROM
-          t_goods_sku t
-        LEFT JOIN t_shopping_cart t1 ON t1.account_id = #{accountId}
-        AND t1.sku_id = #{skuId}
-        WHERE
-          t.is_delete = 0
-        AND t.id = #{skuId}
-        AND t.quantity >= #{amount} + IFNULL(t1.amount, 0)
-    </insert>
 
     <select id="findGoods" resultType="CartGoodsDTO">
         SELECT

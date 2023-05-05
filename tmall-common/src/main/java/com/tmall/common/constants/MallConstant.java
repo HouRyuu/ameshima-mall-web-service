@@ -10,7 +10,7 @@ import org.apache.commons.lang3.math.NumberUtils;
  * @see [関するクラス/メソッド]（オプショナル）
  * @since [プロダクト/モジュールバージョン] （オプショナル）
  */
-public final class TmallConstant {
+public final class MallConstant {
 
     public static final String SITE_NAME = "雨島モール";
 

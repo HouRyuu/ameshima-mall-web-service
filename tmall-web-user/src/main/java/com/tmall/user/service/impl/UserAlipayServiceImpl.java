@@ -5,7 +5,7 @@ import com.alipay.api.request.AlipaySystemOauthTokenRequest;
 import com.alipay.api.request.AlipayUserInfoShareRequest;
 import com.alipay.api.response.AlipaySystemOauthTokenResponse;
 import com.alipay.api.response.AlipayUserInfoShareResponse;
-import com.tmall.common.constants.TmallConstant;
+import com.tmall.common.constants.MallConstant;
 import com.tmall.common.dto.LoginUser;
 import com.tmall.common.utils.AlipayUtil;
 import com.tmall.user.entity.po.UserAlipayPO;
@@ -78,7 +78,7 @@ public class UserAlipayServiceImpl implements UserAlipayService {
         final UserAlipayPO userAlipay = userAlipayPO;
         return transactionTemplate.execute((status) -> {
             LoginUser loginUser = new LoginUser();
-            loginUser.setAccountType(TmallConstant.ACCOUNT_TYPE_ALIPAY);
+            loginUser.setAccountType(MallConstant.ACCOUNT_TYPE_ALIPAY);
             loginUser.setAvatar(userinfoShareResponse.getAvatar());
             loginUser.setNickName(userinfoShareResponse.getNickName());
             loginUser.setGender(userinfoShareResponse.getGender());

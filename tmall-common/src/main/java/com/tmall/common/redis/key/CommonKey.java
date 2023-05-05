@@ -2,7 +2,7 @@ package com.tmall.common.redis.key;
 
 import java.util.concurrent.TimeUnit;
 
-import com.tmall.common.constants.TmallConstant;
+import com.tmall.common.constants.MallConstant;
 import com.tmall.common.redis.BaseKeyPrefix;
 import com.tmall.common.redis.KeyPrefix;
 
@@ -16,7 +16,7 @@ import com.tmall.common.redis.KeyPrefix;
  */
 public class CommonKey extends BaseKeyPrefix {
 
-    public static final KeyPrefix TOKEN = new CommonKey(TmallConstant.TOKEN, 30, TimeUnit.MINUTES);
+    public static final KeyPrefix TOKEN = new CommonKey(MallConstant.TOKEN, 30, TimeUnit.MINUTES);
 
     private CommonKey(String prefix, long timeout, TimeUnit timeUnit) {
         super(prefix, timeout, timeUnit);

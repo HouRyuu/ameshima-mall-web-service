@@ -2,7 +2,7 @@ package com.tmall.user.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.tmall.common.constants.CommonErrResult;
-import com.tmall.common.constants.TmallConstant;
+import com.tmall.common.constants.MallConstant;
 import com.tmall.common.dto.PublicResult;
 import com.tmall.user.entity.dto.AddressDTO;
 import com.tmall.user.entity.po.AddressPO;
@@ -50,7 +50,7 @@ public class AddressServiceImpl implements AddressService {
                 Example example = new Example(AddressPO.class);
                 example.and().andEqualTo("id", address.getId())
                         .andEqualTo("accountId", accountId)
-                        .andCondition("is_delete=", TmallConstant.NO);
+                        .andCondition("is_delete=", MallConstant.NO);
                 if (addressMapper.updateByExampleSelective(addressPO, example) == 1) {
                     return PublicResult.success(address.getId());
                 } else {
@@ -68,10 +68,10 @@ public class AddressServiceImpl implements AddressService {
         Example example = new Example(AddressPO.class);
         example.createCriteria().andEqualTo("id", id)
                 .andEqualTo("accountId", accountId)
-                .andEqualTo("isDefault", TmallConstant.NO)
-                .andCondition("is_delete=", TmallConstant.NO);
+                .andEqualTo("isDefault", MallConstant.NO)
+                .andCondition("is_delete=", MallConstant.NO);
         AddressPO addressPO = new AddressPO();
-        addressPO.setIsDelete(TmallConstant.YES);
+        addressPO.setIsDelete(MallConstant.YES);
         try {
             if (addressMapper.updateByExampleSelective(addressPO, example) == 1) {
                 return PublicResult.success();
@@ -107,7 +107,7 @@ public class AddressServiceImpl implements AddressService {
     private void validAddress(AddressDTO address) {
         Assert.isTrue(address != null && !StringUtils.isAnyBlank(address.getProvince(), address.getProvinceCode(),
                 address.getCity(), address.getCityCode(), address.getDistrict(), address.getDistrictCode(),
-                address.getDetailedAddress()), TmallConstant.PARAM_ERR_MSG);
+                address.getDetailedAddress()), MallConstant.PARAM_ERR_MSG);
     }
 
     private AddressPO convertDtoToPo(AddressDTO address) {

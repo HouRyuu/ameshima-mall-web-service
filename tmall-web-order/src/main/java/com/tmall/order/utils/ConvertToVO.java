@@ -1,7 +1,7 @@
 package com.tmall.order.utils;
 
 import com.google.common.collect.Lists;
-import com.tmall.common.constants.TmallConstant;
+import com.tmall.common.constants.MallConstant;
 import com.tmall.order.entity.po.OrderGoodsPO;
 import com.tmall.order.entity.po.OrderLogisticsPO;
 import com.tmall.order.entity.po.OrderPayPO;
@@ -27,7 +27,7 @@ public final class ConvertToVO {
             payVO.setPayState(payPo.getPayState());
             return payVO;
         }));
-        Map<String, OrderLogisticsVO> logisticsMap = logisticsList.stream().collect(Collectors.toMap(logisticsPO -> logisticsPO.getOrderNo() + TmallConstant.UNDERLINE + logisticsPO.getGoodsLocation(), logisticsPO -> {
+        Map<String, OrderLogisticsVO> logisticsMap = logisticsList.stream().collect(Collectors.toMap(logisticsPO -> logisticsPO.getOrderNo() + MallConstant.UNDERLINE + logisticsPO.getGoodsLocation(), logisticsPO -> {
             OrderLogisticsVO logisticsVO = new OrderLogisticsVO();
             logisticsVO.setOrderNo(logisticsPO.getOrderNo());
             logisticsVO.setGoodsLocation(logisticsPO.getGoodsLocation());
@@ -51,12 +51,12 @@ public final class ConvertToVO {
             goods.setLocation(goodsPO.getGoodsLocation());
             goods.setState(goodsPO.getOrderState().intValue());
             OrderLogisticsGoodsVO logisticsGoods = new OrderLogisticsGoodsVO();
-            logisticsGoods.setOrderLogistics(logisticsMap.get(goodsPO.getOrderNo() + TmallConstant.UNDERLINE + goodsPO.getGoodsLocation()));
+            logisticsGoods.setOrderLogistics(logisticsMap.get(goodsPO.getOrderNo() + MallConstant.UNDERLINE + goodsPO.getGoodsLocation()));
             logisticsGoods.setGoodsList(Lists.newArrayList(goods));
             detail.setLogisticsGoodsList(Lists.newArrayList(logisticsGoods));
             return detail;
         }, (oldGoods, newGoods) -> {
-            if (newGoods.getOrderState().equals(TmallConstant.OrderStateEnum.NO_COMMENT.getState())) {
+            if (newGoods.getOrderState().equals(MallConstant.OrderStateEnum.NO_COMMENT.getState())) {
                 oldGoods.setOrderState(newGoods.getOrderState());
             }
             List<OrderLogisticsGoodsVO> oldLogisticsGoodsList = oldGoods.getLogisticsGoodsList();

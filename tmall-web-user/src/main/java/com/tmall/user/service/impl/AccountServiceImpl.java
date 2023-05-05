@@ -2,7 +2,7 @@ package com.tmall.user.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.tmall.common.constants.GlobalConfig;
-import com.tmall.common.constants.TmallConstant;
+import com.tmall.common.constants.MallConstant;
 import com.tmall.common.constants.UserErrResultEnum;
 import com.tmall.common.dto.LoginUser;
 import com.tmall.common.dto.PublicResult;
@@ -82,7 +82,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public PublicResult<String> login(AccountPO account) {
         Assert.isTrue(account != null && !StringUtils.isAnyBlank(account.getAccount(), account.getPassword()),
-                TmallConstant.PARAM_ERR_MSG);
+                MallConstant.PARAM_ERR_MSG);
         account.setPassword(DigestUtils.md5Hex(DigestUtils.md5(account.getPassword())));
         LoginUser loginUser = accountMapper.login(account);
         if (loginUser == null) {
@@ -127,9 +127,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public PublicResult<?> sendRegisterCaptcha(String account) {
-        Assert.hasText(account, TmallConstant.PARAM_ERR_MSG);
+        Assert.hasText(account, MallConstant.PARAM_ERR_MSG);
         Example example = new Example(AccountPO.class);
-        example.and().andEqualTo("account", account).andCondition("is_delete", TmallConstant.NO);
+        example.and().andEqualTo("account", account).andCondition("is_delete", MallConstant.NO);
         if (accountMapper.selectCountByExample(example) > 0) {
             LOGGER.warn("メールアドレスもう登録された=>{}", account);
             return PublicResult.error(UserErrResultEnum.REG_ACCOUNT_EXISTS);
@@ -143,9 +143,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public PublicResult<?> sendForgetCaptcha(String account) {
-        Assert.hasText(account, TmallConstant.PARAM_ERR_MSG);
+        Assert.hasText(account, MallConstant.PARAM_ERR_MSG);
         Example example = new Example(AccountPO.class);
-        example.and().andEqualTo("account", account).andEqualTo("isDelete", TmallConstant.NO);
+        example.and().andEqualTo("account", account).andEqualTo("isDelete", MallConstant.NO);
         if (accountMapper.selectCountByExample(example) == 0) {
             LOGGER.warn("メールアドレスは登録されていない=>{}", account);
             return PublicResult.error(UserErrResultEnum.ACCOUNT_NOT_EXISTS);
@@ -179,7 +179,7 @@ public class AccountServiceImpl implements AccountService {
         Assert.isTrue(
                 account != null
                         && !StringUtils.isAnyBlank(account.getAccount(), account.getPassword(), account.getCaptcha()),
-                TmallConstant.PARAM_ERR_MSG);
+                MallConstant.PARAM_ERR_MSG);
         CheckUtil.checkMobile(account.getAccount());
         CheckUtil.checkStrLength(account.getPassword(), 6, 32);
         CheckUtil.checkStrLength(account.getCaptcha(), 6, 6);
@@ -188,7 +188,7 @@ public class AccountServiceImpl implements AccountService {
     private void checkRegisterInfo(RegisterDTO registerInfo) {
         Assert.isTrue(registerInfo != null && !StringUtils.isAnyBlank(registerInfo.getAccount(),
                         registerInfo.getPassword(), registerInfo.getNickName(), registerInfo.getCaptcha()),
-                TmallConstant.PARAM_ERR_MSG);
+                MallConstant.PARAM_ERR_MSG);
         CheckUtil.checkMobile(registerInfo.getAccount());
         CheckUtil.checkStrLength(registerInfo.getPassword(), 6, 32);
         CheckUtil.checkStrLength(registerInfo.getNickName(), 1, 16);

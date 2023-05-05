@@ -6,7 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.*;
 import com.tmall.common.constants.CommonErrResult;
 import com.tmall.common.constants.GlobalConfig;
-import com.tmall.common.constants.TmallConstant;
+import com.tmall.common.constants.MallConstant;
 import com.tmall.common.dto.LoginInfo;
 import com.tmall.common.dto.LoginUser;
 import com.tmall.common.dto.PageResult;
@@ -124,7 +124,7 @@ public class GoodsServiceImpl implements GoodsService {
     public List<StoreGoodsDTO> storeGoods(int storeId) {
         GoodsQueryDTO query = new GoodsQueryDTO();
         query.setStoreId(storeId);
-        query.setIsStoreIndex(TmallConstant.YES);
+        query.setIsStoreIndex(MallConstant.YES);
         return redisClient.get(GoodsKey.STORE_INDEX_GOODS, storeId, () -> goodsMapper.storeGoods(query));
     }
 
@@ -132,7 +132,7 @@ public class GoodsServiceImpl implements GoodsService {
     public PageResult<GoodsGridDTO> storeGoodsPage(GoodsQueryDTO query) {
         Example example = new Example(GoodsPO.class);
         Example.Criteria criteria = example.createCriteria().andEqualTo("storeId",
-                query.getStoreId()).andEqualTo("isDelete", TmallConstant.NO);
+                query.getStoreId()).andEqualTo("isDelete", MallConstant.NO);
         if (StringUtils.isNotBlank(query.getGoodsName())) {
             criteria.andLike("name", "%" + query.getGoodsName() + "%");
         }
@@ -182,7 +182,7 @@ public class GoodsServiceImpl implements GoodsService {
         Example example = new Example(GoodsParamPO.class);
         example.and().andEqualTo("id", paramPO.getId())
                 .andEqualTo("goodsId", paramPO.getGoodsId())
-                .andEqualTo("isDelete", TmallConstant.NO);
+                .andEqualTo("isDelete", MallConstant.NO);
         if (goodsParamMapper.updateByExampleSelective(paramPO, example) > 0) {
             return PublicResult.success(paramPO.getId());
         }
@@ -195,12 +195,12 @@ public class GoodsServiceImpl implements GoodsService {
             return PublicResult.error(CommonErrResult.ERR_REQUEST);
         }
         GoodsParamPO paramPO = new GoodsParamPO();
-        paramPO.setIsDelete(TmallConstant.YES);
+        paramPO.setIsDelete(MallConstant.YES);
         redisClient.removeKey(GoodsKey.GOODS_PARAMS, goodsId);
         Example example = new Example(GoodsParamPO.class);
         example.and().andEqualTo("id", id)
                 .andEqualTo("goodsId", goodsId)
-                .andEqualTo("isDelete", TmallConstant.NO);
+                .andEqualTo("isDelete", MallConstant.NO);
         if (goodsParamMapper.updateByExampleSelective(paramPO, example) == 1) {
             return PublicResult.success();
         }
@@ -221,7 +221,7 @@ public class GoodsServiceImpl implements GoodsService {
         Example example = new Example(GoodsSkuPO.class);
         example.and().andEqualTo("goodsId", skuPO.getGoodsId())
                 .andEqualTo("attrs", goodsSku.getAttrs())
-                .andEqualTo("isDelete", TmallConstant.NO);
+                .andEqualTo("isDelete", MallConstant.NO);
         if (goodsSku.getId() != null) {
             example.and().andNotEqualTo("id", skuPO.getId());
         }
@@ -234,7 +234,7 @@ public class GoodsServiceImpl implements GoodsService {
         example.clear();
         example.and().andEqualTo("id", skuPO.getId())
                 .andEqualTo("goodsId", skuPO.getGoodsId())
-                .andEqualTo("isDelete", TmallConstant.NO);
+                .andEqualTo("isDelete", MallConstant.NO);
         if (goodsSkuMapper.updateByExampleSelective(skuPO, example) > 0) {
             return PublicResult.success(skuPO.getId());
         }
@@ -247,11 +247,11 @@ public class GoodsServiceImpl implements GoodsService {
             return PublicResult.error(CommonErrResult.ERR_REQUEST);
         }
         GoodsSkuPO skuPO = new GoodsSkuPO();
-        skuPO.setIsDelete(TmallConstant.YES);
+        skuPO.setIsDelete(MallConstant.YES);
         Example example = new Example(GoodsSkuPO.class);
         example.and().andEqualTo("id", id)
                 .andEqualTo("goodsId", goodsId)
-                .andEqualTo("isDelete", TmallConstant.NO);
+                .andEqualTo("isDelete", MallConstant.NO);
         if (goodsSkuMapper.updateByExampleSelective(skuPO, example) == 1) {
             return PublicResult.success();
         }
@@ -265,7 +265,7 @@ public class GoodsServiceImpl implements GoodsService {
         }
         Example example = new Example(GoodsFreightPO.class);
         example.and().andEqualTo("targetCityCode", cityCode)
-                .andIn("goodsId", goodsIds).andCondition("is_delete=", TmallConstant.NO);
+                .andIn("goodsId", goodsIds).andCondition("is_delete=", MallConstant.NO);
         example.setOrderByClause("store_id, dispatch_city_code, cost DESC");
         List<GoodsFreightPO> freightList = goodsFreightMapper.selectByExample(example);
         Table<Integer, String, Map<Integer, BigDecimal>> storeCityFreightMap = HashBasedTable.create();
@@ -293,7 +293,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public PageResult<EsGoodsDTO> indexGoods(QueryGoodsDTO queryParam) {
-        Assert.isTrue(queryParam != null && StringUtils.isNotBlank(queryParam.getWord()), TmallConstant.PARAM_ERR_MSG);
+        Assert.isTrue(queryParam != null && StringUtils.isNotBlank(queryParam.getWord()), MallConstant.PARAM_ERR_MSG);
         NativeSearchQueryBuilder searchQueryBuilder = buildEsSearch(queryParam);
         if (StringUtils.isNotBlank(queryParam.getOrderField())) {
             searchQueryBuilder.withSort(SortBuilders.fieldSort(queryParam.getOrderField())
@@ -310,7 +310,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public Map<String, Set<String>> findBrandsAndCategories(QueryGoodsDTO queryParam) {
-        Assert.isTrue(queryParam != null && StringUtils.isNotBlank(queryParam.getWord()), TmallConstant.PARAM_ERR_MSG);
+        Assert.isTrue(queryParam != null && StringUtils.isNotBlank(queryParam.getWord()), MallConstant.PARAM_ERR_MSG);
         queryParam.setPageIndex(0);
         NativeSearchQueryBuilder searchQueryBuilder = buildEsSearch(queryParam);
         searchQueryBuilder.withFields("brand", "categories");
@@ -370,7 +370,7 @@ public class GoodsServiceImpl implements GoodsService {
         Set<Integer> cartIds = skuList.stream().map(CartGoodsDTO::getId).filter(Objects::nonNull).collect(Collectors.toSet());
         if (!CollectionUtils.isEmpty(cartIds)) {
             PublicResult<?> removeCartRes = shoppingCartService.remove(cartIds, accountId);
-            if (removeCartRes.getErrCode() != TmallConstant.NO) {
+            if (removeCartRes.getErrCode() != MallConstant.NO) {
                 throw new IllegalArgumentException(removeCartRes.toString());
             }
         }
@@ -397,7 +397,7 @@ public class GoodsServiceImpl implements GoodsService {
         if (result != null) {
             return result;
         }
-        if (goodsSku.getIsDelete() == TmallConstant.NO || amount > goodsSku.getQuantity()) {
+        if (goodsSku.getIsDelete() == MallConstant.NO || amount > goodsSku.getQuantity()) {
             return PublicResult.error(GoodsErrResultEnum.AMOUNT_OVER);
         }
         boolean isChange = false;
@@ -475,10 +475,10 @@ public class GoodsServiceImpl implements GoodsService {
             return PublicResult.error(CommonErrResult.ERR_REQUEST);
         }
         // 支払ってない注文チェック
-        if (orderService.orderGoodsExists(goodsId, TmallConstant.OrderStateEnum.NO_PAY.getState())) {
+        if (orderService.orderGoodsExists(goodsId, MallConstant.OrderStateEnum.NO_PAY.getState())) {
             return PublicResult.error(GoodsErrResultEnum.NO_PAY_ORDER_EXISTS);
         }
-        if (stackOrWithdrawGoods(goodsId, storeId, TmallConstant.NO)) {
+        if (stackOrWithdrawGoods(goodsId, storeId, MallConstant.NO)) {
             // elasticsearchから商品を削除
             goodsRepository.delete(goodsId);
         }
@@ -498,7 +498,7 @@ public class GoodsServiceImpl implements GoodsService {
         if (goodsMapper.selectCountByExample(example) == 0) {
             return PublicResult.error(GoodsErrResultEnum.NO_SKU);
         }
-        if (stackOrWithdrawGoods(goodsId, storeId, TmallConstant.YES)) {
+        if (stackOrWithdrawGoods(goodsId, storeId, MallConstant.YES)) {
             // elasticsearchに商品を保存
             List<EsGoodsDTO> esGoodsList = goodsMapper.findEsGoods(goodsId);
             goodsRepository.save(esGoodsList);
@@ -518,8 +518,8 @@ public class GoodsServiceImpl implements GoodsService {
         Example example = new Example(GoodsPO.class);
         example.and().andEqualTo("id", goodsId)
                 .andEqualTo("storeId", storeId)
-                .andEqualTo("status", TmallConstant.YES - status)
-                .andEqualTo("isDelete", TmallConstant.NO);
+                .andEqualTo("status", MallConstant.YES - status)
+                .andEqualTo("isDelete", MallConstant.NO);
         return goodsMapper.updateByExampleSelective(goodsPO, example) > 0;
     }
 
@@ -563,8 +563,8 @@ public class GoodsServiceImpl implements GoodsService {
             example = new Example(GoodsPO.class);
             example.and().andEqualTo("id", goodsPO.getId())
                     .andEqualTo("storeId", loginUser.getStoreId())
-                    .andEqualTo("status", TmallConstant.NO)
-                    .andEqualTo("isDelete", TmallConstant.NO);
+                    .andEqualTo("status", MallConstant.NO)
+                    .andEqualTo("isDelete", MallConstant.NO);
             result = goodsMapper.updateByExampleSelective(goodsPO, example);
         }
         if (result != 1) {
@@ -574,10 +574,10 @@ public class GoodsServiceImpl implements GoodsService {
         goodsCategoryService.saveGoodsCategoryRelation(goodsPO.getId(), storeGoods.getCategoryId4());
         //写真を変える
         GoodsImgPO goodsImgPO = new GoodsImgPO();
-        goodsImgPO.setIsDelete(TmallConstant.YES);
+        goodsImgPO.setIsDelete(MallConstant.YES);
         example = new Example(GoodsImgPO.class);
         example.and().andEqualTo("goodsId", goodsPO.getId())
-                .andEqualTo("isDelete", TmallConstant.NO);
+                .andEqualTo("isDelete", MallConstant.NO);
         goodsImgMapper.updateByExampleSelective(goodsImgPO, example);
         Date now = new Date();
         List<GoodsImgPO> imgList = storeGoods.getImgList().stream().map(goodsImgDTO -> {
@@ -590,7 +590,7 @@ public class GoodsServiceImpl implements GoodsService {
                 throw new RuntimeException(e);
             }
             imgPO.setCreateTime(now);
-            imgPO.setIsDelete(TmallConstant.NO);
+            imgPO.setIsDelete(MallConstant.NO);
             return imgPO;
         }).collect(Collectors.toList());
         goodsImgMapper.insertList(imgList);

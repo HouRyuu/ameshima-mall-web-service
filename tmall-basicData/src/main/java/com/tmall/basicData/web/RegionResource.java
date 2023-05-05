@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tmall.basicData.entity.dto.RegionDTO;
 import com.tmall.basicData.service.RegionService;
-import com.tmall.common.constants.TmallConstant;
+import com.tmall.common.constants.MallConstant;
 import com.tmall.common.dto.PublicResult;
 
 import javax.annotation.Resource;
@@ -29,7 +29,7 @@ public class RegionResource {
 
     @GetMapping("/provinces")
     private PublicResult<?>  provinces() {
-        return PublicResult.success(regionService.findRegion(new RegionDTO(TmallConstant.REGION_LEVEL_PROVINCE)));
+        return PublicResult.success(regionService.findRegion(new RegionDTO(MallConstant.REGION_LEVEL_PROVINCE)));
     }
 
     @GetMapping("/{parentCode}/findByParent")

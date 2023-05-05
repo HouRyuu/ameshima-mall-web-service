@@ -1,21 +1,18 @@
 package com.tmall.order.rabbitmq;
 
 import com.alibaba.fastjson.JSONObject;
-import com.tmall.common.constants.TmallConstant;
+import com.tmall.common.constants.MallConstant;
 import com.tmall.common.redis.RedisClient;
 import com.tmall.order.constants.OrderConstants;
 import com.tmall.order.entity.dto.OrderMQDTO;
 import com.tmall.order.keys.OrderKey;
 import com.tmall.order.utils.OrderUtils;
-import com.tmall.remote.goods.vo.ShopCartVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.function.Consumer;
 
 @Component
 public class MQSender {
@@ -37,7 +34,7 @@ public class MQSender {
             String msgStr = JSONObject.toJSONString(order);
             LOGGER.info("注文のメッセージを送り始める => {}", msgStr);
             amqpTemplate.convertAndSend(MQConfig.ORDER_QUEUE, msgStr);
-            if (redisClient.set(OrderKey.ORDER_MQ, parentNo + TmallConstant.UNDERLINE + order.getAccountId(), OrderConstants.OrderMqState.DEFAULT.getState())) {
+            if (redisClient.set(OrderKey.ORDER_MQ, parentNo + MallConstant.UNDERLINE + order.getAccountId(), OrderConstants.OrderMqState.DEFAULT.getState())) {
                 return parentNo;
             }
         } catch (Exception e) {

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.tmall.goods.entity.po.ShoppingCartPO;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,7 @@ import org.springframework.util.CollectionUtils;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.tmall.common.constants.TmallConstant;
+import com.tmall.common.constants.MallConstant;
 import com.tmall.common.dto.PublicResult;
 import com.tmall.goods.constants.GoodsErrResultEnum;
 import com.tmall.remote.goods.dto.CartGoodsDTO;
@@ -42,10 +43,25 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private ShoppingCartMapper shoppingCartMapper;
 
     @Override
-    public PublicResult<?>  add(ShoppingCartDTO param) {
+    public PublicResult<?> add(ShoppingCartDTO param) {
         Assert.isTrue(param != null && param.getSkuId() != 0 && StringUtils.isNotBlank(param.getAttrsJson())
-                && param.getAmount() != 0, TmallConstant.PARAM_ERR_MSG);
-        if (shoppingCartMapper.add(param) > 0) {
+                && param.getAmount() != 0, MallConstant.PARAM_ERR_MSG);
+        ShoppingCartPO cartPO = new ShoppingCartPO();
+        cartPO.setAccountId(param.getAccountId());
+        cartPO.setSkuId(param.getSkuId());
+        cartPO.setIsDelete(MallConstant.NO);
+        ShoppingCartPO cart = shoppingCartMapper.selectOne(cartPO);
+        cartPO.setAttrsJson(param.getAttrsJson());
+        int updateRecode;
+        if (cart != null) {
+            cartPO.setId(cart.getId());
+            cartPO.setAmount(param.getAmount() + cart.getAmount());
+            updateRecode = shoppingCartMapper.updateByPrimaryKey(cartPO);
+        } else {
+            cartPO.setAmount(param.getAmount());
+            updateRecode = shoppingCartMapper.insertSelective(cartPO);
+        }
+        if (updateRecode > 0) {
             return PublicResult.success();
         }
         return PublicResult.error(GoodsErrResultEnum.ADD_CART_FAIL);
@@ -75,8 +91,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public PublicResult<?>  remove(Set<Integer> ids, int accountId) {
-        Assert.isTrue(!CollectionUtils.isEmpty(ids), TmallConstant.PARAM_ERR_MSG);
+    public PublicResult<?> remove(Set<Integer> ids, int accountId) {
+        Assert.isTrue(!CollectionUtils.isEmpty(ids), MallConstant.PARAM_ERR_MSG);
         try {
             shoppingCartMapper.remove(ids, accountId);
             LOGGER.info("ショッピングセットを削除した。accountId->{} cartIds->{}", accountId, ids);
@@ -89,8 +105,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public PublicResult<?>  updateAmount(int cartId, int amount, int accountId) {
-        Assert.isTrue(cartId > 0 && amount > 0, TmallConstant.PARAM_ERR_MSG);
+    public PublicResult<?> updateAmount(int cartId, int amount, int accountId) {
+        Assert.isTrue(cartId > 0 && amount > 0, MallConstant.PARAM_ERR_MSG);
         try {
             shoppingCartMapper.updateAmount(cartId, amount, accountId);
             return PublicResult.success();
@@ -102,7 +118,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public PublicResult<?>  removeFailCart(int accountId) {
+    public PublicResult<?> removeFailCart(int accountId) {
         try {
             shoppingCartMapper.removeFailCart(accountId);
             return PublicResult.success();

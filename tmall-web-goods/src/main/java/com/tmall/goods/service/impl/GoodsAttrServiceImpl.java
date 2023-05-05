@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.tmall.common.constants.CommonErrResult;
-import com.tmall.common.constants.TmallConstant;
+import com.tmall.common.constants.MallConstant;
 import com.tmall.common.dto.PublicResult;
 import com.tmall.goods.entity.po.GoodsAttrMapPO;
 import com.tmall.goods.entity.po.GoodsAttrPO;
@@ -53,7 +53,7 @@ public class GoodsAttrServiceImpl implements GoodsAttrService {
     @Override
     public List<GoodsAttrMapDTO> findAttrList() {
         GoodsAttrPO attrPO = new GoodsAttrPO();
-        attrPO.setIsDelete(TmallConstant.NO);
+        attrPO.setIsDelete(MallConstant.NO);
         return attrMapper.select(attrPO).stream().map(attr -> new GoodsAttrMapDTO(attr.getId(), attr.getName()))
                 .collect(Collectors.toList());
     }
@@ -78,7 +78,7 @@ public class GoodsAttrServiceImpl implements GoodsAttrService {
         Example example = new Example(GoodsAttrMapPO.class);
         example.and().andEqualTo("id", attrMapPO.getId())
                 .andEqualTo("goodsId", attrMapPO.getGoodsId())
-                .andEqualTo("isDelete", TmallConstant.NO);
+                .andEqualTo("isDelete", MallConstant.NO);
         if (attrMapMapper.updateByExampleSelective(attrMapPO, example) > 0) {
             return PublicResult.success(attrMapPO.getId());
         }
@@ -91,12 +91,12 @@ public class GoodsAttrServiceImpl implements GoodsAttrService {
             return PublicResult.error(CommonErrResult.ERR_REQUEST);
         }
         GoodsAttrMapPO attrMapPO = new GoodsAttrMapPO();
-        attrMapPO.setIsDelete(TmallConstant.YES);
+        attrMapPO.setIsDelete(MallConstant.YES);
         redisClient.removeKey(GoodsKey.GOODS_ATTRS, goodsId);
         Example example = new Example(GoodsAttrMapPO.class);
         example.and().andEqualTo("id", id)
                 .andEqualTo("goodsId", goodsId)
-                .andEqualTo("isDelete", TmallConstant.NO);
+                .andEqualTo("isDelete", MallConstant.NO);
         if (attrMapMapper.updateByExampleSelective(attrMapPO, example) > 0) {
             return PublicResult.success();
         }

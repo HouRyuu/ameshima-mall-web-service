@@ -3,7 +3,7 @@ package com.tmall.common.po;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.tmall.common.constants.TmallConstant;
+import com.tmall.common.constants.MallConstant;
 import org.springframework.util.Assert;
 
 /**
@@ -28,7 +28,7 @@ public class GlobalConfigPO extends BasePO {
 
     public GlobalConfigPO(String configName) {
         Assert.hasText(configName, "configName can not be empty.");
-        String[] names = configName.split(TmallConstant.UNDERLINE);
+        String[] names = configName.split(MallConstant.UNDERLINE);
         this.category = names[0];
         this.name = names[1];
     }

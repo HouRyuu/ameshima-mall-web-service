@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.tmall.common.constants.TmallConstant;
+import com.tmall.common.constants.MallConstant;
 
 /**
  * 〈機能記述〉<br>
@@ -49,9 +49,9 @@ public class BaseKeyPrefix implements KeyPrefix {
     @Override
     public String prefix() {
         if (StringUtils.isNotBlank(this.prefix)) {
-            return TmallConstant.PROJECT_NAME + TmallConstant.UNDERLINE + this.getClass().getSimpleName() + ":" + this.prefix;
+            return MallConstant.PROJECT_NAME + MallConstant.UNDERLINE + this.getClass().getSimpleName() + ":" + this.prefix;
         }
-        return TmallConstant.PROJECT_NAME + TmallConstant.UNDERLINE + this.getClass().getSimpleName();
+        return MallConstant.PROJECT_NAME + MallConstant.UNDERLINE + this.getClass().getSimpleName();
     }
 
     @Override

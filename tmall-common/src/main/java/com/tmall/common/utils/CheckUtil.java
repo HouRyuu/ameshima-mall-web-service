@@ -8,7 +8,7 @@ import com.tmall.common.constants.IErrResult;
 import com.tmall.common.dto.PublicResult;
 import org.springframework.util.Assert;
 
-import com.tmall.common.constants.TmallConstant;
+import com.tmall.common.constants.MallConstant;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -24,7 +24,7 @@ import org.springframework.util.StringUtils;
 public class CheckUtil<T> {
 
     public static void checkMobile(String mobile) {
-        Assert.isTrue(Pattern.matches(TmallConstant.REG_MOBILE, mobile), "手机号" + mobile + "格式不正确");
+        Assert.isTrue(Pattern.matches(MallConstant.REG_MOBILE, mobile), "手机号" + mobile + "格式不正确");
     }
 
     public static void checkStrLength(String str, int min, int max) {
