@@ -25,6 +25,7 @@ public class EsGoodsDTO {
     private String categoryIds;
     private String categories;
     private String allCategories;
+    private Integer storeId;
     private String store;
     private String brand;
     private String name;
@@ -65,6 +66,14 @@ public class EsGoodsDTO {
 
     public void setAllCategories(String allCategories) {
         this.allCategories = allCategories;
+    }
+
+    public Integer getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Integer storeId) {
+        this.storeId = storeId;
     }
 
     public String getStore() {

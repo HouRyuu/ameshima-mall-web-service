@@ -149,7 +149,8 @@
         t.`name`,
         min(t8.price) price,
         t.img_url,
-        t1.`name` store,
+        t.store_id,
+        t.store_name store,
         t2.brand_name brand,
         GROUP_CONCAT(DISTINCT t3.category_id) categoryIds,
         GROUP_CONCAT(DISTINCT t4.`name`) categories,
@@ -161,8 +162,6 @@
         GROUP_CONCAT(DISTINCT t7.`name`)
         ) allCategories
         FROM t_goods t
-        INNER JOIN t_store t1 ON t1.id = t.store_id
-        AND t1.is_delete = 0
         INNER JOIN t_goods_brand t2 ON t2.id = t.brand_id
         AND t2.is_delete = 0
         INNER JOIN t_goods_category_relation t3 ON t3.goods_id = t.id
@@ -176,8 +175,9 @@
         AND t7.is_delete = 0 -- 1
         INNER JOIN t_goods_sku t8 ON t8.goods_id = t.id
         AND t8.is_delete = 0
+        WHERE t.is_delete = 0 AND t.status = 1
         <if test="goodsId > 0">
-            WHERE t.id = #{goodsId}
+            AND t.id = #{goodsId}
         </if>
         GROUP BY t.id
     </select>

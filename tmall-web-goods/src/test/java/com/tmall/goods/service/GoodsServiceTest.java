@@ -38,14 +38,15 @@ public class GoodsServiceTest {
     }
 
     @Test
-    public void indexGoods() throws Exception {
+    public void indexGoods() {
         QueryGoodsDTO queryParam = new QueryGoodsDTO();
-        queryParam.setWord("电器");
+        queryParam.setStoreId(38);
+        queryParam.setWord("Apple");
         queryParam.setPageIndex(0);
         // queryParam.setOrderField("price");
         // queryParam.setOrderType("DESC");
         // queryParam.setMinPrice(new BigDecimal(6000));
-        queryParam.setBrand("Apple/苹果");
+        queryParam.setBrand("Apple");
         // queryParam.setCategory("手机");
         PageResult<EsGoodsDTO> esGoodsDTOS = goodsService.indexGoods(queryParam);
         System.out.println(JSON.toJSONString(esGoodsDTOS));

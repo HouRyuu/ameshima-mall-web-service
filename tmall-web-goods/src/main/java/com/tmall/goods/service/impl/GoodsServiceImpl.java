@@ -610,6 +610,9 @@ public class GoodsServiceImpl implements GoodsService {
         MatchQueryBuilder storeBuilder = QueryBuilders.matchPhraseQuery("store", queryParam.getWord());
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery().must(QueryBuilders.boolQuery().should(cateBuilder)
                 .should(brandBuilder).should(nameBuilder).should(storeBuilder));
+        if (queryParam.getStoreId() != null && queryParam.getStoreId() > 0) {
+            boolQueryBuilder.must(QueryBuilders.matchPhraseQuery("storeId", queryParam.getStoreId()));
+        }
         if (StringUtils.isNotBlank(queryParam.getBrand())) {
             boolQueryBuilder.must(QueryBuilders.matchPhraseQuery("brand", queryParam.getBrand()));
         }

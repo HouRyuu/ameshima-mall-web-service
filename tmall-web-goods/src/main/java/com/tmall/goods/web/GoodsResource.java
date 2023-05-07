@@ -227,13 +227,13 @@ public class GoodsResource implements IGoodsService {
     @LoginRequire
     @PutMapping("/store/{goodsId}/withdraw")
     public PublicResult<?> withdrawGoods(@PathVariable int goodsId) {
-        return PublicResult.success(goodsService.withdrawGoods(goodsId));
+        return goodsService.withdrawGoods(goodsId);
     }
 
     @LoginRequire
     @PutMapping("/store/{goodsId}/stack")
     public PublicResult<?> stackGoods(@PathVariable int goodsId) {
-        return PublicResult.success(goodsService.stackGoods(goodsId));
+        return goodsService.stackGoods(goodsId);
     }
 
     @LoginRequire

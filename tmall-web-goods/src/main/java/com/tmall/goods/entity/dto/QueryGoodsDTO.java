@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 public class QueryGoodsDTO {
 
     private String word;
+    private Integer storeId;
     private String brand;
     private String category;
     private String orderField;
@@ -27,6 +28,14 @@ public class QueryGoodsDTO {
 
     public void setWord(String word) {
         this.word = word;
+    }
+
+    public Integer getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Integer storeId) {
+        this.storeId = storeId;
     }
 
     public String getBrand() {
