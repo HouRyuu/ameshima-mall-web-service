@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--suppress ALL -->
+<mapper namespace="com.ameshima.basicData.mapper.RegionMapper">
+
+    <select id="findRegion" resultType="RegionDTO">
+        SELECT
+            region_level,
+            region_code,
+            region_name,
+            parent_code
+        FROM
+            `t_region`
+        WHERE
+            is_delete = 0
+        <if test="regionLevel > 0">
+        AND region_level = #{regionLevel}
+        </if>
+        <if test="parentCode != null">
+        AND parent_code = #{parentCode}
+        </if>
+    </select>
+
+</mapper>

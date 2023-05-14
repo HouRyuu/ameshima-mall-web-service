@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--suppress ALL -->
+<mapper namespace="com.ameshima.store.mapper.StoreEvaluateMapper">
+
+    <select id="getStoreEvaluate" resultType="StoreEvaluateDTO">
+        SELECT
+            t.store_id,
+            t1.`name`,
+            t.desc_score,
+            t.service_score,
+            t.logistics_score
+        FROM
+            t_store_evaluate t
+        INNER JOIN t_store t1 ON t1.id = t.store_id
+        AND t1.is_delete = 0
+        WHERE
+            t.store_id = #{storeId}
+        AND t.is_delete = 0
+    </select>
+
+</mapper>

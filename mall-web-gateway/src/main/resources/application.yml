@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: mall-gateway
+  http:
+    multipart:
+      max-file-size: 5MB
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://lp:123456@localhost:8761/eureka/
+zuul:
+  routes:
+    basicApi:
+      path: /basic/**
+      serviceId: mall-basicData
+      stripPrefix: false
+    userApi:
+      path: /user/**
+      serviceId: mall-user
+      stripPrefix: false
+    goodsApi:
+          path: /goods/**
+          serviceId: mall-goods
+          stripPrefix: false
+    storeApi:
+          path: /store/**
+          serviceId: mall-store
+          stripPrefix: false
+    orderApi:
+          path: /order/**
+          serviceId: mall-order
+          stripPrefix: false
+
+# 添加ribbon的超时时间设置
+ribbon:
+  ReadTimeout: 5000
+  ConnectTimeout: 5000

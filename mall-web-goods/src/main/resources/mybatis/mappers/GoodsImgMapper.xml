@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--suppress ALL -->
+<mapper namespace="com.ameshima.goods.mapper.GoodsImgMapper">
+
+    <select id="goodsImgList" resultType="GoodsImgDTO">
+        SELECT t.img_url,
+               t.img_type
+        FROM t_goods_img t
+        WHERE t.goods_id = #{goodsId}
+          AND t.is_delete = 0;
+    </select>
+</mapper>

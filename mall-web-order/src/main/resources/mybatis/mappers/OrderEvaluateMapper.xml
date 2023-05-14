@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--suppress ALL -->
+<mapper namespace="com.ameshima.order.mapper.OrderEvaluateMapper">
+
+
+    <select id="evaluateList" parameterType="OrderEvaluateVO" resultType="OrderEvaluateVO">
+        SELECT avatar, nick_name, desc_score, evaluate_text, oe.create_time, og.attrs_json
+        FROM t_order_evaluate AS oe
+                 INNER JOIN t_order_goods og
+                            ON oe.sku_id = og.sku_id AND oe.order_no = og.order_no AND og.is_delete = 0
+        WHERE oe.goods_id = #{goodsId}
+          AND oe.is_delete = 0
+        order by oe.id DESC
+    </select>
+
+
+</mapper>

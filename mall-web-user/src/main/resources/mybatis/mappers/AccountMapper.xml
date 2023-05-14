@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--suppress ALL -->
+<mapper namespace="com.ameshima.user.mapper.AccountMapper">
+
+    <select id="login" parameterType="AccountPO" resultType="LoginUser">
+        SELECT t.id                                                  account_id,
+               t.account,
+               t.first_user_type                                     account_type,
+               IF(t.first_user_type = 1, t2.avatar, t1.avatar)       avatar,
+               IF(t.first_user_type = 1, t2.nick_name, t1.nick_name) nick_name,
+               IF(t.first_user_type = 1, t2.gender, t1.gender)       gender,
+               t3.store_id,
+               t3.store_name
+        FROM t_account t
+                 LEFT JOIN t_user t1 ON t.id = t1.account_id AND t1.is_delete = 0
+                 LEFT JOIN t_user_alipay t2 ON t.id = t2.account_id AND t2.is_delete = 0
+                 LEFT JOIN t_store_user t3 ON t.id = t3.account_id AND t3.is_delete = 0
+        WHERE t.is_delete = 0
+          AND t.account = #{account}
+          AND t.`password` = #{password}
+    </select>
+
+</mapper>

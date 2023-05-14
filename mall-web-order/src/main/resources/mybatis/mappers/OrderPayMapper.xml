@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--suppress ALL -->
+<mapper namespace="com.ameshima.order.mapper.OrderPayMapper">
+
+
+    <update id="payByParentOrderNo" parameterType="OrderPayPO">
+        UPDATE t_order_pay t
+            SET pay_no=#{payNo}, pay_state=#{payState}, pay_way=#{payWay}
+        WHERE t.order_no in (select order_no from t_order_goods where parent_order_no = #{orderNo} AND is_delete = 0)
+          AND t.account_id = #{accountId}
+          AND t.pay_state = 0
+          AND t.is_delete = 0
+    </update>
+
+</mapper>

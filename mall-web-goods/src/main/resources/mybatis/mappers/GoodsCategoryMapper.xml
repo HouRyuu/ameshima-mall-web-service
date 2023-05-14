@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!--suppress ALL -->
+<mapper namespace="com.ameshima.goods.mapper.GoodsCategoryMapper">
+
+    <select id="findCategories" parameterType="GoodsCategoryDTO" resultType="GoodsCategoryDTO">
+        SELECT
+        id,
+        `level`,
+        `name`,
+        pid
+        FROM
+        t_goods_category
+        WHERE
+        is_delete = 0
+        <if test="level > 0">
+            AND `level` = #{level}
+        </if>
+        <if test="pid != null">
+            AND pid = #{pid}
+        </if>
+    </select>
+
+    <select id="findTowLevelChildren" parameterType="GoodsCategoryDTO" resultType="GoodsCategoryDTO">
+        SELECT
+        t.id,
+        t.`level`,
+        t.`name`,
+        t.pid
+        FROM
+        t_goods_category t,
+        (
+        SELECT
+        id
+        FROM
+        t_goods_category
+        WHERE
+        is_delete = 0
+        AND pid = #{pid}
+        <if test="secondLevel > 0">
+        AND second_level = #{secondLevel}
+        </if>
+        ) t1
+        WHERE
+        is_delete = 0
+        AND (t.id = t1.id OR(t.pid = t1.id))
+    </select>
+
+</mapper>
