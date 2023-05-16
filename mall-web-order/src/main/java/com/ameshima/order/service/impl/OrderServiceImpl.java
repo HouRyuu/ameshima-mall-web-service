@@ -3,6 +3,7 @@ package com.ameshima.order.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ameshima.order.constants.OrderConstants;
+import com.ameshima.order.entity.vo.OrderLogisticsVO;
 import com.ameshima.order.keys.OrderKey;
 import com.ameshima.order.rabbitmq.MQSender;
 import com.ameshima.order.utils.PayPayUtil;
@@ -117,7 +118,7 @@ public class OrderServiceImpl implements OrderService {
         example.and().andEqualTo("accountId", LoginInfo.get().getAccountId())
                 .andEqualTo("parentOrderNo", parentOrderNo)
                 .andEqualTo("orderState", orderState)
-                .andCondition("is_delete=", MallConstant.NO);
+                .andEqualTo("isDelete", MallConstant.NO);
         List<OrderGoodsPO> goodsList = orderGoodsMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(goodsList)) {
             return PublicResult.success(Collections.emptyList());
@@ -142,14 +143,17 @@ public class OrderServiceImpl implements OrderService {
         }
         Example example = new Example(OrderGoodsPO.class);
         example.and().andIn("parentOrderNo", parentNoList)
-                .andCondition("is_delete=", MallConstant.NO);
+                .andEqualTo("isDelete", MallConstant.NO);
+        if (condition.getStoreId() != null) {
+            example.and().andEqualTo("storeId", condition.getStoreId());
+        }
         List<OrderGoodsPO> goodsList = orderGoodsMapper.selectByExample(example);
         List<String> orderNoList = goodsList.stream().map(OrderGoodsPO::getOrderNo).collect(Collectors.toList());
         example = new Example(OrderPayPO.class);
-        example.and().andIn("orderNo", orderNoList).andCondition("is_delete=", MallConstant.NO);
+        example.and().andIn("orderNo", orderNoList).andEqualTo("isDelete", MallConstant.NO);
         List<OrderPayPO> payList = orderPayMapper.selectByExample(example);
         example = new Example(OrderLogisticsPO.class);
-        example.and().andIn("orderNo", orderNoList).andCondition("is_delete=", MallConstant.NO);
+        example.and().andIn("orderNo", orderNoList).andEqualTo("isDelete", MallConstant.NO);
         List<OrderLogisticsPO> logisticsList = orderLogisticsMapper.selectByExample(example);
         return PublicResult.success(new PageResult<>(condition.getPageSize(), condition.getPageIndex(), orderPage.getTotal(), ConvertToVO.fromPO(goodsList, payList, logisticsList)));
     }
@@ -293,6 +297,38 @@ public class OrderServiceImpl implements OrderService {
         orderGoodsPO.setOrderState(status);
         orderGoodsPO.setIsDelete(MallConstant.NO);
         return orderGoodsMapper.selectCount(orderGoodsPO) > 0;
+    }
+
+    @Override
+    public PublicResult<?> delivery(OrderLogisticsVO logistics) {
+        return deliveryWithTran(logistics) == MallConstant.YES ? PublicResult.success() : PublicResult.error();
+    }
+
+    @Transactional
+    short deliveryWithTran(OrderLogisticsVO logistics) {
+        Example example = new Example(OrderLogisticsPO.class);
+        example.and().andEqualTo("orderNo", logistics.getOrderNo())
+                .andEqualTo("logisticsState", MallConstant.LogisticsStateEnum.NO_DISPATCH.getState())
+                .andLike("targetAddress", MallConstant.PERSENT + logistics.getTargetAddress() + MallConstant.PERSENT)
+                .andEqualTo("isDelete", MallConstant.NO);
+        OrderLogisticsPO record = new OrderLogisticsPO();
+        record.setLogisticsCompany(logistics.getLogisticsCompany());
+        record.setTrackingNo(logistics.getTrackingNo());
+        record.setLogisticsState(MallConstant.LogisticsStateEnum.DISPATCH.getState());
+        if (orderLogisticsMapper.updateByExampleSelective(record, example) != 1) {
+            return MallConstant.NO;
+        }
+        example = new Example(OrderGoodsPO.class);
+        example.and().andEqualTo("orderNo", logistics.getOrderNo())
+                .andEqualTo("storeId", LoginInfo.get().getStoreId())
+                .andEqualTo("orderState", MallConstant.OrderStateEnum.NO_DISPATCH.getState())
+                .andEqualTo("isDelete", MallConstant.NO);
+        OrderGoodsPO orderGoods = new OrderGoodsPO();
+        orderGoods.setOrderState(MallConstant.OrderStateEnum.DISPATCH.getState());
+        if (orderGoodsMapper.updateByExampleSelective(orderGoods, example) == 0) {
+            return MallConstant.NO;
+        }
+        return MallConstant.YES;
     }
 
     @Transactional

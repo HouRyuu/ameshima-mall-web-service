@@ -32,6 +32,7 @@ public final class ConvertToVO {
             logisticsVO.setOrderNo(logisticsPO.getOrderNo());
             logisticsVO.setGoodsLocation(logisticsPO.getGoodsLocation());
             logisticsVO.setTargetAddress(logisticsPO.getTargetAddress());
+            logisticsVO.setLogisticsCompany(logisticsPO.getLogisticsCompany());
             logisticsVO.setTrackingNo(logisticsPO.getTrackingNo());
             logisticsVO.setLogisticsState(logisticsPO.getLogisticsState());
             return logisticsVO;

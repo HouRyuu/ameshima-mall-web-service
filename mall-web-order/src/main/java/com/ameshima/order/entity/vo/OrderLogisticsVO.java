@@ -5,7 +5,7 @@ public class OrderLogisticsVO {
     private String orderNo;
     private String goodsLocation;
     private String targetAddress;
-    private String logisticsCompany;
+    private Short logisticsCompany;
     private String trackingNo;
     private Short logisticsState;
 
@@ -33,11 +33,11 @@ public class OrderLogisticsVO {
         this.targetAddress = targetAddress;
     }
 
-    public String getLogisticsCompany() {
+    public Short getLogisticsCompany() {
         return logisticsCompany;
     }
 
-    public void setLogisticsCompany(String logisticsCompany) {
+    public void setLogisticsCompany(Short logisticsCompany) {
         this.logisticsCompany = logisticsCompany;
     }
 

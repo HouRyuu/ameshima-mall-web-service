@@ -6,6 +6,7 @@ import com.ameshima.common.dto.PageResult;
 import com.ameshima.common.dto.PublicResult;
 import com.ameshima.order.entity.dto.OrderConditionDTO;
 import com.ameshima.order.entity.vo.OrderDetailVO;
+import com.ameshima.order.entity.vo.OrderLogisticsVO;
 import com.ameshima.order.service.OrderService;
 import com.ameshima.remote.order.api.IOrderService;
 import org.springframework.web.bind.annotation.*;
@@ -80,6 +81,13 @@ public class OrderResource implements IOrderService {
     @GetMapping("/{goodsId}/{status}/exists")
     public boolean orderGoodsExists(@PathVariable("goodsId") int goodsId, @PathVariable("status") short status) {
         return orderService.orderGoodsExists(goodsId, status);
+    }
+
+    @LoginRequire
+    @PutMapping("/delivery")
+    public PublicResult<?> delivery(@RequestBody OrderLogisticsVO logistics) {
+        logistics.setTargetAddress("accountId\":" + LoginInfo.get().getAccountId());
+        return orderService.delivery(logistics);
     }
 
 }

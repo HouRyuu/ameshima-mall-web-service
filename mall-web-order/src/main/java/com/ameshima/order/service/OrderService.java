@@ -4,6 +4,7 @@ import com.ameshima.common.dto.PageResult;
 import com.ameshima.common.dto.PublicResult;
 import com.ameshima.order.entity.dto.OrderConditionDTO;
 import com.ameshima.order.entity.vo.OrderDetailVO;
+import com.ameshima.order.entity.vo.OrderLogisticsVO;
 
 import java.util.List;
 
@@ -26,4 +27,6 @@ public interface OrderService {
     void generateOrder(String orderStr);
 
     boolean orderGoodsExists(int goodsId, short status);
+
+    PublicResult<?> delivery(OrderLogisticsVO logistics);
 }

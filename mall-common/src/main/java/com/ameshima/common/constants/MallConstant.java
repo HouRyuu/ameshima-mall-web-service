@@ -35,6 +35,7 @@ public final class MallConstant {
     public static final String TOKEN = "token";
 
     public static final String UNDERLINE = "_";
+    public static final String PERSENT = "%";
 
     public enum OrderStateEnum {
         DONE((short) 0), NO_PAY((short) 1), NO_DISPATCH((short) 2), DISPATCH((short) 3), NO_COMMENT((short) 4), CANCEL((short) 5);

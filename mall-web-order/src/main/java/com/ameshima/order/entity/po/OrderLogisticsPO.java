@@ -15,7 +15,7 @@ public class OrderLogisticsPO extends BasePO {
     private String orderNo;
     private String goodsLocation;
     private String targetAddress;
-    private String logisticsCompany;
+    private Short logisticsCompany;
     private String trackingNo;
     private Short logisticsState;
 
@@ -51,11 +51,11 @@ public class OrderLogisticsPO extends BasePO {
         this.targetAddress = targetAddress;
     }
 
-    public String getLogisticsCompany() {
+    public Short getLogisticsCompany() {
         return logisticsCompany;
     }
 
-    public void setLogisticsCompany(String logisticsCompany) {
+    public void setLogisticsCompany(Short logisticsCompany) {
         this.logisticsCompany = logisticsCompany;
     }
 
