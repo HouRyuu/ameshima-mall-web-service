@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @see [関するクラス/メソッド]（オプショナル）
  * @since [プロダクト/モジュールバージョン] （オプショナル）
  */
-@FeignClient(value = "tmall-order",path = "/order/evaluate")
+@FeignClient(value = "mall-order",path = "/order/evaluate")
 public interface IOrderEvaluateService {
 
     @GetMapping("/{goodsId}/count")

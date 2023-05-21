@@ -17,7 +17,7 @@ import java.util.List;
  * @see [関するクラス/メソッド]（オプショナル）
  * @since [プロダクト/モジュールバージョン] （オプショナル）
  */
-@FeignClient(value = "tmall-goods", path = "/goods")
+@FeignClient(value = "mall-goods", path = "/goods")
 public interface IGoodsService {
 
     @GetMapping("/getGoods/{id}")
