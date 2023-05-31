@@ -86,7 +86,7 @@ public class OrderResource implements IOrderService {
     @LoginRequire
     @PutMapping("/delivery")
     public PublicResult<?> delivery(@RequestBody OrderLogisticsVO logistics) {
-        logistics.setTargetAddress("accountId\":" + LoginInfo.get().getAccountId());
+        // logistics.setTargetAddress("accountId\":" + LoginInfo.get().getAccountId());
         return orderService.delivery(logistics);
     }
 

@@ -14,7 +14,7 @@
             AND store_id = #{storeId}
         </if>
         <if test="goodsName!=null">
-            and goods_name LIKE contact('%',#{goodsName},'%')
+            and goods_name LIKE concat('%',#{goodsName},'%')
         </if>
         <if test="orderState!=null">
             and order_state=#{orderState}

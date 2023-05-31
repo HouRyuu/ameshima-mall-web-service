@@ -129,7 +129,8 @@ public class AccountServiceImpl implements AccountService {
     public PublicResult<?> sendRegisterCaptcha(String account) {
         Assert.hasText(account, MallConstant.PARAM_ERR_MSG);
         Example example = new Example(AccountPO.class);
-        example.and().andEqualTo("account", account).andCondition("is_delete", MallConstant.NO);
+        example.and().andEqualTo("account", account)
+                .andEqualTo("isDelete", MallConstant.NO);
         if (accountMapper.selectCountByExample(example) > 0) {
             LOGGER.warn("メールアドレスもう登録された=>{}", account);
             return PublicResult.error(UserErrResultEnum.REG_ACCOUNT_EXISTS);
@@ -166,7 +167,8 @@ public class AccountServiceImpl implements AccountService {
         AccountPO record = new AccountPO();
         record.setPassword(DigestUtils.md5Hex(DigestUtils.md5(account.getPassword())));
         Example example = new Example(AccountPO.class);
-        example.and().andEqualTo("account", account.getAccount()).andCondition("is_delete=0");
+        example.and().andEqualTo("account", account.getAccount())
+                .andEqualTo("isDelete", MallConstant.NO);
         if (accountMapper.updateByExampleSelective(record, example) < 1) {
             return PublicResult.error(UserErrResultEnum.ACCOUNT_NOT_EXISTS);
         }
@@ -180,7 +182,7 @@ public class AccountServiceImpl implements AccountService {
                 account != null
                         && !StringUtils.isAnyBlank(account.getAccount(), account.getPassword(), account.getCaptcha()),
                 MallConstant.PARAM_ERR_MSG);
-        CheckUtil.checkMobile(account.getAccount());
+        // CheckUtil.checkEmail(account.getAccount());
         CheckUtil.checkStrLength(account.getPassword(), 6, 32);
         CheckUtil.checkStrLength(account.getCaptcha(), 6, 6);
     }
@@ -189,7 +191,7 @@ public class AccountServiceImpl implements AccountService {
         Assert.isTrue(registerInfo != null && !StringUtils.isAnyBlank(registerInfo.getAccount(),
                         registerInfo.getPassword(), registerInfo.getNickName(), registerInfo.getCaptcha()),
                 MallConstant.PARAM_ERR_MSG);
-        CheckUtil.checkMobile(registerInfo.getAccount());
+        // CheckUtil.checkEmail(registerInfo.getAccount());
         CheckUtil.checkStrLength(registerInfo.getPassword(), 6, 32);
         CheckUtil.checkStrLength(registerInfo.getNickName(), 1, 16);
         CheckUtil.checkStrLength(registerInfo.getCaptcha(), 6, 6);

@@ -125,10 +125,12 @@ public class OrderServiceImpl implements OrderService {
         }
         List<String> orderNoList = goodsList.stream().map(OrderGoodsPO::getOrderNo).collect(Collectors.toList());
         example = new Example(OrderPayPO.class);
-        example.and().andIn("orderNo", orderNoList).andCondition("is_delete=", MallConstant.NO);
+        example.and().andIn("orderNo", orderNoList)
+                .andEqualTo("isDelete", MallConstant.NO);
         List<OrderPayPO> payList = orderPayMapper.selectByExample(example);
         example = new Example(OrderLogisticsPO.class);
-        example.and().andIn("orderNo", orderNoList).andCondition("is_delete=", MallConstant.NO);
+        example.and().andIn("orderNo", orderNoList)
+                .andEqualTo("isDelete", MallConstant.NO);
         List<OrderLogisticsPO> logisticsList = orderLogisticsMapper.selectByExample(example);
         return PublicResult.success(ConvertToVO.fromPO(goodsList, payList, logisticsList));
     }
@@ -248,7 +250,7 @@ public class OrderServiceImpl implements OrderService {
             example.and().andEqualTo("accountId", accountId)
                     .andEqualTo("orderNo", orderNo)
                     .andEqualTo("orderState", MallConstant.OrderStateEnum.DISPATCH.getState())
-                    .andCondition("is_delete=", MallConstant.NO);
+                    .andEqualTo("isDelete", MallConstant.NO);
             OrderGoodsPO orderGoodsPO = new OrderGoodsPO();
             orderGoodsPO.setOrderState(MallConstant.OrderStateEnum.NO_COMMENT.getState());
             if (orderGoodsMapper.updateByExampleSelective(orderGoodsPO, example) > 0) {
@@ -309,7 +311,7 @@ public class OrderServiceImpl implements OrderService {
         Example example = new Example(OrderLogisticsPO.class);
         example.and().andEqualTo("orderNo", logistics.getOrderNo())
                 .andEqualTo("logisticsState", MallConstant.LogisticsStateEnum.NO_DISPATCH.getState())
-                .andLike("targetAddress", MallConstant.PERSENT + logistics.getTargetAddress() + MallConstant.PERSENT)
+                // .andLike("targetAddress", MallConstant.PERSENT + logistics.getTargetAddress() + MallConstant.PERSENT)
                 .andEqualTo("isDelete", MallConstant.NO);
         OrderLogisticsPO record = new OrderLogisticsPO();
         record.setLogisticsCompany(logistics.getLogisticsCompany());
@@ -442,7 +444,7 @@ public class OrderServiceImpl implements OrderService {
         Example example = new Example(OrderGoodsPO.class);
         example.and().andEqualTo("accountId", accountId)
                 .andEqualTo("orderState", MallConstant.OrderStateEnum.NO_PAY.getState())
-                .andCondition("is_delete=", MallConstant.NO);
+                .andEqualTo("isDelete", MallConstant.NO);
         if (!MallConstant.ZERO_STR.equals(parentOrderNo)) {
             example.and().andEqualTo("parentOrderNo", parentOrderNo);
         }

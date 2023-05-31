@@ -46,7 +46,8 @@ public class OrderEvaluateServiceImpl implements OrderEvaluateService {
 
     public int goodsEvaluateCount(int goodsId) {
         Example example = new Example(OrderEvaluatePO.class);
-        example.and().andEqualTo("goodsId", goodsId).andCondition("is_delete=", MallConstant.NO);
+        example.and().andEqualTo("goodsId", goodsId)
+                .andEqualTo("isDelete", MallConstant.NO);
         return orderEvaluateMapper.selectCountByExample(example);
     }
 
@@ -97,7 +98,7 @@ public class OrderEvaluateServiceImpl implements OrderEvaluateService {
                 .andEqualTo("accountId", evaluatePO.getAccountId())
                 .andEqualTo("skuId", evaluatePO.getSkuId())
                 .andEqualTo("orderState", MallConstant.OrderStateEnum.NO_COMMENT.getState())
-                .andCondition("is_delete=", MallConstant.NO);
+                .andEqualTo("isDelete", MallConstant.NO);
         return orderMapper.updateByExampleSelective(order, example) > 0 && orderEvaluateMapper.insertSelective(evaluatePO) > 0;
     }
 }

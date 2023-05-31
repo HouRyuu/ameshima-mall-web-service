@@ -50,7 +50,7 @@ public class AddressServiceImpl implements AddressService {
                 Example example = new Example(AddressPO.class);
                 example.and().andEqualTo("id", address.getId())
                         .andEqualTo("accountId", accountId)
-                        .andCondition("is_delete=", MallConstant.NO);
+                        .andEqualTo("isDelete", MallConstant.NO);
                 if (addressMapper.updateByExampleSelective(addressPO, example) == 1) {
                     return PublicResult.success(address.getId());
                 } else {
@@ -69,7 +69,7 @@ public class AddressServiceImpl implements AddressService {
         example.createCriteria().andEqualTo("id", id)
                 .andEqualTo("accountId", accountId)
                 .andEqualTo("isDefault", MallConstant.NO)
-                .andCondition("is_delete=", MallConstant.NO);
+                .andEqualTo("isDelete", MallConstant.NO);
         AddressPO addressPO = new AddressPO();
         addressPO.setIsDelete(MallConstant.YES);
         try {

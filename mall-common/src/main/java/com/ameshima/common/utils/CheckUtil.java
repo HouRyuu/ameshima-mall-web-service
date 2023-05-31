@@ -27,6 +27,10 @@ public class CheckUtil {
         Assert.isTrue(Pattern.matches(MallConstant.REG_MOBILE, mobile), "手机号" + mobile + "格式不正确");
     }
 
+    public static void checkEmail(String email) {
+        Assert.isTrue(Pattern.matches(MallConstant.REG_EMAIL, email), email + "はメールアドレスではありません");
+    }
+
     public static void checkStrLength(String str, int min, int max) {
         int len = str.length();
         Assert.isTrue(len >= min && len <= max, str + "长度不在范围内");

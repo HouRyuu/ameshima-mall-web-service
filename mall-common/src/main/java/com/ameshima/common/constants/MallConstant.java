@@ -25,6 +25,8 @@ public final class MallConstant {
 
     public static final String REG_MOBILE = "^1[3-8]\\d{9}$";
 
+    public static final String REG_EMAIL = "/^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$/";
+
     public static final short REGION_LEVEL_PROVINCE = 2;
 
     public static final short YES = 1;

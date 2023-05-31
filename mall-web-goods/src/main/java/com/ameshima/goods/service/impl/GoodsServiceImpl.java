@@ -265,7 +265,8 @@ public class GoodsServiceImpl implements GoodsService {
         }
         Example example = new Example(GoodsFreightPO.class);
         example.and().andEqualTo("targetCityCode", cityCode)
-                .andIn("goodsId", goodsIds).andCondition("is_delete=", MallConstant.NO);
+                .andIn("goodsId", goodsIds)
+                .andEqualTo("isDelete", MallConstant.NO);
         example.setOrderByClause("store_id, dispatch_city_code, cost DESC");
         List<GoodsFreightPO> freightList = goodsFreightMapper.selectByExample(example);
         Table<Integer, String, Map<Integer, BigDecimal>> storeCityFreightMap = HashBasedTable.create();

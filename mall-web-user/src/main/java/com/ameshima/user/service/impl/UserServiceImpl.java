@@ -1,6 +1,7 @@
 package com.ameshima.user.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.ameshima.common.constants.MallConstant;
 import com.ameshima.user.service.UserService;
 import com.ameshima.common.constants.GlobalConfig;
 import com.ameshima.common.dto.LoginInfo;
@@ -69,7 +70,7 @@ public class UserServiceImpl implements UserService {
         userPo.setGender(user.getGender());
         Example example = new Example(UserPO.class);
         example.and().andEqualTo("accountId", user.getAccountId())
-                .andCondition("is_delete=0");
+                .andEqualTo("isDelete", MallConstant.NO);
         try {
             if (userMapper.updateByExampleSelective(userPo, example) == 1 && redisClient.setNoLog(CommonKey.TOKEN, LoginInfo.getToken(), user)) {
                 return PublicResult.success();
