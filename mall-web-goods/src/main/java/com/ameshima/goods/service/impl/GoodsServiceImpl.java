@@ -551,7 +551,7 @@ public class GoodsServiceImpl implements GoodsService {
         goodsPO.setSimpleDesc(storeGoods.getSimpleDesc());
         goodsPO.setPrice(storeGoods.getPrice());
         goodsPO.setPromoPrice(storeGoods.getPromoPrice());
-        goodsPO.setImgUrl(FileUtil.compressImgToBase64(storeGoods.getImgList().get(0).getImgUrl()));
+        goodsPO.setImgUrl(FileUtil.uploadImgWithBase64(storeGoods.getImgList().get(0).getImgUrl()));
         goodsPO.setLocation(storeGoods.getLocation());
         goodsPO.setIsShowBanner(storeGoods.getIsShowBanner());
         goodsPO.setIsPromote(storeGoods.getIsPromote());
@@ -586,7 +586,7 @@ public class GoodsServiceImpl implements GoodsService {
             imgPO.setGoodsId(goodsPO.getId());
             imgPO.setImgType(goodsImgDTO.getImgType());
             try {
-                imgPO.setImgUrl(FileUtil.compressImgToBase64(goodsImgDTO.getImgUrl()));
+                imgPO.setImgUrl(FileUtil.uploadImgWithBase64(goodsImgDTO.getImgUrl()));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

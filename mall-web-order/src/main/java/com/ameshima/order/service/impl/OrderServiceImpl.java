@@ -317,7 +317,7 @@ public class OrderServiceImpl implements OrderService {
         record.setLogisticsCompany(logistics.getLogisticsCompany());
         record.setTrackingNo(logistics.getTrackingNo());
         record.setLogisticsState(MallConstant.LogisticsStateEnum.DISPATCH.getState());
-        if (orderLogisticsMapper.updateByExampleSelective(record, example) != 1) {
+        if (orderLogisticsMapper.updateByExampleSelective(record, example) == 0) {
             return MallConstant.NO;
         }
         example = new Example(OrderGoodsPO.class);

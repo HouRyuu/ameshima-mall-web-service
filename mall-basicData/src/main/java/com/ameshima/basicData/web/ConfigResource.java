@@ -32,7 +32,7 @@ public class ConfigResource {
 
     @PostMapping("/img/upload")
     public PublicResult<String> imgUpload(@RequestParam("img") MultipartFile file) throws IOException {
-        return PublicResult.success(FileUtil.compressImgToBase64(file.getInputStream(), file.getContentType()));
+        return PublicResult.success(FileUtil.compressImg(file.getInputStream(), file.getContentType()));
     }
 
 }

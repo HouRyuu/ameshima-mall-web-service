@@ -162,7 +162,7 @@
         GROUP_CONCAT(DISTINCT t7.`name`)
         ) allCategories
         FROM t_goods t
-        INNER JOIN t_goods_brand t2 ON t2.id = t.brand_id
+        LEFT JOIN t_goods_brand t2 ON t2.id = t.brand_id
         AND t2.is_delete = 0
         INNER JOIN t_goods_category_relation t3 ON t3.goods_id = t.id
         INNER JOIN t_goods_category t4 ON t4.id = t3.category_id

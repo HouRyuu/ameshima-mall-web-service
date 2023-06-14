@@ -11,6 +11,9 @@ public class GoodsCategoryRelationPO {
     private Integer goodsId;
     private Integer categoryId;
 
+    public GoodsCategoryRelationPO() {
+    }
+
     public GoodsCategoryRelationPO(Integer goodsId) {
         this.goodsId = goodsId;
     }

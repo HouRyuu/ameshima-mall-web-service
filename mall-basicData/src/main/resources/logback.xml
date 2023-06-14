@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <property name="LOG_HOME" value="${user.dir}/applogs" />
-    <property name="APP_NAME" value="mall-web-basic" />
+    <property name="APP_NAME" value="mall-basicData" />
     <property name="LOG_MAX_HISTORY" value="30" />
     <property name="LOG_APP_HOME" value="${LOG_HOME}/${APP_NAME}/app/" />
 
