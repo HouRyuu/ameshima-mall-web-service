@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8086
   context-path: /user/
 
 spring:
@@ -9,13 +9,12 @@ spring:
     active: mail
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/tmall?useUnicode=true&characterEncoding=utf-8&useSSL=false
-    #    url: jdbc:mysql://127.0.0.1:3306/tmallUser?useUnicode=true&characterEncoding=utf-8&useSSL=false
-    username: root
-    password: 3086941018Zn
+    driverClassName: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://192.168.225.134:3306/ameshimaMall?useUnicode=true&characterEncoding=utf-8
+    username: admin
+    password: zn891018"
   redis:
-    host: 127.0.0.1
+    host: 192.168.225.134
     port: 6379
     password: ;463*
   jackson:
@@ -39,7 +38,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://lp:123456@localhost:8761/eureka/
+      defaultZone: http://lp:123456@192.168.225.132:8761/eureka/
 
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
