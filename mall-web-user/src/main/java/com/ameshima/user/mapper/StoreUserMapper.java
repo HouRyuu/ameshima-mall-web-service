@@ -1,6 +1,7 @@
-package com.ameshima.remote.user.api;
+package com.ameshima.user.mapper;
 
-import org.springframework.cloud.netflix.feign.FeignClient;
+import com.ameshima.common.BaseMapper;
+import com.ameshima.user.entity.po.StoreUserPO;
 
 /**
  * 〈機能記述〉<br>
@@ -10,8 +11,5 @@ import org.springframework.cloud.netflix.feign.FeignClient;
  * @see [関するクラス/メソッド]（オプショナル）
  * @since [プロダクト/モジュールバージョン] （オプショナル）
  */
-@FeignClient(value = "mall-user", path = "/user")
-public interface IUserService {
-
-
+public interface StoreUserMapper extends BaseMapper<StoreUserPO> {
 }

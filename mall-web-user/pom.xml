@@ -53,6 +53,18 @@
             <artifactId>google-api-services-gmail</artifactId>
             <version>v1-rev20230206-2.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.ameshima</groupId>
+            <artifactId>mall-store-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ameshima</groupId>
+            <artifactId>mall-store-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>

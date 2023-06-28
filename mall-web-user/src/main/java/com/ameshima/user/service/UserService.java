@@ -2,6 +2,7 @@ package com.ameshima.user.service;
 
 import com.ameshima.common.dto.LoginUser;
 import com.ameshima.common.dto.PublicResult;
+import com.ameshima.user.entity.dto.StoreUserDTO;
 
 /**
  * 〈機能記述〉<br>
@@ -16,5 +17,7 @@ public interface UserService {
     int createUser(LoginUser user);
 
     PublicResult<?> update(LoginUser user);
+
+    PublicResult<?> registerStore(StoreUserDTO storeUser);
 
 }
