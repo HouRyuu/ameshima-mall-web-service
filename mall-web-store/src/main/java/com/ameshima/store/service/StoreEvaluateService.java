@@ -14,4 +14,6 @@ public interface StoreEvaluateService {
 
     StoreEvaluateDTO getStoreEvaluate(int storeId);
 
+    void createEvaluate(int storeId);
+
 }

@@ -1,6 +1,8 @@
 package com.ameshima.store.mapper;
 
+import com.ameshima.common.BaseMapper;
 import com.ameshima.store.entity.dto.StoreEvaluateDTO;
+import com.ameshima.store.entity.po.StoreEvaluatePO;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -11,7 +13,7 @@ import org.apache.ibatis.annotations.Param;
  * @see [関するクラス/メソッド]（オプショナル）
  * @since [プロダクト/モジュールバージョン] （オプショナル）
  */
-public interface StoreEvaluateMapper {
+public interface StoreEvaluateMapper extends BaseMapper<StoreEvaluatePO> {
 
     StoreEvaluateDTO getStoreEvaluate(@Param("storeId") int storeId);
 

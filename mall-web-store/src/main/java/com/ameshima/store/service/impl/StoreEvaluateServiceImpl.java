@@ -1,5 +1,6 @@
 package com.ameshima.store.service.impl;
 
+import com.ameshima.store.entity.po.StoreEvaluatePO;
 import org.springframework.stereotype.Service;
 
 import com.ameshima.store.entity.dto.StoreEvaluateDTO;
@@ -26,4 +27,10 @@ public class StoreEvaluateServiceImpl implements StoreEvaluateService {
     public StoreEvaluateDTO getStoreEvaluate(int storeId) {
         return storeEvaluateMapper.getStoreEvaluate(storeId);
     }
+
+    @Override
+    public void createEvaluate(int storeId) {
+        storeEvaluateMapper.insertSelective(new StoreEvaluatePO(storeId));
+    }
+
 }
